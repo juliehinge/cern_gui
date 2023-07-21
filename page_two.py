@@ -3,6 +3,8 @@ from tkinter import ttk
 from tkinter import *
 from tkscrolledframe import ScrolledFrame
 import random
+from p import Pages
+
 
 class PageTwo(tk.Frame):
     def __init__(self, parent, controller):
@@ -152,6 +154,11 @@ class PageTwo(tk.Frame):
             self.warning_text.set("The total degrees should not exceed 360 degrees!")
         elif not user_mistake:
             self.warning_text.set("")
+            Pages.alpha_list = self.alpha_entries
+            Pages.vector_list = self.vector_entries
+            self.controller.show_frame("PageFive")
+
+        
 
 
 if __name__ == "__main__":

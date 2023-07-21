@@ -195,6 +195,8 @@ class PageFour(tk.Frame, Pages):
     
         elif user_mistake == False:
             self.warning_text.set(" ") # Removing the warning if error is fixed
-
+            Pages.alpha_list = self.alpha_list
+            Pages.vector_list = self.vector_list
+            self.controller.show_frame("PageFive")
 
         

@@ -1,6 +1,7 @@
 import tkinter as tk
 from tkinter import font as tkfont
 from tkinter import ttk
+from p import Pages
 
 class PageOne(tk.Frame):
 
@@ -103,17 +104,19 @@ class PageOne(tk.Frame):
       
     def record_params(self):
         radius = self.r_radius_entry.get()
-
+        #print(radius.isdigit())
         # Ensuring the radius is an integer
-        if radius.isnumeric() == False:
+        if radius.replace(".", "").isnumeric()== False:
             self.entryFlag = False
         # Ensuring the radius is larger than 0
-        elif int(radius) < 0:
+        
+        elif float(radius) < 0:
                 self.entryFlag = False
         # When error is fixed, the text disappears and the new window is opened
         else:
             self.warning_text.set("") 
             self.entryFlag = True
+            Pages.radius += Pages.radius
 
 
     def open_next_frame(self):
@@ -123,7 +126,6 @@ class PageOne(tk.Frame):
         elif self.checkFlag == True and self.entryFlag == True and self.method == True:
             self.controller.show_frame("PageThree")
         else:
-            print(self.entryFlag)
             self.warning_text.set("Please fill out the information correctly")
 
 
