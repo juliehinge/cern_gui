@@ -1,0 +1,6 @@
+tkscrolledframe
+random
+tkinter
+pandas
+matplotlib
+seaborn
