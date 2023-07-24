@@ -116,7 +116,7 @@ class PageOne(tk.Frame):
         else:
             self.warning_text.set("") 
             self.entryFlag = True
-            Pages.radius += Pages.radius
+            Pages.radius += float(radius)
 
 
     def open_next_frame(self):

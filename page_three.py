@@ -19,7 +19,6 @@ class PageThree(tk.Frame, Pages):
         ttk.Label(self, text="Upload your CSV file please", font = ("bold", 20)).grid(row=1, column=0, padx = (10,30), pady = (10,30), columnspan=3)
                 
 
-
         Btn_import = ttk.Button(self, text='Browse Data Set', command=lambda:self.import_csv_data())
         Btn_import.grid(row=2, column=0, sticky='w')
         Btn_ok = ttk.Button(self, text='OK', command=lambda:self.open_window())

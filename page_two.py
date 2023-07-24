@@ -88,8 +88,9 @@ class PageTwo(tk.Frame):
         sections_entry.grid(row=self.row + 2, column=1, sticky='w')
         random_num = random.randint(0, 9)
         sections_entry.insert(0, random_num)
-        sections_entry.bind("<Button-1>", lambda event: self.clear(sections_entry))
+        sections_entry.bind("<Button-1>", lambda event: self.clear(sections_entry, random_num))
         self.vector_entries.append(sections_entry)
+        
         lab3 = tk.Label(self.scrollable_frame, text="α:", font=(10))
         lab3.grid(row=self.row + 2, column=2, sticky='e', padx=(10, 0))
         self.labels.append(lab3)
@@ -101,14 +102,20 @@ class PageTwo(tk.Frame):
         sections_entry.grid(row=self.row + 2, column=3, sticky='w')
         random_num = random.randint(0, 360)
         sections_entry.insert(0, random_num)
-        sections_entry.bind("<Button-1>", lambda event: self.clear(sections_entry))
+        sections_entry.bind("<Button-1>", lambda event: self.clear(sections_entry, random_num))
         self.alpha_entries.append(sections_entry)
 
 
 
-    def clear(self, sections_entry):
-        sections_entry.delete(0, tk.END)
-        sections_entry.config(foreground="white")
+
+    def clear(self, sections_entry, random_num):
+        if sections_entry.get() != '':
+            if float(sections_entry.get()) == float(random_num):
+                sections_entry.delete(0, tk.END) # Deleting text already in box
+                sections_entry.config(foreground="white") # Changing colour of the box
+
+
+
 
 
     def remove_section(self):
@@ -137,25 +144,41 @@ class PageTwo(tk.Frame):
         ttk.Label(self.scrollable_frame, text="-" * 100, foreground="grey").grid(row=self.row, column=0, pady=(10, 0),
                                                                                   columnspan=5, sticky='w')
 
-    def sum_alpha(self):
-        alpha_sum = 0
-        user_mistake = False
-        self.warning_text.set("")
 
+
+    def sum_alpha(self):
+
+        alpha_sum = 0 # Counter to keep track of the current sum of degrees
+        user_mistake = False # Flag to keep track of mistakes in the input
+
+        updated_alpha = []
+        updated_vector = []
+
+
+        for i in self.vector_entries:
+            vector = i.get()
+            updated_vector.append(vector.split(","))
+
+
+        # Looping through the buttons and getting their alpha value 
         for i in self.alpha_entries:
             alpha = i.get()
-            if not alpha.isnumeric():
-                self.warning_text.set("There is an error in one of your inputs!")
-                user_mistake = True
-            else:
-                alpha_sum += int(alpha)
-
+            updated_alpha.append(alpha)
+            try:
+                alpha = float(alpha)
+                alpha_sum += float(alpha) # adding to the alpha sum
+            except ValueError:
+                self.warning_text.set("There is an error in one of your inputs!") # Warning the user
+                user_mistake = True # Setting the flag to true since there is a mistake in the input
+    
+                            
         if alpha_sum > 360:
-            self.warning_text.set("The total degrees should not exceed 360 degrees!")
-        elif not user_mistake:
-            self.warning_text.set("")
-            Pages.alpha_list = self.alpha_entries
-            Pages.vector_list = self.vector_entries
+            self.warning_text.set("The total degrees should not exceed 360 degrees!") # Warning the user if the degrees exceed 360
+    
+        elif user_mistake == False:
+            self.warning_text.set(" ") # Removing the warning if error is fixed
+            Pages.alpha_list = updated_alpha
+            Pages.vector_list = updated_vector
             self.controller.show_frame("PageFive")
 
         

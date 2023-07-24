@@ -81,7 +81,7 @@ class PageFour(tk.Frame, Pages):
         sections_entry = ttk.Entry(self.scrollable_frame); sections_entry.grid(row=self.row+2, column=1, sticky = 'w')
         sections_entry.insert(0, self.vector)
         self.vector_entries.append(sections_entry)
-        sections_entry.bind("<Button-1>", lambda event: self.clear(sections_entry),) # Binding to an event to clear text already in box
+    #    sections_entry.bind("<Button-1>", lambda event: self.clear(sections_entry),) # Binding to an event to clear text already in box
 
         # Adding Labels For alpga
         alp_lab = ttk.Label(self.scrollable_frame, text="α:")
@@ -92,8 +92,7 @@ class PageFour(tk.Frame, Pages):
         alpha_entry = ttk.Entry(self.scrollable_frame); alpha_entry.grid(row=self.row+2, column=3, sticky = 'w')
         alpha_entry.insert(0, self.alpha)
         self.alpha_entries.append(alpha_entry)
-        alpha_entry.bind("<Button-1>", lambda event: self.clear(alpha_entry),) # Binding to an event to clear text already in box
-
+     #   alpha_entry.bind("<Button-1>", lambda event: self.clear(alpha_entry),) # Binding to an event to clear text already in box
 
 
         lab = ttk.Label(self.scrollable_frame, text="-"*100, foreground="grey")
@@ -114,11 +113,11 @@ class PageFour(tk.Frame, Pages):
         self.labels.append(sec_ent); self.labels.append(Bn_lab)
 
         # Adding Entries for vector
-        sections_entry = ttk.Entry(self.scrollable_frame, foreground="grey"); sections_entry.grid(row=self.row+2, column=1, sticky = 'w')
-        random_num = random.randint(0,360) # Generate random number to use as example text
-        sections_entry.insert(0, random_num)
-        sections_entry.bind("<Button-1>", lambda event: self.clear(sections_entry),) # Binding to an event to clear text already in box
-        self.vector_entries.append(sections_entry)
+        sections_entry_v = ttk.Entry(self.scrollable_frame, foreground="grey"); sections_entry_v.grid(row=self.row+2, column=1, sticky = 'w')
+        random_num_v = random.randint(0,360) # Generate random number to use as example text
+        sections_entry_v.insert(0, random_num_v)
+        sections_entry_v.bind("<Button-1>", lambda event: self.clear(sections_entry_v, random_num_v),) # Binding to an event to clear text already in box
+        self.vector_entries.append(sections_entry_v)
 
         # Adding Labels For alpha
         alpha_lab = ttk.Label(self.scrollable_frame, text="α:")
@@ -127,11 +126,11 @@ class PageFour(tk.Frame, Pages):
 
 
         # Adding Entries for alpha
-        sections_entry = ttk.Entry(self.scrollable_frame, foreground="grey"); sections_entry.grid(row=self.row+2, column=3, sticky = 'w')
+        sections_entry_a = ttk.Entry(self.scrollable_frame, foreground="grey"); sections_entry_a.grid(row=self.row+2, column=3, sticky = 'w')
         random_num = random.randint(0,360) # Generate random number to use as example text
-        sections_entry.insert(0, random_num)
-        sections_entry.bind("<Button-1>", lambda event: self.clear(sections_entry),) # Binding to an event to clear text already in box
-        self.alpha_entries.append(sections_entry)
+        sections_entry_a.insert(0, random_num)
+        sections_entry_a.bind("<Button-1>", lambda event: self.clear(sections_entry_a, random_num),) # Binding to an event to clear text already in box
+        self.alpha_entries.append(sections_entry_a)
 
 
         lab = ttk.Label(self.scrollable_frame, text="-"*100, foreground="grey")
@@ -140,9 +139,11 @@ class PageFour(tk.Frame, Pages):
         self.row += 3; self.counter += 1 # Increment row number for new section and Increment the number of sections
 
   
-    def clear(self, sections_entry):
-        sections_entry.delete(0, tk.END) # Deleting text already in box
-        sections_entry.config(foreground="white") # Changing colour of the box
+    def clear(self, sections_entry, random_num):
+        if sections_entry.get() != '':
+            if float(sections_entry.get()) == float(random_num):
+                sections_entry.delete(0, tk.END) # Deleting text already in box
+                sections_entry.config(foreground="white") # Changing colour of the box
 
 
 
@@ -181,22 +182,36 @@ class PageFour(tk.Frame, Pages):
         alpha_sum = 0 # Counter to keep track of the current sum of degrees
         user_mistake = False # Flag to keep track of mistakes in the input
 
+        updated_alpha = []
+        updated_vector = []
+
+
+        for i in self.vector_entries:
+            vector = i.get()
+            updated_vector.append(vector.split(","))
+
+
         # Looping through the buttons and getting their alpha value 
         for i in self.alpha_entries:
             alpha = i.get()
-            if alpha.isnumeric() == False:
+            updated_alpha.append(alpha)
+            try:
+                alpha = float(alpha)
+                alpha_sum += float(alpha) # adding to the alpha sum
+            except ValueError:
                 self.warning_text.set("There is an error in one of your inputs!") # Warning the user
                 user_mistake = True # Setting the flag to true since there is a mistake in the input
-            else:
-                alpha_sum += int(alpha) # adding to the alpha sum
-                
+    
+                            
         if alpha_sum > 360:
             self.warning_text.set("The total degrees should not exceed 360 degrees!") # Warning the user if the degrees exceed 360
     
         elif user_mistake == False:
             self.warning_text.set(" ") # Removing the warning if error is fixed
-            Pages.alpha_list = self.alpha_list
-            Pages.vector_list = self.vector_list
+            Pages.alpha_list = updated_alpha
+            Pages.vector_list = updated_vector
+
+            print(updated_vector)
             self.controller.show_frame("PageFive")
 
         

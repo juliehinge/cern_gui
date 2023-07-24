@@ -23,12 +23,32 @@ import math
 import math
 
 R = 0.7
-#A = [math.pi/8, math.pi/8, math.pi/2]
 A = [[0, math.pi/8], [math.pi/8, 3*math.pi/8], [3*math.pi/8, math.pi/2]]
-B = [1,0]
+B = [0.6, 0.4, 0.5]
 G = [2, -2, 1]
 P = [0.2, -0.5]
-trims = [[0, math.pi/8], [math.pi/8, 3*math.pi/8], [3*math.pi/8, math.pi/2]]
+trims = [0.1, math.pi/2-0.1 ]
+
+
+
+li = [[0.6, 2], [0.4,-2], [0.5,1]]
+
+for pol in B[0]:
+    print(pol)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 def get_B(R, A, B, G, P, trims):
@@ -45,8 +65,8 @@ def get_B(R, A, B, G, P, trims):
     
     # Update output, if needed
     for k in range(len(A)):
-        m1 = math.tan(math.pi/2 - A[k][0])
-        m2 = math.tan(math.pi/2 - A[k][1])
+        m1 = math.tan(math.pi/2 - float(A[k][0]))
+        m2 = math.tan(math.pi/2 - float(A[k][1]))
         
         if y < m1*x - R and y >= m2*x - R:  # if P is in Area k
             if k != len(A) - 1:  # NOT in the last area (exit area)
@@ -57,6 +77,9 @@ def get_B(R, A, B, G, P, trims):
             elif k == len(A) - 1:  # in the last area (exit area)
                 if y >= math.tan(-beta1)*x + (-R-math.tan(-beta1)*(R-left_trim_size)) and \
                         y >= math.tan(beta2)*x + (-R-math.tan(beta2)*(R+right_trim_size)):  # inside magnet
+                    
+                    print(beta1)
+
                     d = math.sqrt(x**2 + (y-(-R))**2)
                     h = R - d
                     Bout = B[k] + G[k]*h
@@ -65,8 +88,4 @@ def get_B(R, A, B, G, P, trims):
     return Bout
 
 
-
-# Example usage:
-
-
-print(get_B(R, A, B, G, P, trims))
+#print(get_B(R, A, B, G, P, trims))

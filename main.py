@@ -32,6 +32,9 @@ class SampleApp(tk.Tk):
             self.frames[page_name] = (frame, geometry)
             frame.grid(row=0, column=0, sticky="nsew")
 
+
+
+
     
         self.show_frame("StartPage")
 
