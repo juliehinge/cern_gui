@@ -15,15 +15,21 @@ class PageFive(tk.Frame):
       
 
         # Labels for instructions
-        tk.Label(self, text="please input the coordinate:", font = ("bold", 15)).grid(row=1, column=0, pady=10, sticky='w', )
+       # tk.Label(self, text="Preview:", font = ("bold", 15)).grid(row=1, column=0, pady=10, sticky='w', )
     
 
-        self.coor_entry = ttk.Entry(self)
-        self.coor_entry.grid(row=1, column=1, padx=2, sticky = 'w')
+        preview = ttk.Button(self, text="Preview",
+                            command=lambda: controller.show_frame("PageSix"))
+        preview.grid(row=1, column=1, padx=2, sticky = 'w')
+
+        
+       # self.coor_entry = ttk.Entry(self)
+       # self.coor_entry.grid(row=1, column=1, padx=2, sticky = 'w')
+
 
 
         button1 = ttk.Button(self, text="Back",
-                            command=lambda: controller.show_frame("StartPage"))
+                            command=lambda: controller.show_frame("PageOne"))
         button1.grid(row=2, column=0,  pady = (10), sticky='e')
 
 
@@ -69,15 +75,10 @@ class PageFive(tk.Frame):
 
         A = []
         curr = 0
-
-        print("B", B)
-        print("G", G)
-        print(d)
         for i in range(len(a)):
             A.append([curr, curr + float(a[i])])
             curr += float(a[i])
         
-        print("alpha", A)           
         print("result", get_B(R, A, B, G, P, trims))
 
 

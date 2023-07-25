@@ -86,7 +86,7 @@ class PageTwo(tk.Frame):
 
         sections_entry = ttk.Entry(self.scrollable_frame, foreground="grey")
         sections_entry.grid(row=self.row + 2, column=1, sticky='w')
-        random_num = random.randint(0, 9)
+        random_num = round(random.uniform(0,10), 1)
         sections_entry.insert(0, random_num)
         sections_entry.bind("<Button-1>", lambda event: self.clear(sections_entry, random_num))
         self.vector_entries.append(sections_entry)
@@ -100,7 +100,7 @@ class PageTwo(tk.Frame):
     def alpha_section(self, i):
         sections_entry = ttk.Entry(self.scrollable_frame, foreground="grey")
         sections_entry.grid(row=self.row + 2, column=3, sticky='w')
-        random_num = random.randint(0, 360)
+        random_num = round(random.uniform(0,10), 1)
         sections_entry.insert(0, random_num)
         sections_entry.bind("<Button-1>", lambda event: self.clear(sections_entry, random_num))
         self.alpha_entries.append(sections_entry)

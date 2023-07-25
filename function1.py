@@ -1,4 +1,8 @@
 import math
+from p import Pages
+import seaborn as sns
+import numpy as np
+import pandas as pd
 
 
 """""
@@ -20,31 +24,106 @@ import math
 
   """
 
-import math
-
-R = 0.7
-A = [[0, math.pi/8], [math.pi/8, 3*math.pi/8], [3*math.pi/8, math.pi/2]]
-B = [0.6, 0.4, 0.5]
-G = [2, -2, 1]
-P = [0.2, -0.5]
-trims = [0.1, math.pi/2-0.1 ]
-
-
-
-li = [[0.6, 2], [0.4,-2], [0.5,1]]
-
-for pol in B[0]:
-    print(pol)
 
 
 
 
+def default():
+
+    R = 0.7
+    A = [0.39, 0.4,0.5]
+    P = [0.2, -0.5]
+    trims = [0.1, math.pi/2-0.1 ]
+    li = [[0.6,0.4,0.5],[2,-2,1]]
+
+
+    X_max = R + 0.5
+    Y_min = -R-0.2
+    Y_max = 0.2
+
+    d = dict()
+
+
+    for i in range(len(li[0])):
+        d[i] = []
+
+        for j in range(len(li)):
+            try:
+                d[i].append(li[j][i])
+            except IndexError:
+                d[i].append(0)
+
+
+    B = d[0]
+    try:
+        G = d[1]
+    except KeyError:
+        G = []
+        for i in range(len(li)):
+            G.append(0)
 
 
 
+    X = np.linspace(X_min, X_max, num=100)
+    Y = np.linspace(Y_min, Y_max, num=100)
+    xx, yy = np.meshgrid(X, Y)
 
 
+    x_li = []
+    y_li = []
+    mag_field = []
 
+    for x,y in zip(xx,yy):
+        for xx,yy in zip(x,y):
+            x_li.append(round(xx,2))
+            y_li.append(round(yy,2))
+            P = xx, yy
+            mag_field.append(get_B(R, A, B, G, P, trims))
+
+
+    df = pd.DataFrame({
+
+        'x': x_li,
+        'y': y_li,
+        'values': mag_field
+    })
+
+    pivot_table = df.pivot(index='y', columns='x', values='values')
+    pivot_table = pivot_table.iloc[::-1] # Reverse the order of rows
+
+    fig, ax = plt.subplots(figsize=(10,7))
+    sns.heatmap(pivot_table, cbar_kws={'label': 'B[T]'},cmap="Reds", ax=ax)
+
+    plt.xlabel("X position") 
+    plt.ylabel("Y position") 
+
+    a = X_min * min(len(pivot_table.columns), len(pivot_table.index))
+    b = Y_min * min(len(pivot_table.columns), len(pivot_table.index))
+    r = 0.7
+
+    # Adjust the radius to match the DataFrame indices
+    r_adj = r * min(len(pivot_table.columns), len(pivot_table.index))
+
+    stepSize = 0.01
+
+    positions = []
+    t = 0
+    while t < 2 * math.pi:
+        positions.append((r_adj * math.cos(t) + a, r_adj * math.sin(t) + b))
+        t += stepSize
+
+
+    X = []
+    Y = []
+    for i in positions:
+        x, y = i
+        X.append(x)
+        Y.append(-y)
+
+    ax.plot(X, Y, color='black')
+
+    plt.save("img.png")
+    plt.show()
 
 
 
@@ -88,4 +167,4 @@ def get_B(R, A, B, G, P, trims):
     return Bout
 
 
-#print(get_B(R, A, B, G, P, trims))
+print(get_B(R, A, B, G, P, trims))

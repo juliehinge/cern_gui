@@ -60,12 +60,13 @@ class PageFour(tk.Frame, Pages):
     def pasvariable(self, var):
       
         # Looping over the alpha list and vecor list from the csv and adding them to the entries 
-        alpha_list = Pages.alpha_list
-        vector_list = Pages.vector_list
-        for i in range(len(alpha_list)):
-            self.alpha = alpha_list[i]
-            self.vector = vector_list[i]
-            self.automatic_add() # Calling the function to actually add alpha and the vector
+        if len(self.alpha_entries) == 0:
+            alpha_list = Pages.alpha_list
+            vector_list = Pages.vector_list
+            for i in range(len(alpha_list)):
+                self.alpha = alpha_list[i]
+                self.vector = vector_list[i]
+                self.automatic_add() # Calling the function to actually add alpha and the vector
 
 
 
@@ -79,9 +80,10 @@ class PageFour(tk.Frame, Pages):
         
         # Adding Entries for vector
         sections_entry = ttk.Entry(self.scrollable_frame); sections_entry.grid(row=self.row+2, column=1, sticky = 'w')
-        sections_entry.insert(0, self.vector)
+        vector = ' '.join([str(elem) for elem in self.vector])
+        vector = vector.replace(" ", ", ")
+        sections_entry.insert(0, vector)
         self.vector_entries.append(sections_entry)
-    #    sections_entry.bind("<Button-1>", lambda event: self.clear(sections_entry),) # Binding to an event to clear text already in box
 
         # Adding Labels For alpga
         alp_lab = ttk.Label(self.scrollable_frame, text="α:")
@@ -92,7 +94,6 @@ class PageFour(tk.Frame, Pages):
         alpha_entry = ttk.Entry(self.scrollable_frame); alpha_entry.grid(row=self.row+2, column=3, sticky = 'w')
         alpha_entry.insert(0, self.alpha)
         self.alpha_entries.append(alpha_entry)
-     #   alpha_entry.bind("<Button-1>", lambda event: self.clear(alpha_entry),) # Binding to an event to clear text already in box
 
 
         lab = ttk.Label(self.scrollable_frame, text="-"*100, foreground="grey")
@@ -114,7 +115,7 @@ class PageFour(tk.Frame, Pages):
 
         # Adding Entries for vector
         sections_entry_v = ttk.Entry(self.scrollable_frame, foreground="grey"); sections_entry_v.grid(row=self.row+2, column=1, sticky = 'w')
-        random_num_v = random.randint(0,360) # Generate random number to use as example text
+        random_num_v = round(random.uniform(0,10), 1)
         sections_entry_v.insert(0, random_num_v)
         sections_entry_v.bind("<Button-1>", lambda event: self.clear(sections_entry_v, random_num_v),) # Binding to an event to clear text already in box
         self.vector_entries.append(sections_entry_v)
@@ -127,7 +128,8 @@ class PageFour(tk.Frame, Pages):
 
         # Adding Entries for alpha
         sections_entry_a = ttk.Entry(self.scrollable_frame, foreground="grey"); sections_entry_a.grid(row=self.row+2, column=3, sticky = 'w')
-        random_num = random.randint(0,360) # Generate random number to use as example text
+        #random_num = random.randint(0,360) # Generate random number to use as example text
+        random_num = round(random.uniform(0,10), 1)
         sections_entry_a.insert(0, random_num)
         sections_entry_a.bind("<Button-1>", lambda event: self.clear(sections_entry_a, random_num),) # Binding to an event to clear text already in box
         self.alpha_entries.append(sections_entry_a)
@@ -148,7 +150,6 @@ class PageFour(tk.Frame, Pages):
 
 
     def remove_section(self):
-
         if self.counter > 1: 
             for i in self.labels[-5:-1]:
                 i.destroy()
