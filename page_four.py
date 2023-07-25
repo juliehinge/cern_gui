@@ -212,7 +212,6 @@ class PageFour(tk.Frame, Pages):
             Pages.alpha_list = updated_alpha
             Pages.vector_list = updated_vector
 
-            print(updated_vector)
+            print(updated_alpha)
             self.controller.show_frame("PageFive")
 
-        
