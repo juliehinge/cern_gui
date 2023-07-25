@@ -10,14 +10,19 @@ matplotlib.use('TkAgg')  # Backend of matplotlib for tkinter
 from matplotlib.figure import Figure
 import seaborn as sns
 import pandas as pd
-from function1 import default
+from function1 import custom
+from p import Pages
 
-class PageSix(tk.Frame):
+
+
+class PageSeven(tk.Frame):
 
     def __init__(self, parent, controller):
         tk.Frame.__init__(self, parent)
         self.controller = controller
     
+        self.bind("<<ShowFrame>>", self.pasvariable)
+
         # Create "Back" button
         back_button = tk.Button(self, text="Go back", 
                                 command=lambda: controller.show_frame("PageFive"))
@@ -28,7 +33,7 @@ class PageSix(tk.Frame):
         self.frame.pack(side=tk.TOP, fill=tk.BOTH, expand=1)
 
         # Call method to create plot
-        self.fig = default()
+        self.fig = self.pasvariable()
 
         # Put plot on tkinter frame
         self.canvas = FigureCanvasTkAgg(self.fig, master=self.frame)  
@@ -36,3 +41,12 @@ class PageSix(tk.Frame):
         self.canvas.get_tk_widget().pack(side=tk.TOP, fill=tk.BOTH, expand=1)
 
    
+
+
+
+    def pasvariable(self):
+    
+        A = Pages.alpha_list
+        li = Pages.vector_list
+        R = Pages.radius
+        custom(A, li, R)
