@@ -49,4 +49,5 @@ class PageSeven(tk.Frame):
         A = Pages.alpha_list
         li = Pages.vector_list
         R = Pages.radius
-        custom(A, li, R)
+        #custom(A, li, R)
+        

@@ -144,6 +144,23 @@ def default():
     plt.ylabel("Y position (m)") 
 
 
+
+    # For X axis
+    n_cols = len(pivot_table.columns)
+    n = 5 
+    ticks = ax.get_xticks()[::n]
+    ax.set_xticks(ticks)
+    ax.set_xticklabels([pivot_table.columns[int(tick)] for tick in ticks])
+
+    # For Y axis
+    n_y = 5 
+    ticks_y = ax.get_yticks()[::n_y]
+    ax.set_yticks(ticks_y)
+    ax.set_yticklabels([pivot_table.index[int(tick)] for tick in ticks_y])
+
+
+
+
     a = X_min * min(len(pivot_table.columns), len(pivot_table.index))
     b = Y_min * min(len(pivot_table.columns), len(pivot_table.index))
     r = 0.7

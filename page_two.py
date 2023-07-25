@@ -27,6 +27,8 @@ class PageTwo(tk.Frame):
         label = tk.Label(self.scrollable_frame, text="Input information about the vectors please", font=("bold", 20))
         label.grid(row=0, column=0, padx=(10, 30), pady=(10, 20), sticky='w', columnspan=4)
 
+
+
         ttk.Label(self.scrollable_frame, text="-" * 100, foreground="grey").grid(row=1, column=0, pady=(10, 0),
                                                                                       columnspan=4, sticky='w')
       
@@ -51,16 +53,16 @@ class PageTwo(tk.Frame):
         self.btn_clear.grid(row=0, column=2, padx=5, pady=5)
 
         self.btn_ok = ttk.Button(self.bottom_frame, text="OK", width=5, command=self.sum_alpha)
-        self.btn_ok.grid(row=0, column=3, padx=5, pady=5)
+        self.btn_ok.grid(row=1, column=1, pady=5)
 
         self.btn_back = ttk.Button(self.bottom_frame, text="Back",
                             command=lambda: controller.show_frame("PageOne"))
-        self.btn_back.grid(row=0, column=4, padx=5, pady=5)
+        self.btn_back.grid(row=1, column=0, pady=5)
 
 
         self.warning_text = StringVar(self.bottom_frame, value=' ')
         self.text = ttk.Label(self.bottom_frame, textvariable=self.warning_text, foreground="red")
-        self.text.grid(row=1, column=0, columnspan=5, padx=5, pady=5)
+        self.text.grid(row=2, column=0, columnspan=5, padx=5, pady=5)
 
 
 
