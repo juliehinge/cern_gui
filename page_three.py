@@ -52,19 +52,19 @@ class PageThree(tk.Frame, Pages):
             self.path.set(csv_file_path) # Warning the user      
             df = pd.read_csv(csv_file_path)
 
-            is_header = not any(cell.isdigit() for cell in df)
+            is_header = any(char.isdigit() for char in df)
 
             if is_header:
-                for (alpha, vector) in df.iloc():
-                    self.alpha_list.append(alpha); self.vector_list.append(vector)
+                alpha = df.iloc[:, 0].tolist()
+                vector = df.iloc[:, 1:].values.tolist()
 
             else:
                 df = pd.read_csv(csv_file_path, header=None) 
-                for (alpha, vector) in df.iloc():
-                    self.alpha_list.append(alpha); self.vector_list.append(vector)
+                alpha = df.iloc[:, 0].tolist()
+                vector = df.iloc[:, 1:].values.tolist()
 
-            Pages.alpha_list = self.alpha_list
-            Pages.vector_list = self.vector_list
+            Pages.alpha_list = alpha
+            Pages.vector_list = vector
 
 
 

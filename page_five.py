@@ -39,7 +39,6 @@ class PageFive(tk.Frame):
 
 
     def open_next_frame(self):
-        print(self.coor_entry.get())
 
         R = Pages.radius
         li = Pages.vector_list
@@ -47,18 +46,17 @@ class PageFive(tk.Frame):
         trims = [0.1, math.pi/2-0.1 ]
         P = self.coor_entry.get()
         P = P.split(",")
-        print(P[0], P[1])
+
+        l = [[float(x) for x in s[0].split()] for s in li]
 
         d = dict()
-
-        for i in range(len(li[0])):
+        for i in range(len(l[0])):
             d[i] = []
-            for j in range(len(li)):
+            for j in range(len(l)):
                 try:
-                    d[i].append(li[j][i])
+                    d[i].append(l[j][i])
                 except IndexError:
                     d[i].append(0)
-        
 
         B = d[0]
 
@@ -66,13 +64,15 @@ class PageFive(tk.Frame):
             G = d[1]
         except KeyError:
             G = []
-            for i in range(len(li)):
+            for i in range(len(l)):
                 G.append(0)
-
 
         A = []
         curr = 0
 
+        print("B", B)
+        print("G", G)
+        print(d)
         for i in range(len(a)):
             A.append([curr, curr + float(a[i])])
             curr += float(a[i])
@@ -82,9 +82,7 @@ class PageFive(tk.Frame):
 
 
 
-
 def get_B(R, A, B, G, P, trims):
-
     # Step 1: check what point it is
     x = float(P[0])
     y = float(P[1])
@@ -105,7 +103,7 @@ def get_B(R, A, B, G, P, trims):
             if k != len(A) - 1:  # NOT in the last area (exit area)
                 d = math.sqrt(x**2 + (y-(-R))**2)
                 h = R - d
-                Bout = float(B[k])+ float(G[k])*float(h)
+                Bout = float(B[k])+ float(G[k])*h
                 break
             elif k == len(A) - 1:  # in the last area (exit area)
                 if y >= math.tan(-beta1)*x + (-R-math.tan(-beta1)*(R-left_trim_size)) and \
