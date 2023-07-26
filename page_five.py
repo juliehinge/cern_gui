@@ -18,7 +18,7 @@ class PageFive(tk.Frame):
                             command=lambda: controller.show_frame("PageSix"))
         preview.grid(row=1, column=2, padx=2,pady=10, sticky = 'w')
 
-        
+     
 
         #Labels for instructions
         tk.Label(self, text="Input your own parameters:", font = ("bold", 15)).grid(row=3, column=0, pady=10, columnspan=3, sticky='w', )
@@ -33,7 +33,6 @@ class PageFive(tk.Frame):
         self.x_max = ttk.Entry(self, width=5); self.x_max.grid(row=5, column=1, pady=10, sticky='w', )
         self.y_min = ttk.Entry(self, width=5); self.y_min.grid(row=4, column=3, pady=10, sticky='w', )
         self.y_max = ttk.Entry(self, width=5); self.y_max.grid(row=5, column=3, pady=10, sticky='w', )
-
 
 
 

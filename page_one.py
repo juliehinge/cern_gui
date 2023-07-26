@@ -104,7 +104,6 @@ class PageOne(tk.Frame):
       
     def record_params(self):
         radius = self.r_radius_entry.get()
-        #print(radius.isdigit())
         # Ensuring the radius is an integer
         if radius.replace(".", "").isnumeric()== False:
             self.entryFlag = False
@@ -116,7 +115,7 @@ class PageOne(tk.Frame):
         else:
             self.warning_text.set("") 
             self.entryFlag = True
-            Pages.radius += float(radius)
+            Pages.radius = float(radius)
 
 
     def open_next_frame(self):
