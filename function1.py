@@ -48,6 +48,8 @@ def get_B(R, A, B, G, P, trims):
             if k != len(A) - 1:  # NOT in the last area (exit area)
                 d = math.sqrt(x**2 + (y-(-R))**2)
                 h = R - d
+                G[k] = float(G[k])
+                B[k] = float(B[k])
                 Bout = B[k]+ G[k]*h
                 break
             elif k == len(A) - 1:  # in the last area (exit area)
@@ -133,17 +135,15 @@ def default():
         'values': mag_field
     })
 
-    pivot_table = df.pivot(index='y', columns='x', values='values')
+
+    pivot_table = df.pivot_table(index='y', columns='x', values='values', aggfunc=np.sum)
     pivot_table = pivot_table.iloc[::-1] # Reverse the order of rows
 
     fig, ax = plt.subplots(figsize=(10,7))
     sns.heatmap(pivot_table, cbar_kws={'label': 'B[T]'},cmap="Reds", ax=ax)
-    sns.set_style(rc = {'axes.facecolor': 'lightsteelblue'})
 
     plt.xlabel("X position (m)") 
     plt.ylabel("Y position (m)") 
-
-
 
     # For X axis
     n_cols = len(pivot_table.columns)
@@ -155,11 +155,13 @@ def default():
     # For Y axis
     n_y = 5 
     ticks_y = ax.get_yticks()[::n_y]
+    ticks_y = ticks_y[::-1] # Reverse the y-ticks
+
+    # Create y-axis labels from the reversed order of index values
+    y_labels = [pivot_table.index[-int(tick)-1] for tick in ticks_y if tick < len(pivot_table.index)]
+
     ax.set_yticks(ticks_y)
-    ax.set_yticklabels([pivot_table.index[int(tick)] for tick in ticks_y])
-
-
-
+    ax.set_yticklabels(y_labels)
 
     a = X_min * min(len(pivot_table.columns), len(pivot_table.index))
     b = Y_min * min(len(pivot_table.columns), len(pivot_table.index))
@@ -195,14 +197,18 @@ def default():
 
 
 
-def custom(A, li, R):
+
+
+
+
+def custom(A, li, R, X_min, X_max, Y_min, Y_max):
 
    
     trims = [0.1, math.pi/2-0.1 ]
 
-    print(R, li, A)
-
     d = dict()
+
+
     for i in range(len(li[0])):
         d[i] = []
 
@@ -220,7 +226,7 @@ def custom(A, li, R):
         G = []
         for i in range(len(li)):
             G.append(0)
-    
+    a = A
     A = []
     curr = 0
     for i in range(len(a)):
@@ -252,21 +258,44 @@ def custom(A, li, R):
         'values': mag_field
     })
 
-    pivot_table = df.pivot(index='y', columns='x', values='values')
-    pivot_table = pivot_table.iloc[::-1] # Reverse the order of rows
+
+    pivot_table = df.pivot_table(index='y', columns='x', values='values', aggfunc=np.sum)
+    #pivot_table = pivot_table.iloc[::-1] 
 
     fig, ax = plt.subplots(figsize=(10,7))
     sns.heatmap(pivot_table, cbar_kws={'label': 'B[T]'},cmap="Reds", ax=ax)
-    sns.set_style(rc = {'axes.facecolor': 'lightsteelblue'})
 
     plt.xlabel("X position (m)") 
     plt.ylabel("Y position (m)") 
 
+    # For X axis
+    n_cols = len(pivot_table.columns)
+    n = 5 
+    ticks = ax.get_xticks()[::n]
+    ax.set_xticks(ticks)
+    ax.set_xticklabels([pivot_table.columns[int(tick)] for tick in ticks])
 
-    a = X_min * min(len(pivot_table.columns), len(pivot_table.index))
-    b = Y_min * min(len(pivot_table.columns), len(pivot_table.index))
-    r = 0.7
+    # For Y axis
+    n_y = 5 
+    ticks_y = ax.get_yticks()[::n_y]
+    ticks_y = ticks_y[::-1] # Reverse the y-ticks
 
+    # Create y-axis labels from the reversed order of index values
+    y_labels = [pivot_table.index[-int(tick)-1] for tick in ticks_y if tick < len(pivot_table.index)]
+
+    ax.set_yticks(ticks_y)
+    ax.set_yticklabels(y_labels)
+
+   # a = X_min * min(len(pivot_table.columns), len(pivot_table.index))
+   # b = Y_min * min(len(pivot_table.columns), len(pivot_table.index))
+   
+    a = X_min
+    b = Y_max
+
+    r = R
+
+    print(a,b)
+    
     # Adjust the radius to match the DataFrame indices
     r_adj = r * min(len(pivot_table.columns), len(pivot_table.index))
 
@@ -284,11 +313,15 @@ def custom(A, li, R):
     for i in positions:
         x, y = i
         X.append(x)
-        Y.append(-y)
+        Y.append(y)
 
 
 
     ax.plot(X, Y, color='black')
+    ax.invert_yaxis() # reverse the y-axis
 
 
     return fig
+
+
+

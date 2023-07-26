@@ -61,6 +61,6 @@ class PageFive(tk.Frame):
         Pages.x_max = self.x_max.get()       
         Pages.y_min = self.y_min.get()
         Pages.y_max = self.y_max.get()
-        self.controller.show_frame("PageOne")
+        self.controller.show_frame("PageSeven")
 
     
