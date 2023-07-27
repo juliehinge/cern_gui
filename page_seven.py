@@ -1,15 +1,10 @@
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
-
 import tkinter as tk      
-from tkinter import ttk
 from tkinter import *
 import numpy as np
-import matplotlib.pyplot as plt
 import matplotlib
 matplotlib.use('TkAgg')  # Backend of matplotlib for tkinter
 from matplotlib.figure import Figure
-import seaborn as sns
-import pandas as pd
 from function1 import custom
 from p import Pages
 
@@ -21,6 +16,7 @@ class PageSeven(tk.Frame):
         tk.Frame.__init__(self, parent)
         self.controller = controller
     
+        # Binding to an event that passes the user defined variables once this page is opened to avoid having empty values passed back.
         self.bind("<<ShowFrame>>", self.pasvariable)
 
         # Create "Back" button
@@ -42,17 +38,16 @@ class PageSeven(tk.Frame):
 
     def pasvariable(self, event=None):
     
+        # Getting the user defined variables from the Pages module
         x_min = float(Pages.x_min)         
         x_max = float(Pages.x_max)      
         y_min = float(Pages.y_min)
         y_max = float(Pages.y_max)
-
-
         A = Pages.alpha_list
         li = Pages.vector_list
         R = Pages.radius
-        print(A, li, R)
-        
-        self.fig = custom(x_min, x_max, y_min, y_max, A, li, R, )  # Assuming custom returns a matplotlib.figure.Figure object
+
+        # Calling the function that makes the plot and putting it on the GUI        
+        self.fig = custom(x_min, x_max, y_min, y_max, A, li, R, )  
         self.canvas.figure = self.fig  # Update the figure associated with the canvas
         self.canvas.draw()  # Redraw the canvas to reflect changes
