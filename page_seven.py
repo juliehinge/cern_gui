@@ -53,6 +53,6 @@ class PageSeven(tk.Frame):
         R = Pages.radius
         print(A, li, R)
         
-        self.fig = custom(A, li, R, x_min, x_max, y_min, y_max)  # Assuming custom returns a matplotlib.figure.Figure object
+        self.fig = custom(x_min, x_max, y_min, y_max, A, li, R, )  # Assuming custom returns a matplotlib.figure.Figure object
         self.canvas.figure = self.fig  # Update the figure associated with the canvas
         self.canvas.draw()  # Redraw the canvas to reflect changes

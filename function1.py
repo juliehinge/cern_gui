@@ -26,14 +26,14 @@ from p import Pages
 
 
 
-def get_B(R, A, B, G, P, trims):
+def get_B(R, A, B, G, P):
     # Step 1: check what point it is
     x = P[0]
     y = P[1]
-    beta1 = trims[0]
-    beta2 = trims[1]
-    left_trim_size = 0.138
-    right_trim_size = 0.082
+   # beta1 = trims[0]
+   # beta2 = trims[1]
+   # left_trim_size = 0.138
+   # right_trim_size = 0.082
     
     # Initialize output
     Bout = 0
@@ -55,140 +55,40 @@ def get_B(R, A, B, G, P, trims):
 
 
 
-def default():
-
-    R = 0.7
-    a = [0.39, 0.4, 0.5]
-    P = [0.2, -0.5]
-    trims = [0.1, math.pi/2-0.1 ]
-   #li = [[0.6,0.4], [0.5, 2], [-2,1]]
-    li = [[1, 0], [0.5, -2], [2,0.3]]
 
 
-    X_min = -0.2
-    X_max = R + 0.5
-    Y_min = -R-0.2
-    Y_max = 0.2
 
 
-    d = dict()
 
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+import math
 
-    for i in range(len(li[0])):
-        d[i] = []
-        for j in range(len(li)):
-            try:
-                d[i].append(li[j][i])
-            except IndexError:
-                d[i].append(0)
-
-
-    B = d[0]
-    try:
-        G = d[1]
-    except KeyError:
-        G = []
-        for i in range(len(li)):
-            G.append(0)
-    
-    A = []
-    curr = 0
-    for i in range(len(a)):
-        A.append([curr, curr + float(a[i])])
-        curr += float(a[i])
-    
-
-    X = np.linspace(X_min, X_max, num=100)
-    Y = np.linspace(Y_min, Y_max, num=100)
-    xx, yy = np.meshgrid(X, Y)
-
-
-    x_li = []
-    y_li = []
-    mag_field = []
-
-    for x,y in zip(xx,yy):
-        for xx,yy in zip(x,y):
-            x_li.append(round(xx,2))
-            y_li.append(round(yy,2))
-            P = xx, yy
-            mag_field.append(get_B(R, A, B, G, P, trims))
-
-
-    df = pd.DataFrame({
-        'x': x_li,
-        'y': y_li,
-        'values': mag_field
-    })
-
-    pivot_table = df.pivot_table(index='y', columns='x', values='values', aggfunc=np.sum)
-
-    fig, ax = plt.subplots(figsize=(10,7))
-    sns.heatmap(pivot_table, cbar_kws={'label': 'B[T]'},cmap="Reds", ax=ax)
-
-    plt.xlabel("X position (m)") 
-    plt.ylabel("Y position (m)") 
-
-
-    plt.xlabel("X position (m)") 
-    plt.ylabel("Y position (m)") 
-
-    # For X axis
-    n_cols = len(pivot_table.columns)
-    n = 5 
-    ticks = ax.get_xticks()[::n]
-    ax.set_xticks(ticks)
-    ax.set_xticklabels([pivot_table.columns[int(tick)] for tick in ticks])
-
-
-    #a = X_min * min(len(pivot_table.columns), len(pivot_table.index))
-    #b = Y_min * min(len(pivot_table.columns), len(pivot_table.index))
-
-    a = X_min 
-    b = Y_min
-    r = 0.7
-
-    # Adjust the radius to match the DataFrame indices
-    r_adj = r * min(len(pivot_table.columns), len(pivot_table.index))
-
+def custom(X_min, X_max, Y_min, Y_max, A, li, R):
+    a = 0 
+    b = -R
+    r = 0.5
     stepSize = 0.01
 
     positions = []
     t = 0
     while t < 2 * math.pi:
-        positions.append((r_adj * math.cos(t) + a, r_adj * math.sin(t) + b))
+        positions.append((R*math.cos(t) + a, R*math.sin(t) + b))
         t += stepSize
-
 
     X = []
     Y = []
     for i in positions:
         x, y = i
         X.append(x)
-        Y.append(-y)
+        Y.append(y)
 
-
-
+    fig, ax = plt.subplots(figsize=(10,10)) 
     ax.plot(X, Y, color='black')
 
-    ax.invert_yaxis()  # Reverse y-axis
-    ax.set_aspect('equal')
-
-    return fig
-
-
-
-
-
-
-def custom(A, li, R, X_min, X_max, Y_min, Y_max):
-
-   
-    trims = [0.1, math.pi/2-0.1 ]
-
+    # helper function part starts here
     d = dict()
-
-
     for i in range(len(li[0])):
         d[i] = []
         for j in range(len(li)):
@@ -196,8 +96,6 @@ def custom(A, li, R, X_min, X_max, Y_min, Y_max):
                 d[i].append(li[j][i])
             except IndexError:
                 d[i].append(0)
-
-
     B = d[0]
     try:
         G = d[1]
@@ -211,84 +109,104 @@ def custom(A, li, R, X_min, X_max, Y_min, Y_max):
     for i in range(len(a)):
         A.append([curr, curr + float(a[i])])
         curr += float(a[i])
-    
 
-    X = np.linspace(X_min, X_max, num=150)
-    Y = np.linspace(Y_min, Y_max, num=150)
+    X = np.linspace(X_min, X_max, num=100)
+    Y = np.linspace(Y_min, Y_max, num=100)
     xx, yy = np.meshgrid(X, Y)
 
+    mag_field = np.zeros_like(xx)
 
-    x_li = []
-    y_li = []
-    mag_field = []
+    for i in range(xx.shape[0]):
+        for j in range(xx.shape[1]):
+            P = xx[i, j], yy[i, j]
+            mag_field[i, j] = get_B(R, A, B, G, P)
 
-    for x,y in zip(xx,yy):
-        for xx,yy in zip(x,y):
-            x_li.append(round(xx,2))
-            y_li.append(round(yy,2))
-            P = xx, yy
-            mag_field.append(get_B(R, A, B, G, P, trims))
+    color_mesh = ax.pcolormesh(xx, yy, mag_field, cmap='Reds')
 
+    ax.set_xlabel('X (m)')
+    ax.set_ylabel('Y (m)')
 
-    df = pd.DataFrame({
-        'x': x_li,
-        'y': y_li,
-        'values': mag_field
-    })
+    colorbar = plt.colorbar(color_mesh, ax=ax)
+    colorbar.set_label('Magnetic Field (T)')
+    # helper function part ends here
 
-    pivot_table = df.pivot_table(index='y', columns='x', values='values', aggfunc=np.sum)
+    ax.set_aspect('equal', adjustable='box')
+    ax.set_xlim([X_min, X_max])
+    ax.set_ylim([Y_min, Y_max])
 
-    fig, ax = plt.subplots(figsize=(10,7))
-    sns.heatmap(pivot_table, cbar_kws={'label': 'B[T]'},cmap="Reds", ax=ax)
+    return fig  # return only figure object
+def default(A, li, R):
+    X_min = -0.2
+    X_max = R + 0.5
+    Y_min = -R-0.2
+    Y_max = 0.2
 
-    plt.xlabel("X position (m)") 
-    plt.ylabel("Y position (m)") 
-
-
-    # For X axis
-    n_cols = len(pivot_table.columns)
-    n = 5 
-    ticks = ax.get_xticks()[::n]
-    ax.set_xticks(ticks)
-    ax.set_xticklabels([pivot_table.columns[int(tick)] for tick in ticks])
-
-
-    #a = X_min * min(len(pivot_table.columns), len(pivot_table.index))
-    #b = Y_min * min(len(pivot_table.columns), len(pivot_table.index))
-
-    a = X_min 
-    b = Y_min
-    r = 0.7
-
-    # Adjust the radius to match the DataFrame indices
-    r_adj = r * min(len(pivot_table.columns), len(pivot_table.index))
-
+    a = 0 
+    b = -R
+    r = 0.5
     stepSize = 0.01
 
     positions = []
     t = 0
     while t < 2 * math.pi:
-        positions.append((r_adj * math.cos(t) + a, r_adj * math.sin(t) + b))
+        positions.append((R*math.cos(t) + a, R*math.sin(t) + b))
         t += stepSize
-
 
     X = []
     Y = []
     for i in positions:
         x, y = i
         X.append(x)
-        Y.append(-y)
+        Y.append(y)
 
-
-
+    fig, ax = plt.subplots(figsize=(10,10)) 
     ax.plot(X, Y, color='black')
 
-    ax.invert_yaxis()  # Reverse y-axis
-    ax.set_aspect('equal')
+    # helper function part starts here
+    d = dict()
+    for i in range(len(li[0])):
+        d[i] = []
+        for j in range(len(li)):
+            try:
+                d[i].append(li[j][i])
+            except IndexError:
+                d[i].append(0)
+    B = d[0]
+    try:
+        G = d[1]
+    except KeyError:
+        G = []
+        for i in range(len(li)):
+            G.append(0)
+    a = A
+    A = []
+    curr = 0
+    for i in range(len(a)):
+        A.append([curr, curr + float(a[i])])
+        curr += float(a[i])
 
+    X = np.linspace(X_min, X_max, num=500)
+    Y = np.linspace(Y_min, Y_max, num=500)
+    xx, yy = np.meshgrid(X, Y)
 
-    print(mag_field)
-    
-    return fig
+    mag_field = np.zeros_like(xx)
 
+    for i in range(xx.shape[0]):
+        for j in range(xx.shape[1]):
+            P = xx[i, j], yy[i, j]
+            mag_field[i, j] = get_B(R, A, B, G, P)
 
+    color_mesh = ax.pcolormesh(xx, yy, mag_field, cmap='Reds')
+
+    ax.set_xlabel('X (m)')
+    ax.set_ylabel('Y (m)')
+
+    colorbar = plt.colorbar(color_mesh, ax=ax)
+    colorbar.set_label('Magnetic Field (T)')
+    # helper function part ends here
+
+    ax.set_aspect('equal', adjustable='box')
+    ax.set_xlim([X_min, X_max])
+    ax.set_ylim([Y_min, Y_max])
+
+    return fig  # return only figure object
