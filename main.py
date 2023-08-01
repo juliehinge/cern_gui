@@ -9,9 +9,8 @@ from page_four import PageFour
 from page_five import PageFive
 from page_six import PageSix
 from page_seven import PageSeven
-# https://stackoverflow.com/questions/39530107/tkinter-have-code-for-pages-in-separate-files
-# https://python-forum.io/thread-24731.html
-
+from page_eight import PageEight
+from page_nine import PageNine
 
 class SampleApp(tk.Tk):
     def __init__(self, *args, **kwargs):
@@ -26,7 +25,7 @@ class SampleApp(tk.Tk):
         self.frames = {}
 
  
-        for F,geometry in zip((StartPage, PageOne, PageTwo, PageThree, PageFour, PageFive, PageSix, PageSeven), ('450x500', '450x400', '600x500', '350x150', '600x500', '450x400', '600x600', '600x600')):
+        for F,geometry in zip((StartPage, PageOne, PageTwo, PageThree, PageFour, PageFive, PageSix, PageSeven, PageEight,PageNine), ('450x500', '450x400', '600x500', '350x150', '600x500', '450x400', '600x600', '600x600','600x600', '600x600')):
 
             page_name = F.__name__
             frame = F(parent=container, controller=self)

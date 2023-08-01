@@ -42,7 +42,7 @@ class PageSix(tk.Frame):
         R = Pages.radius
         
         # Calling the function that makes the plot and putting it on the GUI        
-        self.fig = default(A, li, R)  
+        self.fig, ax = default(A, li, R)  
         self.canvas.figure = self.fig  # Update the figure associated with the canvas
         self.canvas.draw()  # Redraw the canvas to reflect changes
 

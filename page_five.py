@@ -46,11 +46,12 @@ class PageFive(tk.Frame):
                             command=lambda: self.open_next_frame())
         button2.grid(row=6, column=1,  pady = (10), sticky='w')
 
+        button3 = ttk.Button(self, text="Track Beam",
+                            command=lambda: self.open_tracking_frame())
+        button3.grid(row=7, column=0,  pady = (10), sticky='w')
 
 
-        self.warning_text = tk.StringVar(self, value=' ')
-        self.text = ttk.Label(self, textvariable = self.warning_text, foreground ="red").grid(row=10, column=0,pady = 5, columnspan=3)
-        
+    
 
 
 
@@ -61,5 +62,11 @@ class PageFive(tk.Frame):
         Pages.y_min = self.y_min.get()
         Pages.y_max = self.y_max.get()
         self.controller.show_frame("PageSeven")
+
+    
+
+
+    def open_tracking_frame(self):
+        self.controller.show_frame("PageEight")
 
     
