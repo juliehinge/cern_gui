@@ -14,7 +14,6 @@ class PageOne(tk.Frame):
         ttk.Label(self, text="-"*80, foreground="grey").grid(row=1, column=0, pady = (10,0), columnspan = 5, sticky='w')
         tk.Label(self, text="Reference Radius:", font = ("bold", 15)).grid(row=2, column=0, pady=10, sticky='w', )
         tk.Label(self, text="Input Sections:", font = ("bold", 15)).grid(row=4, column=0,pady=(10,0), sticky='w')
-        tk.Label(self, text="Choose Units:", font = ("bold", 15)).grid(row=7, column=0,pady=(10,0), sticky='w')
         ttk.Label(self, text="-"*80, foreground="grey").grid(row=3, column=0, pady = (10,0), columnspan = 5, sticky='w')
         ttk.Label(self, text="-"*80, foreground="grey").grid(row=6, column=0, pady = (10,0), columnspan = 5, sticky='w')
 
@@ -30,23 +29,16 @@ class PageOne(tk.Frame):
         c2 = tk.Checkbutton(self, text='By CSV upload',variable=self.var2, onvalue=1, offvalue=0, command=self.get_selection)
         c2.grid(row=5, column=1, sticky='w', pady=(0,10))
 
-        self.var3 = tk.IntVar()
-        self.var4 = tk.IntVar()
-        c1 = tk.Checkbutton(self, text='Meters',variable=self.var3, onvalue=1, offvalue=0, command=self.get_metric)
-        c1.grid(row=7, column=1, pady=(10,0), sticky='w')
-        c2 = tk.Checkbutton(self, text='Other',variable=self.var4, onvalue=1, offvalue=0, command=self.get_metric)
-        c2.grid(row=8, column=1, sticky='w', pady=(0,10))
-        
         
         # Making a backbutton and ok button and placing them on the grid
         button1 = ttk.Button(self, text="Back",
                             command=lambda: controller.show_frame("StartPage"))
-        button1.grid(row=9, column=0,  pady = (10), sticky='e')
+        button1.grid(row=7, column=0,  pady = (10), sticky='e')
 
 
         button2 = ttk.Button(self, text="OK",
                             command=lambda: self.open_next_frame())
-        button2.grid(row=9, column=1,  pady = (10), sticky='w')
+        button2.grid(row=7, column=1,  pady = (10), sticky='w')
 
 
 
@@ -77,25 +69,6 @@ class PageOne(tk.Frame):
         else:
             self.warning_text.set("Please choose only on option")
             self.checkFlag = False
-
-
-
-    def get_metric(self):
-        """This function is for making sure that the user only chose one checkbox for the metric selection. If they didn't the warning text and flags will be set"""
-        if (self.var3.get() == 1) & (self.var4.get() == 0): # Getting the value of the checkbox: 1 = on, 0 = off )
-            self.warning_text.set("")
-            self.checkFlag = True
-
-        elif (self.var3.get() == 0) & (self.var4.get() == 1):
-            self.warning_text.set("")
-            self.checkFlag = True
-        elif (self.var3.get() == 0) & (self.var4.get() == 0):
-            self.warning_text.set("Please choose an option")
-            self.checkFlag = False
-        else:
-            self.warning_text.set("Please choose only on option")
-            self.checkFlag = False
-
 
 
       

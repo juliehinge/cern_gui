@@ -4,12 +4,12 @@ from tkinter import *
 import matplotlib
 matplotlib.use('TkAgg')  # Backend of matplotlib for tkinter
 from matplotlib.figure import Figure
-from function1 import custom
+from function1 import custom2
 from p import Pages
 
 
 
-class PageSeven(tk.Frame):
+class PageTen(tk.Frame):
 
     def __init__(self, parent, controller):
         tk.Frame.__init__(self, parent)
@@ -47,6 +47,6 @@ class PageSeven(tk.Frame):
         R = Pages.radius
 
         # Calling the function that makes the plot and putting it on the GUI        
-        self.fig = custom(x_min, x_max, y_min, y_max, A, li, R, )  
+        self.fig = custom2(x_min, x_max, y_min, y_max, A, li, R, )  
         self.canvas.figure = self.fig  # Update the figure associated with the canvas
         self.canvas.draw()  # Redraw the canvas to reflect changes

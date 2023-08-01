@@ -22,7 +22,7 @@ class PageNine(tk.Frame):
 
         # Create "Back" button
         back_button = tk.Button(self, text="Go back", 
-                                command=lambda: controller.show_frame("PageEigth"))
+                                command=lambda: controller.show_frame("PageEight"))
         back_button.pack()
 
 
@@ -35,25 +35,20 @@ class PageNine(tk.Frame):
         self.canvas = FigureCanvasTkAgg(self.fig, master=self.frame)  # linking figure with the FigureCanvasTkAgg
         self.canvas.get_tk_widget().pack(side=tk.TOP, fill=tk.BOTH, expand=1)
 
+    
 
 
     def pasvariable(self, event=None):
     
 
         # Getting the user defined variables from the Pages module
-       # P = Pages.P # Getting the coorinates of the point
-       # D = Pages.D # Getting the direction of the point
-       # charge = Pages.charge # Getting the charge
-       # tracking = Pages.tracking # Getting the tracking size
-   
-
-
         A = Pages.alpha_list
         li = Pages.vector_list
         R = Pages.radius
 
       
         # Calling the function that makes the plot and putting it on the GUI        
+        
         self.fig, ax = default2(A, li, R)  
         self.canvas.figure = self.fig  # Update the figure associated with the canvas
         self.canvas.draw()  # Redraw the canvas to reflect changes
