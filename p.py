@@ -9,11 +9,8 @@ class Pages:
     y_min = 0
     y_max = 0
     P = []
-    D =[]
+    D = []
     charge = ""
     tracking = 0 
-    B = []
-    G = []
-    A = []
-    
+
         

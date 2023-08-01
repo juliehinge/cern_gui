@@ -36,18 +36,14 @@ def get_B(R, A, B, G, P):
     Bout = 0
     # Update output, if needed
 
-    for k in range(len(A)):
-        
+    for k in range(len(A)):        
         m1 = math.tan(math.pi/2 - float(A[k][0]))
         m2 = math.tan(math.pi/2 - float(A[k][1]))
         
         if y < m1*x - R and y >= m2*x - R:  # if P is in Area k
-
             d = math.sqrt(x**2 + (y-(-R))**2)
             h = R - d
-            print(f'Before the error, B is {B}, k is {k}, B[k] is {B[k]}, G[k] is {G[k]}')
             Bout = float(B[k]) + float(G[k])*h
-
             break
 
  
@@ -251,7 +247,9 @@ def next_point(r, P, d):
 
 
 
+
 def get_points(R, A, B, G, P, D, size):
+
 
     # Compute the magnitude of the vector
     magnitude = np.linalg.norm(D)
@@ -282,7 +280,7 @@ def get_points(R, A, B, G, P, D, size):
     y = [point[1] for point in points]
 
 
-    return x, y
+    return x,y
 
 
 
@@ -345,6 +343,7 @@ def default2(A, li, R):
         A.append([curr, curr + float(a[i])])
         curr += float(a[i])
 
+
     # This makes the coordinates of the points and initiates the magnetic field vector
     X = np.linspace(X_min, X_max, num=100)
     Y = np.linspace(Y_min, Y_max, num=100)
@@ -369,9 +368,10 @@ def default2(A, li, R):
     
 
 
-    x,y = get_points(R, A, B, G, P, Pages.D, Pages.tracking)
+    x,y = get_points(R, A, B, G, Pages.P, Pages.D, Pages.tracking)
     
-    print(x[:10], y[10:])
+    print(x[:10], y[:10])
     ax.plot(x, y, color='blue')
+
 
     return fig,ax  # return only the figure object

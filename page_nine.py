@@ -22,7 +22,7 @@ class PageNine(tk.Frame):
 
         # Create "Back" button
         back_button = tk.Button(self, text="Go back", 
-                                command=lambda: controller.show_frame("PageFive"))
+                                command=lambda: controller.show_frame("PageEigth"))
         back_button.pack()
 
 
@@ -57,5 +57,4 @@ class PageNine(tk.Frame):
         self.fig, ax = default2(A, li, R)  
         self.canvas.figure = self.fig  # Update the figure associated with the canvas
         self.canvas.draw()  # Redraw the canvas to reflect changes
-
 

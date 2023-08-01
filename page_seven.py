@@ -20,7 +20,7 @@ class PageSeven(tk.Frame):
 
         # Create "Back" button
         back_button = tk.Button(self, text="Go back", 
-                                command=lambda: controller.show_frame("PageFive"))
+                                command=lambda: controller.show_frame("PageSix"))
         back_button.pack()
 
 
