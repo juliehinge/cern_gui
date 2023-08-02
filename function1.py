@@ -285,7 +285,6 @@ def get_points(R, A, B, G, P, D, size):
     y = [point[1] for point in points]
 
  #   plt.plot(x,y)
-    print(len(x))
 
     return x,y
 
@@ -374,7 +373,22 @@ def default2(A, li, R):
     
 
 
-    x,y = get_points(R, A, B, G, Pages.P, Pages.D, Pages.tracking)
+    mu, sigma = float(Pages.ref_point), 0.5 # mean and standard deviation
+    s = np.random.normal(mu, sigma, 3)
+    directions = Pages.dir_vector
+
+    
+
+    for i in range(3):
+        parts = directions[i].split(',')
+        dir = [float(part) for part in parts]
+        print(s, dir)
+        x,y = get_points(R, A, B, G, [s[i],s[i]], [dir[0],dir[1]], Pages.tracking)    
+        plt.plot(x,y)
+
+
+
+    x,y = get_points(R, A, B, G, Pages.ref_point, Pages.ref_dir, Pages.tracking)
     
    
     plt.plot(x,y)
@@ -465,10 +479,5 @@ def custom2(X_min, X_max, Y_min, Y_max, A, li, R):
     ax.set_ylim([Y_min, Y_max])
     
 
-
-    x,y = get_points(R, A, B, G, Pages.P, Pages.D, Pages.tracking)
-    
-   
-    plt.plot(x,y)
 
     return fig,ax  # return only the figure object

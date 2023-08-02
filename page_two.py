@@ -39,20 +39,20 @@ class PageTwo(tk.Frame):
         self.bottom_frame.pack(side="bottom")
 
         self.btn_add = ttk.Button(self.bottom_frame, text="Add Section", command=self.add_section)
-        self.btn_add.grid(row=0, column=0, padx=5, pady=5)
+        self.btn_add.grid(row=0, column=0, padx=(0,5), pady=5, sticky='w')
 
         self.btn_remove = ttk.Button(self.bottom_frame, text="Remove Section", command=self.remove_section)
-        self.btn_remove.grid(row=0, column=1, padx=5, pady=5)
+        self.btn_remove.grid(row=0, column=1, padx=5, pady=5, sticky='w')
 
         self.btn_clear = ttk.Button(self.bottom_frame, text="Clear All", command=self.clear_all)
-        self.btn_clear.grid(row=0, column=2, padx=5, pady=5)
+        self.btn_clear.grid(row=0, column=2, padx=5, pady=5, sticky='w')
 
         self.btn_ok = ttk.Button(self.bottom_frame, text="OK", width=5, command=self.sum_alpha)
-        self.btn_ok.grid(row=1, column=1, pady=5)
+        self.btn_ok.grid(row=1, column=1, pady=5, sticky='w')
 
         self.btn_back = ttk.Button(self.bottom_frame, text="Back",
                             command=lambda: controller.show_frame("PageOne"))
-        self.btn_back.grid(row=1, column=0, pady=5)
+        self.btn_back.grid(row=1, column=0, pady=5, sticky='w')
 
         # Warning text set up
         self.warning_text = StringVar(self.bottom_frame, value=' ')
@@ -85,6 +85,9 @@ class PageTwo(tk.Frame):
         sections_entry.grid(row=self.row + 2, column=1, sticky='w')
         random_num = round(random.uniform(0,10), 1) # Placing a random number as placeholder in the entry
         sections_entry.insert(0, random_num)
+        sections_entry.insert(3, ",")
+        sections_entry.insert(4, round(random.uniform(0,10), 1))
+
         sections_entry.bind("<Button-1>", lambda event: self.clear(sections_entry, random_num)) # If the user clicks on the entry, we clear the random number and change the color.
         self.vector_entries.append(sections_entry)
         
@@ -108,7 +111,7 @@ class PageTwo(tk.Frame):
     def clear(self, sections_entry, random_num):
         """This function clears the number already in the entry"""
         if sections_entry.get() != '': # If the section is empty, there is nothing to clear
-            if float(sections_entry.get()) == float(random_num): # We don't want to clear anything the user put in, just the random pre-placed numbers
+            if float(sections_entry.get()[0:3]) == float(random_num): # We don't want to clear anything the user put in, just the random pre-placed numbers
                 sections_entry.delete(0, tk.END) # Deleting text already in box
                 sections_entry.config(foreground="white") # Changing colour of the box
 

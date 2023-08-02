@@ -29,7 +29,7 @@ class PageEleven(tk.Frame):
       
         # Counters for row number and number of sections to keep track of them
         self.row = 1; self.counter = 0  
-        self.part_pos = []; self.part_dir = []; self.labels = [] # Lists to keep track of all the widgets
+        self.part_dir = []; self.labels = [] # Lists to keep track of all the widgets
 
         # Putting the first section on the frame
         self.add_section()
@@ -64,7 +64,6 @@ class PageEleven(tk.Frame):
 
     def add_section(self):
         i = self.row
-        self.pos_section(i) # Calling the function that puts the vector on the gui
         self.dir_section(i)# Calling the function that puts the direction section on the gui
         lab = ttk.Label(self.scrollable_frame, text="-" * 100, foreground="grey")
         lab.grid(row=i + 3, column=0, pady=(10, 0), columnspan=5, sticky='w')
@@ -73,34 +72,21 @@ class PageEleven(tk.Frame):
         self.counter += 1   # Increasing the counter with 1 since we just added a section
 
 
-    def pos_section(self, i):
-        lab1 = ttk.Label(self.scrollable_frame, text=f"Section {self.counter + 1}", font=("bold", 15)) # Heading
-        lab1.grid(row=self.row + 1, column=0, pady=(0, 10), sticky='w', columnspan=4)
-        lab2 = ttk.Label(self.scrollable_frame, text='Position:') # Bn label
-        lab2.grid(row=self.row + 2, column=0, sticky='e')
-        self.labels.append(lab1)  # We append all labels to a list so we can delete them if the user wants to
-        self.labels.append(lab2)
-
-        sections_entry = ttk.Entry(self.scrollable_frame, foreground="grey") # Putting the entry on the gui
-        sections_entry.grid(row=self.row + 2, column=1, sticky='w')
-        random_num = round(random.uniform(0,10), 1) # Placing a random number as placeholder in the entry
-
-        sections_entry.insert(0, random_num)
-        sections_entry.insert(3, ",")
-        sections_entry.insert(4, round(random.uniform(0,10), 1))
-
-        sections_entry.bind("<Button-1>", lambda event: self.clear(sections_entry, random_num)) # If the user clicks on the entry, we clear the random number and change the color.
-        self.part_pos.append(sections_entry)
-        
-        lab3 = tk.Label(self.scrollable_frame, text="Direction:", font=(10))
-        lab3.grid(row=self.row + 2, column=2, sticky='e', padx=(10, 0))
-        self.labels.append(lab3)
 
 
 
     def dir_section(self, i):
+        lab1 = ttk.Label(self.scrollable_frame, text=f"Section {self.counter + 1}", font=("bold", 15)) # Heading
+        lab1.grid(row=self.row + 1, column=0, pady=(0, 10), sticky='w', columnspan=4)
+
+        lab2 = ttk.Label(self.scrollable_frame, text='Direction:') # Bn label
+        lab2.grid(row=self.row + 2, column=0, sticky='e')
+        self.labels.append(lab1)  # We append all labels to a list so we can delete them if the user wants to
+        self.labels.append(lab2)
+
+
         sections_entry = ttk.Entry(self.scrollable_frame, foreground="grey") # Putting the entry on the gui
-        sections_entry.grid(row=self.row + 2, column=3, sticky='w')
+        sections_entry.grid(row=self.row + 2, column=1, sticky='w')
         random_num = round(random.uniform(0,10), 1)  # Placing a random number as placeholder in the entry
         sections_entry.insert(0, random_num)
         sections_entry.insert(3, ",")
@@ -120,8 +106,6 @@ class PageEleven(tk.Frame):
 
 
 
-
-
     def remove_section(self):
         """Funtion to delete a section"""
         if self.counter > 1: # We don't want to clear the first section
@@ -133,8 +117,6 @@ class PageEleven(tk.Frame):
             self.part_dir[-1].destroy() 
             self.part_dir.pop()
 
-            self.part_pos[-1].destroy()
-            self.part_pos.pop()
             self.counter -= 1 # Decrease the sections counter since we just deleted a section
 
 
@@ -158,26 +140,7 @@ class PageEleven(tk.Frame):
 
         user_mistake = False # Flag to keep track of mistakes in the input
 
-        updated_pos = [] 
         updated_dir = []
-
-        for i in self.part_pos:
-            i = i.get()
-            try:
-                parts = i.split(',')
-                # There should be exactly 2 parts
-                if len(parts) != 2:
-                    user_mistake = True
-                # Both parts should be convertible to a float 
-    
-                self.warning_text.set("")
-                user_mistake = False
-                updated_pos.append(i)
-
-            except ValueError:
-                self.warning_text.set("Please make sure that the initial position of the particle two coordinates seperated by a comma")
-                user_mistake = True
-
 
         for i in self.part_dir:
             i = i.get()
@@ -199,8 +162,7 @@ class PageEleven(tk.Frame):
 
         if user_mistake == False:
             self.warning_text.set(" ") # Removing the warning if error is fixed
-            Pages.pos_vector = updated_pos # Passing the variables to the pages module
             Pages.dir_vector = updated_dir
-            self.controller.show_frame("PageOne") # Opening the next page
+            self.controller.show_frame("PageFourteen") # Opening the next page
 
         

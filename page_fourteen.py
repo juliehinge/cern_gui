@@ -5,7 +5,7 @@ from p import Pages
 
 
 
-class PageTen(tk.Frame):
+class PageFourteen(tk.Frame):
 
     def __init__(self, parent, controller):
         tk.Frame.__init__(self, parent)
@@ -22,26 +22,27 @@ class PageTen(tk.Frame):
 
 
 
-        tk.Label(self, text="How would you like to input your list of particle directions and positions:", font = ("bold", 15)).grid(row=4, column=0,pady=(10,0),columnspan=3, sticky='w')
+        tk.Label(self, text="Which distribution would you life for the particles:", font = ("bold", 15)).grid(row=4, column=0,pady=(10,0),columnspan=3, sticky='w')
 
 
         # This is the setup for the checkboxes
         self.var1 = tk.IntVar()
         self.var2 = tk.IntVar()
-        c1 = tk.Checkbutton(self, text='Manually',variable=self.var1, onvalue=1, offvalue=0, command=self.get_selection)
-        c1.grid(row=5, column=0, pady=(10,0), sticky='w')
-        c2 = tk.Checkbutton(self, text='By CSV upload',variable=self.var2, onvalue=1, offvalue=0, command=self.get_selection)
-        c2.grid(row=6, column=0, sticky='w', pady=(0,10))
 
+        c1 = tk.Checkbutton(self, text='Gaussian',variable=self.var1, onvalue=1, offvalue=0, command=self.get_selection)
+        c1.grid(row=5, column=0, pady=(10,0), sticky='w')
+        c2 = tk.Checkbutton(self, text='Random',variable=self.var2, onvalue=1, offvalue=0, command=self.get_selection)
+        c2.grid(row=6, column=0, sticky='w', pady=(0,10))
+       
 
 
         button1 = ttk.Button(self, text="Back",
-                            command=lambda: controller.show_frame("PageEight"))
+                            command=lambda: controller.show_frame("PageTen"))
         button1.grid(row=7, column=0,  pady = (10), sticky='e')
 
 
         button1 = ttk.Button(self, text="Ok",
-                            command=lambda: self.open_next_frame())
+                            command=lambda: controller.show_frame("PageNine"))
         button1.grid(row=7, column=1,  pady = (10), sticky='w')
 
 
@@ -51,7 +52,8 @@ class PageTen(tk.Frame):
         self.text = ttk.Label(self, textvariable = self.warning_text, foreground ="red").grid(row=13, column=0,pady = 5, columnspan=3)
         
         self.entryFlag = True
-        self.method = False
+
+
 
 
 
@@ -66,12 +68,12 @@ class PageTen(tk.Frame):
             self.checkFlag = True
             self.method = True
         elif (self.var1.get() == 0) & (self.var2.get() == 0):
+
             self.warning_text.set("Please choose an option")
             self.checkFlag = False
         else:
             self.warning_text.set("Please choose only on option")
             self.checkFlag = False
-
 
 
     def record_params(self):
@@ -95,21 +97,4 @@ class PageTen(tk.Frame):
                 print("here")
                 self.warning_text.set("Please make sure that the point and velocity are two numbers seperated by a comma")
                 self.entryFlag = False
-
-
-
-
-    def open_next_frame(self):
-        """This function first calls the record params function to make sure everything is ok. If the option is manual, page two will be opened,
-        if the option is CSV page three will be opened. If there is a mistake in the user input, the user will be informed"""
-        self.record_params()
-        print(self.entryFlag)
-
-        if self.entryFlag == True and self.method == False:
-            self.controller.show_frame("PageEleven")
-        elif self.entryFlag == True and self.method == True:
-            self.controller.show_frame("PageTwelve")
-        else:
-            self.warning_text.set("Please fill out the information correctly")
-
 

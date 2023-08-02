@@ -46,7 +46,6 @@ class PageNine(tk.Frame):
         li = Pages.vector_list
         R = Pages.radius
 
-      
         # Calling the function that makes the plot and putting it on the GUI        
         
         self.fig, ax = default2(A, li, R)  

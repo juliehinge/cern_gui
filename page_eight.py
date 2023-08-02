@@ -15,37 +15,36 @@ class PageEight(tk.Frame):
         label1 = tk.Label(self, text="Section for tracking particle beam", font = ("bold", 20))
         label1.grid(row=0, column=0, padx = (10), pady = (10), columnspan=4)
       
+        lab = ttk.Label(self, text="-"*100, foreground="grey")
+        lab.grid(row=1, column=0, pady = (10), columnspan=4)
 
         #Labels for instructions
-        tk.Label(self, text="Input your own parameters:", font = ("bold", 15)).grid(row=2, column=0, pady=10, columnspan=3, sticky='w', )
+        tk.Label(self, text="Input parameters:", font = ("bold", 15)).grid(row=2, column=0, pady=10, columnspan=3, sticky='w', )
 
-        tk.Label(self, text="Position of Particle:").grid(row=4, column=0, pady=10, sticky='w')
-        tk.Label(self, text="Velocity of Particle:").grid(row=4, column=2, pady=10, sticky='w')
-        tk.Label(self, text="Tracking size (m)").grid(row=5, column=0, pady=10, sticky='w', )
-        tk.Label(self, text="Charge of Particles (+/-)").grid(row=5, column=2, pady=10, sticky='w', )
+        tk.Label(self, text="Tracking size (m)").grid(row=3, column=0, pady=10, sticky='e')
+        tk.Label(self, text="Charge of Particles (+/-)").grid(row=4, column=0, pady=10, sticky='e')
 
-        self.point = ttk.Entry(self, width=5); self.point.grid(row=4, column=1, pady=10, sticky='w', )
-        self.vel = ttk.Entry(self, width=5); self.vel.grid(row=4, column=3, pady=10, sticky='w', )
-        self.track = ttk.Entry(self, width=5); self.track.grid(row=5, column=1, pady=10, sticky='w', )
-        self.charge = ttk.Entry(self, width=5); self.charge.grid(row=5, column=3, pady=10, sticky='w', )
+       
+        self.track = ttk.Entry(self, width=5); self.track.grid(row=3, column=1, pady=10, sticky='w', )
+        self.charge = ttk.Entry(self, width=5); self.charge.grid(row=4, column=1, pady=10, sticky='w', )
 
 
 
 
         button1 = ttk.Button(self, text="Back",
                             command=lambda: controller.show_frame("PageFive"))
-        button1.grid(row=10, column=0,  pady = (10), sticky='e')
+        button1.grid(row=5, column=0,  pady = (10), sticky='e')
 
 
         button1 = ttk.Button(self, text="Ok",
                             command=lambda: self.check())
-        button1.grid(row=10, column=1,  pady = (10), sticky='w')
+        button1.grid(row=5, column=1,  pady = (10), sticky='w')
 
 
 
         # Warning text setup
         self.warning_text = tk.StringVar(self, value=' ')
-        self.text = ttk.Label(self, textvariable = self.warning_text, foreground ="red").grid(row=13, column=0,pady = 5, columnspan=3)
+        self.text = ttk.Label(self, textvariable = self.warning_text, foreground ="red").grid(row=6, column=0,pady = 5, columnspan=3)
         
 
 

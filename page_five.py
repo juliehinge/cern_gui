@@ -16,14 +16,14 @@ class PageFive(tk.Frame):
 
         preview = ttk.Button(self, text="Preview",
                             command=lambda: controller.show_frame("PageSix"))
-        preview.grid(row=1, column=1, padx=2,pady=10, sticky = 'w')
+        preview.grid(row=1, column=1, padx=2,pady=10, sticky = 'e')
 
      
 
         ttk.Label(self, text="-"*80, foreground="grey").grid(row=3, column=0, pady = (10,0), columnspan = 5, sticky='w')
 
         #Labels for instructions
-        tk.Label(self, text="Input your own parameters:", font = ("bold", 15)).grid(row=4, column=0, padx=10,pady=10, columnspan=3, sticky='w', )
+        tk.Label(self, text="Input bounds to display zoomed in magnetic field plot:", font = ("bold", 15)).grid(row=4, column=0, padx=10,pady=10, columnspan=3, sticky='w', )
     
         tk.Label(self, text="X-min:").grid(row=5, column=0, pady=10)
         tk.Label(self, text="X-max:").grid(row=6, column=0, pady=10)
@@ -41,12 +41,12 @@ class PageFive(tk.Frame):
         # Button for returning back to page one
         button1 = ttk.Button(self, text="Back",
                             command=lambda: controller.show_frame("PageOne"))
-        button1.grid(row=7, column=0,  pady = (10), sticky='e')
+        button1.grid(row=9, column=0,  pady = (10,20), sticky='e')
 
         # Button for opening the zoomed in frame
         button2 = ttk.Button(self, text="OK",
                             command=lambda: self.open_next_frame())
-        button2.grid(row=7, column=1,  pady = (10), sticky='w')
+        button2.grid(row=7, column=1,  pady = (10), sticky='e')
 
 
         ttk.Label(self, text="-"*80, foreground="grey").grid(row=8, column=0, pady = (10,0), columnspan = 5, sticky='w')
@@ -54,7 +54,7 @@ class PageFive(tk.Frame):
         # Button for going to the tracking beam section
         button3 = ttk.Button(self, text="View Beam tracking",
                             command=lambda: self.open_tracking_frame())
-        button3.grid(row=9, column=0, pady = (10,20), columnspan=2)
+        button3.grid(row=9, column=1, pady = (10,20), sticky='w', columnspan=2)
 
 
 
@@ -73,6 +73,6 @@ class PageFive(tk.Frame):
 
     def open_tracking_frame(self):
         # Opening the frame where users can input variables for tracking the beam
-        self.controller.show_frame("PageEight")
+        self.controller.show_frame("PageTen")
 
     
