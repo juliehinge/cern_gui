@@ -10,7 +10,7 @@ class PageFive(tk.Frame):
         tk.Frame.__init__(self, parent)
         self.controller = controller
 
-        label1 = tk.Label(self, text="Section for plotting magnetic field", font = ("bold", 20))
+        label1 = tk.Label(self, text="Section for viewing magnetic field", font = ("bold", 20))
         label1.grid(row=0, column=0, padx = (10), pady = (10), columnspan=4)
       
 
@@ -23,7 +23,7 @@ class PageFive(tk.Frame):
         ttk.Label(self, text="-"*80, foreground="grey").grid(row=3, column=0, pady = (10,0), columnspan = 5, sticky='w')
 
         #Labels for instructions
-        tk.Label(self, text="Input your own parameters:", font = ("bold", 15)).grid(row=4, column=0, pady=10, columnspan=3, sticky='w', )
+        tk.Label(self, text="Input your own parameters:", font = ("bold", 15)).grid(row=4, column=0, padx=10,pady=10, columnspan=3, sticky='w', )
     
         tk.Label(self, text="X-min:").grid(row=5, column=0, pady=10)
         tk.Label(self, text="X-max:").grid(row=6, column=0, pady=10)
@@ -52,9 +52,9 @@ class PageFive(tk.Frame):
         ttk.Label(self, text="-"*80, foreground="grey").grid(row=8, column=0, pady = (10,0), columnspan = 5, sticky='w')
 
         # Button for going to the tracking beam section
-        button3 = ttk.Button(self, text="Preview of Beam",
+        button3 = ttk.Button(self, text="View Beam tracking",
                             command=lambda: self.open_tracking_frame())
-        button3.grid(row=9, column=1,  pady = (15), sticky='w')
+        button3.grid(row=9, column=0, pady = (10,20), columnspan=2)
 
 
 

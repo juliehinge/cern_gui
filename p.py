@@ -12,5 +12,7 @@ class Pages:
     D = []
     charge = ""
     tracking = 0 
-
-        
+    ref_point = 0
+    ref_dir = 0
+    pos_vector = []
+    dir_vector = []
