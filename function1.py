@@ -261,7 +261,10 @@ def get_points(R, A, B, G, P, D, size):
     # Compute the magnitude of the vector
     magnitude = np.linalg.norm(D) 
     # Normalize the vector
-    D = D/magnitude  
+    eps = 1e-10
+
+
+    D = D/(magnitude+eps)
 
     B_e = 3.3356*0.1 # Beam Rigidity
     s = 0.01
@@ -372,9 +375,11 @@ def default2(A, li, R):
     ax.set_ylim([Y_min, Y_max])
     
 
-
-    mu, sigma = float(Pages.ref_point), 0.5 # mean and standard deviation
+    print(float(Pages.ref_point))
+    mu, sigma = float(Pages.ref_point), 0.1 # mean and standard deviation
     s = np.random.normal(mu, sigma, 3)
+   # y_dir = np.random.normal(mu, sigma, 3)
+
     directions = Pages.dir_vector
 
     
@@ -382,13 +387,13 @@ def default2(A, li, R):
     for i in range(3):
         parts = directions[i].split(',')
         dir = [float(part) for part in parts]
-        print(s, dir)
-        x,y = get_points(R, A, B, G, [s[i],s[i]], [dir[0],dir[1]], Pages.tracking)    
+        x,y = get_points(R, A, B, G, [s[i],s[i]], [dir[0],dir[1]], 100)   
+        print(s[i], s[i])
         plt.plot(x,y)
 
 
 
-    x,y = get_points(R, A, B, G, Pages.ref_point, Pages.ref_dir, Pages.tracking)
+   # x,y = get_points(R, A, B, G, Pages.ref_point, Pages.ref_dir, Pages.tracking)
     
    
     plt.plot(x,y)
