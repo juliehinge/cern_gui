@@ -270,7 +270,7 @@ def get_points(R, A, B, G, P, D, size):
     s = 0.01
 
     points = []
-    for i in range(int(size)):
+    for i in range(int(size)*1000):
         Bout = get_B(R, A, B, G, P)
         
         if Bout != 0:

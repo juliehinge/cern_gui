@@ -1,5 +1,4 @@
 import tkinter as tk
-from tkinter import font as tkfont
 from tkinter import ttk
 from tkinter import *
 from tkinter.filedialog import askopenfilename
@@ -71,7 +70,3 @@ class PageThree(tk.Frame, Pages):
             self.text = ttk.Label(self, textvariable = self.path,foreground ="red").grid(row=4, column=0, columnspan=3, pady = 5)
            
 
-
-if __name__ == "__main__":
-    app = PageThree()
-    app.mainloop()

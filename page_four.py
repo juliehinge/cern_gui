@@ -128,7 +128,6 @@ class PageFour(tk.Frame, Pages):
 
         # Adding Entries for alpha
         sections_entry_a = ttk.Entry(self.scrollable_frame, foreground="grey"); sections_entry_a.grid(row=self.row+2, column=3, sticky = 'w')
-        #random_num = random.randint(0,360) # Generate random number to use as example text
         random_num = round(random.uniform(0,10), 1)
         sections_entry_a.insert(0, random_num)
         sections_entry_a.bind("<Button-1>", lambda event: self.clear(sections_entry_a, random_num),) # Binding to an event to clear text already in box

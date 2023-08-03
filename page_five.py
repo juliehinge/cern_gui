@@ -40,7 +40,7 @@ class PageFive(tk.Frame):
 
         # Button for returning back to page one
         button1 = ttk.Button(self, text="Back",
-                            command=lambda: controller.show_frame("PageOne"))
+                            command=lambda: self.go_back())
         button1.grid(row=9, column=0,  pady = (10,20), sticky='e')
 
         # Button for opening the zoomed in frame
@@ -73,6 +73,12 @@ class PageFive(tk.Frame):
 
     def open_tracking_frame(self):
         # Opening the frame where users can input variables for tracking the beam
-        self.controller.show_frame("PageTen")
+        self.controller.show_frame("PageEight")
 
     
+
+    def go_back(self):
+        if Pages.manual == True:
+            self.controller.show_frame("PageTwo")
+        else:
+            self.controller.show_frame("PageFour")

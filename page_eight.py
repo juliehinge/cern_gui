@@ -1,8 +1,8 @@
-import tkinter as tk
-from tkinter import font as tkfont
+import tkinter as tk      
+from tkinter import *
 from tkinter import ttk
 from p import Pages
-import re
+
 
 
 class PageEight(tk.Frame):
@@ -11,81 +11,101 @@ class PageEight(tk.Frame):
         tk.Frame.__init__(self, parent)
         self.controller = controller
 
-   
-        label1 = tk.Label(self, text="Section for tracking particle beam", font = ("bold", 20))
-        label1.grid(row=0, column=0, padx = (10), pady = (10), columnspan=4)
-      
-        lab = ttk.Label(self, text="-"*100, foreground="grey")
-        lab.grid(row=1, column=0, pady = (10), columnspan=4)
+        tk.Label(self, text="Input parameters for specifying the beam", font = ("bold", 20)).grid(row=0, column=0, padx = (10), pady = (10), columnspan=3)
+        ttk.Label(self, text="-"*100, foreground="grey").grid(row=1, column=0, pady = (10,0), columnspan = 5, sticky='w')
 
-        #Labels for instructions
-        tk.Label(self, text="Input parameters:", font = ("bold", 15)).grid(row=2, column=0, pady=10, columnspan=3, sticky='w', )
 
-        tk.Label(self, text="Tracking size (m)").grid(row=3, column=0, pady=10, sticky='e')
-        tk.Label(self, text="Charge of Particles (+/-)").grid(row=4, column=0, pady=10, sticky='e')
+        tk.Label(self, text="How would you like to input your list of initial particle directions:", font = ("bold", 15)).grid(row=4, column=0, padx=5, pady=(10,0),columnspan=3, sticky='w')
+
+
+        # This is the setup for the checkboxes
+        self.var1 = tk.IntVar()
+        self.var2 = tk.IntVar()
+        c1 = tk.Checkbutton(self, text='Manually',variable=self.var1, onvalue=1, offvalue=0, command=self.get_selection)
+        c1.grid(row=5, column=1, padx=20, pady=(10,0),sticky='w')
+        c2 = tk.Checkbutton(self, text='By CSV upload',variable=self.var2, onvalue=1, offvalue=0, command=self.get_selection)
+        c2.grid(row=6, column=1, padx=20, pady=(0,10),sticky='w')
+
+
+        ttk.Label(self, text="-"*100, foreground="grey").grid(row=7, column=0, pady = (10,0), columnspan = 5, sticky='w')
+
+        ttk.Label(self, text="Please input the tracking size and charge of paricles", font = ("bold", 15)).grid(row=8, column=0, padx=5, pady = (10,0), columnspan = 5, sticky='w')
+
+        tk.Label(self, text="Tracking size (m)").grid(row=9, column=0, pady=10, sticky='e')
+        tk.Label(self, text="Charge of Particles (+/-)").grid(row=10, column=0, pady=10, sticky='e')
 
        
-        self.track = ttk.Entry(self, width=5); self.track.grid(row=3, column=1, pady=10, sticky='w', )
-        self.charge = ttk.Entry(self, width=5); self.charge.grid(row=4, column=1, pady=10, sticky='w', )
+        self.track = ttk.Entry(self, width=5); self.track.grid(row=9, column=1, pady=10, sticky='w', )
+        self.charge = ttk.Entry(self, width=5); self.charge.grid(row=10, column=1, pady=10, sticky='w', )
 
 
 
 
         button1 = ttk.Button(self, text="Back",
                             command=lambda: controller.show_frame("PageFive"))
-        button1.grid(row=5, column=0,  pady = (10), sticky='e')
+        button1.grid(row=11, column=0,  pady = (10), sticky='e')
 
 
         button1 = ttk.Button(self, text="Ok",
-                            command=lambda: self.check())
-        button1.grid(row=5, column=1,  pady = (10), sticky='w')
+                            command=lambda: self.open_next_frame())
+        button1.grid(row=11, column=1,  pady = (10), sticky='w')
 
 
 
         # Warning text setup
         self.warning_text = tk.StringVar(self, value=' ')
-        self.text = ttk.Label(self, textvariable = self.warning_text, foreground ="red").grid(row=6, column=0,pady = 5, columnspan=3)
+        self.text = ttk.Label(self, textvariable = self.warning_text, foreground ="red").grid(row=12, column=0,pady = 5, columnspan=3)
         
+        self.entryFlag = True
+        self.method = False
+
+
+
+    def get_selection(self):
+        """This function is for making sure that the user only chose one checkbox for the manual vs.csv option. If they didn't the warning text and flags will be set"""
+        if (self.var1.get() == 1) & (self.var2.get() == 0): # Getting the value of the checkbox: 1 = on, 0 = off )
+            self.warning_text.set("")
+            self.checkFlag = True
+            self.method = False
+        elif (self.var1.get() == 0) & (self.var2.get() == 1):
+            self.warning_text.set("")
+            self.checkFlag = True
+            self.method = True
+        elif (self.var1.get() == 0) & (self.var2.get() == 0):
+            self.warning_text.set("Please choose an option")
+            self.checkFlag = False
+        else:
+            self.warning_text.set("Please choose only on option")
+            self.checkFlag = False
+
+    
+
 
 
 
     def open_next_frame(self):
-        # Getting the user defined variables from the pages module
-        # Opening the zoomed in magnetic field plot
-        self.controller.show_frame("PageTen")
+        """This function first calls the record params function to make sure everything is ok. If the option is manual, page two will be opened,
+        if the option is CSV page three will be opened. If there is a mistake in the user input, the user will be informed"""
 
-
-
-    def check(self):
-        flag = False
-        for i in (self.point.get(), self.vel.get()):
-            try:
-                parts = i.split(',')
-                # There should be exactly 2 parts
-                if len(parts) != 2:
-                    return False
-                # Both parts should be convertible to a float 
-                float(parts[0])
-                float(parts[1])
-                self.warning_text.set("")
-                flag = True
-            except ValueError:
-                self.warning_text.set("Please make sure that the point and velocity are two numbers seperated by a comma")
-                flag = False
+        user_mistake = True
 
         try:
-            str(self.charge.get())
-            float(self.track.get())
-            self.warning_text.set("")
-            flag = True
-        except ValueError:
-            self.warning_text.set("Please make sure that the charge is +/- and the tracking size is a valid float")
-            flag = False
+            size = float(self.track.get())
+            Pages.tracking = size
+            user_mistake = False
 
-        if flag == True:
-            Pages.tracking = float(self.track.get())
-            Pages.charge = str(self.charge.get())
-            Pages.P = [float(num) for num in re.split(',| ', self.point.get()) if num]
-            Pages.D = [float(num) for num in re.split(',| ', self.vel.get()) if num]
+        except ValueError:
+            self.warning_text.set("Please fill out the information correctly")
+            user_mistake = True
+
+
+        if self.entryFlag == True and self.method == False and user_mistake == False:
+            Pages.manual = True
             self.controller.show_frame("PageTen")
+        elif self.entryFlag == True and self.method == True and user_mistake == False:
+            Pages.manual = False
+            self.controller.show_frame("PageEleven")
+        else:
+            self.warning_text.set("Please fill out the information correctly")
+
 

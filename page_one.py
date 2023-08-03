@@ -92,8 +92,10 @@ class PageOne(tk.Frame):
         if the option is CSV page three will be opened. If there is a mistake in the user input, the user will be informed"""
         self.record_params()
         if self.checkFlag == True and self.entryFlag == True and self.method == False:
+            Pages.manual = True # Setting the munual flag to True since the user chose the manual method
             self.controller.show_frame("PageTwo")
         elif self.checkFlag == True and self.entryFlag == True and self.method == True:
+            Pages.manual = False # Setting the munual flag to false since the user chose the csv method
             self.controller.show_frame("PageThree")
         else:
             self.warning_text.set("Please fill out the information correctly")

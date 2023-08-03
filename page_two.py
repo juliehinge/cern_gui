@@ -57,7 +57,7 @@ class PageTwo(tk.Frame):
         # Warning text set up
         self.warning_text = StringVar(self.bottom_frame, value=' ')
         self.text = ttk.Label(self.bottom_frame, textvariable=self.warning_text, foreground="red")
-        self.text.grid(row=2, column=0, columnspan=5, padx=5, pady=5)
+        self.text.grid(row=2, column=0, columnspan=5, padx=5, pady=(0,10))
 
 
 
@@ -112,6 +112,7 @@ class PageTwo(tk.Frame):
         """This function clears the number already in the entry"""
         if sections_entry.get() != '': # If the section is empty, there is nothing to clear
             if float(sections_entry.get()[0:3]) == float(random_num): # We don't want to clear anything the user put in, just the random pre-placed numbers
+                print(float(sections_entry.get()[0:3]),float(random_num))
                 sections_entry.delete(0, tk.END) # Deleting text already in box
                 sections_entry.config(foreground="white") # Changing colour of the box
 
@@ -161,16 +162,23 @@ class PageTwo(tk.Frame):
 
         for i in self.vector_entries: 
             vector = i.get() # Getting the values of all vector entries and appending them to an updated version
-            updated_vector.append(vector.split(","))
 
+            try:
+                parts = vector.split(',')
+                float_parts = [float(part) for part in parts]
+                updated_vector.append(float_parts)
+            except ValueError:
+                self.warning_text.set("There is an error in one of your inputs!") # Warning the user
+                user_mistake = True # Setting the flag to true since there is a mistake in the input
+    
 
         # Looping through the buttons and getting their alpha value 
         for i in self.alpha_entries:
             alpha = i.get()
-            updated_alpha.append(alpha)
             try:
                 alpha = float(alpha)
                 alpha_sum += float(alpha) # adding to the alpha sum
+                updated_alpha.append(alpha)
             except ValueError:
                 self.warning_text.set("There is an error in one of your inputs!") # Warning the user
                 user_mistake = True # Setting the flag to true since there is a mistake in the input
@@ -184,5 +192,4 @@ class PageTwo(tk.Frame):
             Pages.alpha_list = updated_alpha # Passing the variables to the pages module
             Pages.vector_list = updated_vector
             self.controller.show_frame("PageFive") # Opening the next page
-
         
