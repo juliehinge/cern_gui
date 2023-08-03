@@ -94,7 +94,8 @@ class PageTen(tk.Frame):
         sections_entry.insert(0, random_num)
         sections_entry.insert(3, ",")
         sections_entry.insert(4, random_num2)
-        sections_entry.bind("<Button-1>", lambda event: self.clear(sections_entry, random_num, random_num2)) # If the user clicks on the entry, we clear the random number and change the color.
+        sections_entry.bind("<Button-1>", lambda event: self.clear(sections_entry)) # If the user clicks on the entry, we clear the random number and change the color.
+        sections_entry.bind("<Leave>", lambda event: self.change(sections_entry)) # If the user clicks on the entry, we clear the random number and change the color.
         self.part_point.append(sections_entry)
 
 
@@ -114,18 +115,20 @@ class PageTen(tk.Frame):
         sections_entry.insert(0, random_num)
         sections_entry.insert(3, ",")
         sections_entry.insert(4, random_num2)
-        sections_entry.bind("<Button-1>", lambda event: self.clear(sections_entry, random_num, random_num2)) # If the user clicks on the entry, we clear the random number and change the color.
+        sections_entry.bind("<Button-1>", lambda event: self.clear(sections_entry)) # If the user clicks on the entry, we clear the random number and change the color.
+        sections_entry.bind("<Leave>", lambda event: self.change(sections_entry)) # If the user clicks on the entry, we clear the random number and change the color.
         self.part_dir.append(sections_entry)
 
 
-
-
-    def clear(self, sections_entry, random_num, random_num2):
+    def clear(self, sections_entry):
         """This function clears the number already in the entry"""
-        if sections_entry.get() != '': # If the section is empty, there is nothing to clear
-            if float(sections_entry.get()[0:3]) == float(random_num) and float(sections_entry.get()[-3:]) == random_num2: # We don't want to clear anything the user put in, just the random pre-placed numbers
-                sections_entry.delete(0, tk.END) # Deleting text already in box
-                sections_entry.config(foreground="white") # Changing colour of the box
+        sections_entry.delete(0, tk.END) # Deleting text already in box
+        sections_entry.config(foreground="white") # Changing colour of the box
+
+    def change(self, sections_entry):
+        
+        """This function clears the number already in the entry"""
+        sections_entry.config(foreground="white") # Changing colour of the box
 
 
 

@@ -143,7 +143,7 @@ def default(A, li, R):
     Y_max = 0.2
     a = 0 # X coordinate of center of circle
     b = -R # Y coordinate of center of circle
-    stepSize = 0.01 # Stepsize of line of circle
+    stepSize = 0.5 # Stepsize of line of circle
 
     # This is to calculate the coordinates of the circles circumference
     positions = []
@@ -215,12 +215,11 @@ def default(A, li, R):
 
 
 
-
-
 def rot_matrix(alpha):
     R = np.array([[np.cos(alpha), -np.sin(alpha)],
         [np.sin(alpha), np.cos(alpha)]]) # Defining the rotation matrix in a clockwise direction
     return R
+
 
 
 def next_point(r, P, D):
@@ -258,36 +257,40 @@ def next_point(r, P, D):
 
 def get_points(R, A, B, G, P, D, size):
 
-    # Compute the magnitude of the vector
+    # Compute the magnitude of the vector for normalization
     magnitude = np.linalg.norm(D) 
     # Normalize the vector
     eps = 1e-10
+    D = D/(magnitude+eps) # Normalizing the vector and adding a tiny constant to avoid division by zero error
 
+    B_e = 3.3356*0.12 # Beam Rigidity
+    s = 0.01 # Step size
 
-    D = D/(magnitude+eps)
-
-    B_e = 3.3356*0.1 # Beam Rigidity
-    s = 0.01
-
+    print(P)
     points = []
-    for i in range(int(size)*1000):
+    points.append([float(P[0]), float(P[1])])
+
+    trajectory_len = float(size)
+    num_steps = trajectory_len/s
+
+    for i in range(int(num_steps)):
         Bout = get_B(R, A, B, G, P)
         
         if Bout != 0:
             R = B_e/Bout # Radius
-            P, D = next_point(R,P,D)
-        else:
+            P, D = next_point(R,P,D) # Calculating the next point
+        else: # If the magnetic field is zero at this point the particle just continues in a straight line
             P2 = s*D
             P = np.add(P, P2)
+        print(P)
+
         points.append(P)
 
      
-
     # Splitting the data into x and y coordinates for plotting
     x = [point[0] for point in points]
     y = [point[1] for point in points]
 
- #   plt.plot(x,y)
 
     return x,y
 
@@ -380,15 +383,20 @@ def default2(A, li, R):
     s = np.random.normal(mu, sigma, 3)
    # y_dir = np.random.normal(mu, sigma, 3)
 
+
+    positions = Pages.pos_vector
     directions = Pages.dir_vector
 
     
 
-    for i in range(3):
+    for i in range(len(positions)):
+        parts = positions[i].split(',')
+        pos = [float(part) for part in parts]
+        
         parts = directions[i].split(',')
         dir = [float(part) for part in parts]
-        x,y = get_points(R, A, B, G, [s[i],s[i]], [dir[0],dir[1]], 100)   
-        print(s[i], s[i])
+
+        x,y = get_points(R, A, B, G, [pos[0],pos[1]], [dir[0],dir[1]], Pages.tracking)   
         plt.plot(x,y)
 
 
