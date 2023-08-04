@@ -1,11 +1,11 @@
 
-from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
+from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg, NavigationToolbar2Tk
 import tkinter as tk      
 from tkinter import *
 import matplotlib
 matplotlib.use('TkAgg')  # Backend of matplotlib for tkinter
 from matplotlib.figure import Figure
-from function1 import get_points, default, default2
+from function1 import default2
 from p import Pages
 
 
@@ -51,4 +51,8 @@ class PageNine(tk.Frame):
         self.fig, ax = default2(A, li, R)  
         self.canvas.figure = self.fig  # Update the figure associated with the canvas
         self.canvas.draw()  # Redraw the canvas to reflect changes
+
+
+        self.toolbar = NavigationToolbar2Tk(self.canvas, self.frame)
+        self.toolbar.update()
 

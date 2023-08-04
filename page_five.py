@@ -59,6 +59,8 @@ class PageFive(tk.Frame):
 
 
 
+
+
     def open_next_frame(self):
         # Getting the user defined variables from the pages module
         Pages.x_min = self.x_min.get()        
