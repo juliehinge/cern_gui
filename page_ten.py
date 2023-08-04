@@ -22,14 +22,14 @@ class PageTen(tk.Frame):
 
         # Making labels and putting them on the frame
         label = tk.Label(self.scrollable_frame, text="Input vectors of particle start positions and directions please ", font=("bold", 20))
-        label.grid(row=0, column=0, padx=(10, 30), pady=(10, 20), sticky='w', columnspan=4)
+        label.grid(row=0, column=0, padx=(10, 30), pady=(10, 20), sticky='w', columnspan=6)
 
-        ttk.Label(self.scrollable_frame, text="-" * 100, foreground="grey").grid(row=1, column=0, pady=(10, 0),
-                                                                                      columnspan=4, sticky='w')
+        ttk.Label(self.scrollable_frame, text="-" * 150, foreground="grey").grid(row=1, column=0, pady=(10, 0),
+                                                                                      columnspan=6, sticky='w')
       
         # Counters for row number and number of sections to keep track of them
         self.row = 1; self.counter = 0  
-        self.part_point = []; self.part_dir = []; self.labels = [] # Lists to keep track of all the widgets
+        self.part_point = []; self.part_dir = []; self.energy = []; self.labels = [] # Lists to keep track of all the widgets
 
         # Putting the first section on the frame
         self.add_section()
@@ -57,7 +57,7 @@ class PageTen(tk.Frame):
         # Warning text set up
         self.warning_text = StringVar(self.bottom_frame, value=' ')
         self.text = ttk.Label(self.bottom_frame, textvariable=self.warning_text, foreground="red")
-        self.text.grid(row=2, column=0, columnspan=5, padx=5, pady=5)
+        self.text.grid(row=2, column=0, columnspan=6, padx=5, pady=5)
 
 
 
@@ -66,9 +66,9 @@ class PageTen(tk.Frame):
         i = self.row
         self.point_section(i)# Calling the function that puts the direction section on the gui
         self.dir_section(i)# Calling the function that puts the direction section on the gui
-
-        lab = ttk.Label(self.scrollable_frame, text="-" * 100, foreground="grey")
-        lab.grid(row=i + 3, column=0, pady=(10, 0), columnspan=5, sticky='w')
+        self.energy_section(i)
+        lab = ttk.Label(self.scrollable_frame, text="-" * 150, foreground="grey")
+        lab.grid(row=i + 3, column=0, pady=(10, 0), columnspan=6, sticky='w')
         self.labels.append(lab) # We append all labels to a list so we can delete them if the user wants to
         self.row += 3    # Increasing the row count with three since we just added three rows to the screen
         self.counter += 1   # Increasing the counter with 1 since we just added a section
@@ -79,7 +79,7 @@ class PageTen(tk.Frame):
 
     def point_section(self, i):
         lab1 = ttk.Label(self.scrollable_frame, text=f"Particle {self.counter + 1}", font=("bold", 15)) # Heading
-        lab1.grid(row=self.row + 1, column=0, pady=(0, 10), sticky='w', columnspan=4)
+        lab1.grid(row=self.row + 1, column=0, pady=(0, 10), sticky='w', columnspan=6)
 
         lab2 = ttk.Label(self.scrollable_frame, text='Position:') # position label
         lab2.grid(row=self.row + 2, column=0, sticky='e')
@@ -119,6 +119,23 @@ class PageTen(tk.Frame):
         self.part_dir.append(sections_entry)
 
 
+
+
+    def energy_section(self, i):
+        lab2 = ttk.Label(self.scrollable_frame, text='Energy:') # direction label
+        lab2.grid(row=self.row + 2, column=4, sticky='e')
+        self.labels.append(lab2)
+        sections_entry = ttk.Entry(self.scrollable_frame, foreground="grey") # Putting the entry on the gui
+        sections_entry.grid(row=self.row + 2, column=5, sticky='w')
+        random_num = random.randrange(100, 200, 5) # Placing a random number as placeholder in the entry
+        sections_entry.insert(0, random_num)
+
+        sections_entry.bind('<FocusIn>', lambda event: self.clear(event, sections_entry, random_num))
+        self.energy.append(sections_entry)
+
+
+
+
     def clear(self, event, sections_entry, random_num):
 
         """This function clears the number already in the entry"""
@@ -137,15 +154,6 @@ class PageTen(tk.Frame):
 
 
 
-
-    def change(self, sections_entry):
-        
-        """This function clears the number already in the entry"""
-        sections_entry.config(foreground="white") # Changing colour of the box
-
-
-
-
     def remove_section(self):
         """Funtion to delete a section"""
         if self.counter > 1: # We don't want to clear the first section
@@ -158,6 +166,8 @@ class PageTen(tk.Frame):
             self.part_dir.pop()
             self.part_point[-1].destroy() 
             self.part_point.pop()
+            self.energy[-1].destroy() 
+            self.energy.pop()
             self.counter -= 1 # Decrease the sections counter since we just deleted a section
 
 
@@ -168,16 +178,17 @@ class PageTen(tk.Frame):
 
     def clear_all(self):
         """This function clears all entries except for the first on"""
-        for i in self.labels[3:]: # We dont include the first section which is why we start from three in the loop
+        for i in self.labels[4:]: # We dont include the first section which is why we start from three in the loop
             i.destroy()
 
-        for i, j in zip(self.part_point[1:], self.part_dir[1:]):
+        for i, j,k in zip(self.part_point[1:], self.part_dir[1:], self.energy[1:]):
             j.destroy()
             i.destroy()
+            k.destroy()
             self.counter -= 1 # Decrease sections counter each time we delete a section
 
-        ttk.Label(self.scrollable_frame, text="-" * 100, foreground="grey").grid(row=self.row, column=0, pady=(10, 0),
-                                                                                  columnspan=5, sticky='w')
+        ttk.Label(self.scrollable_frame, text="-" * 150, foreground="grey").grid(row=self.row, column=0, pady=(10, 0),
+                                                                                  columnspan=6, sticky='w')
 
 
 
@@ -188,8 +199,7 @@ class PageTen(tk.Frame):
 
         updated_point = []
         updated_dir = []
-
-
+        updated_energy = []
 
         for i in self.part_point:
             i = i.get()
@@ -227,13 +237,30 @@ class PageTen(tk.Frame):
                 user_mistake = True
 
 
+
+
+
+        for i in self.energy:
+            i = i.get()
+            try:
+                float(i) # The energy shouldn't be a string
+
+                self.warning_text.set("")
+                user_mistake = False
+                updated_energy.append(i)
+
+            except ValueError:
+                self.warning_text.set("Please make sure that the energy of all particles is a proper number")
+                user_mistake = True
+
+
         if user_mistake == False:
             self.warning_text.set(" ") # Removing the warning if error is fixed
             Pages.dir_vector = updated_dir
             Pages.pos_vector = updated_point
+            Pages.ener_vector = updated_energy
             self.controller.show_frame("PageFourteen") # Opening the next page
 
-        
 
     def go_back(self):
 

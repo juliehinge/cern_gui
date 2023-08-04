@@ -255,7 +255,7 @@ def next_point(r, P, D):
 
 
 
-def get_points(R, A, B, G, P, D, size):
+def get_points(R, A, B, G, P, D, energy, size):
 
     # Compute the magnitude of the vector for normalization
     magnitude = np.linalg.norm(D) 
@@ -263,7 +263,7 @@ def get_points(R, A, B, G, P, D, size):
     eps = 1e-10
     D = D/(magnitude+eps) # Normalizing the vector and adding a tiny constant to avoid division by zero error
 
-    B_e = 3.3356*0.12 # Beam Rigidity
+    B_e = 3.3356*(energy/1000) # Beam Rigidity
     s = 0.01 # Step size
 
     points = []
@@ -275,9 +275,8 @@ def get_points(R, A, B, G, P, D, size):
     for i in range(int(num_steps)):
         Bout = get_B(R, A, B, G, P)
         if Bout != 0:
-            print(Bout)
-            R = B_e/Bout # Radius
-            P, D = next_point(R,P,D) # Calculating the next point
+            R_bending = B_e/Bout # Radius
+            P, D = next_point(R_bending,P,D) # Calculating the next point
         else: # If the magnetic field is zero at this point the particle just continues in a straight line
             P2 = s*D
             P = np.add(P, P2)
@@ -377,8 +376,9 @@ def default2(A, li, R):
 
     positions = Pages.pos_vector
     directions = Pages.dir_vector
-    
+    Energy = Pages.ener_vector
 
+    print(Energy)
     if len(positions) > 11:
 
 
@@ -391,8 +391,13 @@ def default2(A, li, R):
         avg_x_dir = sum(pair[0] for pair in split_directions) / len(split_directions)
         avg_y_dir = sum(pair[1] for pair in split_directions) / len(split_directions)
 
+        # Convert all the energies to floats
+        int_list = [float(i) for i in Energy]
+        # calculate the average of the energies
+        avg_energy = sum(int_list) / len(int_list)
 
-        x,y = get_points(R, A, B, G, [avg_x_pos,avg_y_pos], [avg_x_dir, avg_y_dir], Pages.tracking)   
+
+        x,y = get_points(R, A, B, G, [avg_x_pos,avg_y_pos], [avg_x_dir, avg_y_dir],avg_energy, Pages.tracking)   
         plt.plot(x,y)
 
 
@@ -405,7 +410,8 @@ def default2(A, li, R):
             parts = directions[i].split(',')
             dir = [float(part) for part in parts]
 
-            x,y = get_points(R, A, B, G, [pos[0],pos[1]], [dir[0],dir[1]], Pages.tracking)   
+            x,y = get_points(R, A, B, G, [pos[0],pos[1]], [dir[0],dir[1]], float(Energy[i]), Pages.tracking)   
+            print(float(Energy[i]))
             plt.plot(x,y)
 
 

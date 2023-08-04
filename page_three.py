@@ -30,8 +30,8 @@ class PageThree(tk.Frame, Pages):
         csv_file_path = askopenfilename() # This allows the user to open their folder
         self.path.set(csv_file_path) 
 
-        if "csv" not in csv_file_path: # Making sure the user only uploads a csv file
-            self.path = StringVar(self, value="Please input a CSV file only") # Warning the user
+        if "csv" not in csv_file_path or "txt" not in csv_file_path: # Making sure the user only uploads a csv file
+            self.path = StringVar(self, value="Please input a CSV or TXT file only") # Warning the user
             self.text = ttk.Label(self, textvariable = self.path,foreground ="red").grid(row=4, column=0, columnspan=3, pady = 5)
             self.flag = False # Setting the user mistake flag to False since the user didn't input the correct information
 
@@ -66,7 +66,7 @@ class PageThree(tk.Frame, Pages):
             self.controller.show_frame("PageFour")
 
         else:
-            self.path = StringVar(self, value="Please upload a CSV file") # Warning the user
+            self.path = StringVar(self, value="Please upload a CSV or TXT file") # Warning the user
             self.text = ttk.Label(self, textvariable = self.path,foreground ="red").grid(row=4, column=0, columnspan=3, pady = 5)
            
 

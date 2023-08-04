@@ -32,7 +32,7 @@ class SampleApp(tk.Tk):
 
  
         for F,geometry in zip((StartPage, PageOne, PageTwo, PageThree, PageFour, PageFive, PageSix, PageSeven, PageEight,PageNine, PageTen, PageEleven, PageTwelve, PageFourteen), 
-                              ('450x500', '400x350', '600x500', '350x150', '600x500', '500x500', '600x600', '600x600','500x500', '700x700','700x700', '600x500', '600x600', '600x600')):
+                              ('450x500', '400x350', '600x500', '350x150', '600x500', '500x500', '600x600', '600x600','500x500', '600x600','950x700', '600x500', '950x700', '600x600')):
 
             page_name = F.__name__
             frame = F(parent=container, controller=self)

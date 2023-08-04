@@ -17,3 +17,4 @@ class Pages:
     ref_dir = 0
     pos_vector = []
     dir_vector = []
+    ener_vector = []

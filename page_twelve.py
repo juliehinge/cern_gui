@@ -22,11 +22,11 @@ class PageTwelve(tk.Frame, Pages):
         self.scrollable_frame = self.sf.display_widget(tk.Frame)
 
         label = tk.Label(self.scrollable_frame, text="This is the CSV section", font=("bold", 20))
-        label.grid(row=0, column=0, padx=(10, 30), pady=(10, 20), sticky='w', columnspan=4)
+        label.grid(row=0, column=0, padx=(10, 30), pady=(10, 20), sticky='w', columnspan=6)
 
         # Counters for row number and number of sections
         self.row = 1; self.counter = 1  
-        self.dir_entries = []; self.pos_entries = []; self.labels = [] # Lists to keep track of all the widgets
+        self.dir_entries = []; self.pos_entries = [];self.energy_entries = []; self.labels = [] # Lists to keep track of all the widgets
 
 
        # Create the frame at the bottom
@@ -59,17 +59,20 @@ class PageTwelve(tk.Frame, Pages):
 
     def pasvariable(self, var):
       
-        # Looping over the direction  list and vecor list from the csv and adding them to the entries 
         if len(self.dir_entries) == 0:
             dir_list = Pages.dir_vector
             pos_list = Pages.pos_vector
+            energy_list = Pages.ener_vector
 
             i = 0
             while i < len(dir_list) and i < 100:
                 self.dir = dir_list[i]
                 self.pos = pos_list[i]
+                self.energy = energy_list[i]
                 self.automatic_add() # Calling the function to actually add direction and the position of the particle
                 i += 1
+
+
 
     def automatic_add(self):
         # Adding Labels For position
@@ -98,11 +101,25 @@ class PageTwelve(tk.Frame, Pages):
         self.dir_entries.append(dir_entry)
 
 
-        lab = ttk.Label(self.scrollable_frame, text="-"*100, foreground="grey")
-        lab.grid(row=self.row+3, column=0, pady = (10,0), columnspan = 5, sticky='w')
+
+        # Adding Labels For energy of particle
+        alp_lab = ttk.Label(self.scrollable_frame, text="Energy:")
+        alp_lab.grid(row=self.row+2, column=4, sticky='e')
+        self.labels.append(alp_lab)
+
+
+
+        # Adding entries for energies of particles
+        energy_entry = ttk.Entry(self.scrollable_frame); energy_entry.grid(row=self.row+2, column=5, sticky = 'w')
+        energy = float(self.energy[0])
+        energy_entry.insert(0, energy)
+        self.energy_entries.append(energy_entry)
+
+
+        lab = ttk.Label(self.scrollable_frame, text="-"*150, foreground="grey")
+        lab.grid(row=self.row+3, column=0, pady = (10,0), columnspan = 6, sticky='w')
         self.labels.append(lab) # Apending to list of labels
         self.row += 3; self.counter += 1 # Increment row number for new section and Increment the number of sections
-
 
 
 
@@ -123,7 +140,7 @@ class PageTwelve(tk.Frame, Pages):
         self.pos_entries.append(sections_entry_v)
 
         # Adding Labels For the direction of the particle
-        alpha_lab = ttk.Label(self.scrollable_frame, text="α:")
+        alpha_lab = ttk.Label(self.scrollable_frame, text="Direction:")
         alpha_lab.grid(row=self.row+2, column=2, sticky='e')
         self.labels.append(alpha_lab)
 
@@ -136,12 +153,31 @@ class PageTwelve(tk.Frame, Pages):
         self.dir_entries.append(sections_entry_a)
 
 
-        lab = ttk.Label(self.scrollable_frame, text="-"*100, foreground="grey")
-        lab.grid(row=self.row+3, column=0, pady = (10,0), columnspan = 5, sticky='w')
+
+        # Adding Labels For the energy of the particle
+        energy_lab = ttk.Label(self.scrollable_frame, text="Energy:")
+        energy_lab.grid(row=self.row+2, column=4, sticky='e')
+        self.labels.append(energy_lab)
+
+
+        # Adding Entries for engergy of particle
+        sections_entry_energy = ttk.Entry(self.scrollable_frame, foreground="grey"); sections_entry_energy.grid(row=self.row+2, column=5, sticky = 'w')
+        random_num = random.randrange(100, 200, 5) # Placing a random number as placeholder in the entry
+        sections_entry_energy.insert(0, random_num)
+
+        sections_entry_energy.bind("<FocusIn>", lambda event: self.clear(event, sections_entry_energy, random_num),) # Binding to an event to clear text already in box
+        self.energy_entries.append(sections_entry_energy)
+
+
+        lab = ttk.Label(self.scrollable_frame, text="-"*150, foreground="grey")
+        lab.grid(row=self.row+3, column=0, pady = (10,0), columnspan = 6, sticky='w')
         self.labels.append(lab) # Apending to list of labels
         self.row += 3; self.counter += 1 # Increment row number for new section and Increment the number of sections
 
   
+
+
+
 
     def clear(self, event, sections_entry, random_num):
 
@@ -161,9 +197,10 @@ class PageTwelve(tk.Frame, Pages):
 
 
 
+
     def remove_section(self):
         if self.counter > 1: 
-            for i in self.labels[-5:-1]:
+            for i in self.labels[-6:-1]:
                 i.destroy()
                 self.labels.remove(i)
 
@@ -172,6 +209,9 @@ class PageTwelve(tk.Frame, Pages):
             
             self.pos_entries[-1].destroy()
             self.pos_entries.pop()    
+
+            self.energy_entries[-1].destroy()
+            self.energy_entries.pop()   
             self.counter -= 1 # Decreasing the counter for every section we remove
 
 
@@ -181,12 +221,15 @@ class PageTwelve(tk.Frame, Pages):
         for i in self.labels[4:]:
             i.destroy()
 
-        for i,j in zip(self.pos_entries[1:], self.dir_entries[1:]):
+        for i,j,k in zip(self.pos_entries[1:], self.dir_entries[1:], self.energy_entries[1:]):
             j.destroy()
             i.destroy()
+            k.destroy()
             self.counter -= 1 # Decreasing the counter for every section we remove
 
 
+        ttk.Label(self.scrollable_frame, text="-" * 150, foreground="grey").grid(row=self.row, column=0, pady=(10, 0),
+                                                                                  columnspan=6, sticky='w')
 
 
 
@@ -198,7 +241,7 @@ class PageTwelve(tk.Frame, Pages):
 
         updated_point = []
         updated_dir = []
-
+        updated_energy = []
 
 
         for i in self.pos_entries:
@@ -237,10 +280,27 @@ class PageTwelve(tk.Frame, Pages):
                 user_mistake = True
 
 
+
+        for i in self.energy_entries:
+            i = i.get()
+            try:
+                float(i) # The energy shouldn't be a string
+
+                self.warning_text.set("")
+                user_mistake = False
+                updated_energy.append(i)
+
+            except ValueError:
+                self.warning_text.set("Please make sure that the energy of all particles is a proper number")
+                user_mistake = True
+
+
+
         if user_mistake == False:
             self.warning_text.set(" ") # Removing the warning if error is fixed
             Pages.dir_vector = updated_dir
             Pages.pos_vector = updated_point
+            Pages.ener_vector = updated_energy
             self.controller.show_frame("PageFourteen") # Opening the next page
 
         
