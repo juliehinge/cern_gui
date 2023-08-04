@@ -117,7 +117,7 @@ class PageFour(tk.Frame, Pages):
         sections_entry_v = ttk.Entry(self.scrollable_frame, foreground="grey"); sections_entry_v.grid(row=self.row+2, column=1, sticky = 'w')
         random_num_v = round(random.uniform(0,10), 1)
         sections_entry_v.insert(0, random_num_v)
-        sections_entry_v.bind("<Button-1>", lambda event: self.clear(sections_entry_v, random_num_v),) # Binding to an event to clear text already in box
+        sections_entry_v.bind("<FocusIn>", lambda event: self.clear(event, sections_entry_v, random_num_v),) # Binding to an event to clear text already in box
         self.vector_entries.append(sections_entry_v)
 
         # Adding Labels For alpha
@@ -130,7 +130,7 @@ class PageFour(tk.Frame, Pages):
         sections_entry_a = ttk.Entry(self.scrollable_frame, foreground="grey"); sections_entry_a.grid(row=self.row+2, column=3, sticky = 'w')
         random_num = round(random.uniform(0,10), 1)
         sections_entry_a.insert(0, random_num)
-        sections_entry_a.bind("<Button-1>", lambda event: self.clear(sections_entry_a, random_num),) # Binding to an event to clear text already in box
+        sections_entry_a.bind("<FocusIn>", lambda event: self.clear(event, sections_entry_a, random_num),) # Binding to an event to clear text already in box
         self.alpha_entries.append(sections_entry_a)
 
 
@@ -140,11 +140,20 @@ class PageFour(tk.Frame, Pages):
         self.row += 3; self.counter += 1 # Increment row number for new section and Increment the number of sections
 
   
-    def clear(self, sections_entry, random_num):
-        if sections_entry.get() != '':
-            if float(sections_entry.get()) == float(random_num):
-                sections_entry.delete(0, tk.END) # Deleting text already in box
-                sections_entry.config(foreground="white") # Changing colour of the box
+
+    def clear(self, event, sections_entry, random_num):
+        """This function clears the number already in the entry"""
+        if sections_entry.get() != '': # If the section is empty, there is nothing to clear
+            try:
+                entry_num = sections_entry.get().split(',')
+                if float(entry_num[0]) == float(random_num): # We don't want to clear anything the user put in, just the random pre-placed numbers
+                    sections_entry.delete(0, tk.END) # Deleting text already in box
+                    sections_entry.config(foreground="white") # Changing colour of the box
+            except AttributeError:
+                if float(sections_entry.get()) == float(random_num): # We don't want to clear anything the user put in, just the random pre-placed numbers
+                    sections_entry.delete(0, tk.END) # Deleting text already in box
+                    sections_entry.config(foreground="white") # Changing colour of the box
+
 
 
 

@@ -18,14 +18,14 @@ class PageEleven(tk.Frame):
         ttk.Label(self, text="Upload your CSV files please", font = ("bold", 20)).grid(row=1, column=0, padx = (10,30), pady = (10,30), columnspan=3)
 
         Btn_import1 = ttk.Button(self, text='Upload Positions', command=lambda:self.import_csv_data(1));  Btn_import1.grid(row=2, column=0, sticky='w')
-        Btn_import2 = ttk.Button(self, text='Browse Directions', command=lambda:self.import_csv_data(2));  Btn_import2.grid(row=2, column=1, sticky='w')
+        Btn_import2 = ttk.Button(self, text='Upload Directions', command=lambda:self.import_csv_data(2));  Btn_import2.grid(row=2, column=1, sticky='w')
         Btn_ok = ttk.Button(self, text='OK', command=lambda:self.open_window());  Btn_ok.grid(row=3, column=0, sticky='w')
         Btn_back = ttk.Button(self, text="Back", command=lambda: controller.show_frame("PageTen")); Btn_back.grid(row=3, column=1, sticky='w')
 
         self.path1 = StringVar(self, value=' ')
-        self.text1 = ttk.Label(self, textvariable = self.path1).grid(row=4, column=0, columnspan=3, pady = 5)
+        self.text1 = ttk.Label(self, textvariable = self.path1).grid(row=4, column=0, columnspan=5, pady = 5)
         self.path2 = StringVar(self, value=' ')
-        self.text2 = ttk.Label(self, textvariable = self.path2).grid(row=5, column=0, columnspan=3, pady = 5)
+        self.text2 = ttk.Label(self, textvariable = self.path2).grid(row=5, column=0, columnspan=5, pady = 5)
 
 
 
@@ -64,7 +64,6 @@ class PageEleven(tk.Frame):
 
             coordinates = []
             if is_header:
-                print("test")
                 for _, row in df.iterrows():
                     coordinates.append(row.tolist())
 
@@ -83,7 +82,7 @@ class PageEleven(tk.Frame):
 
     def open_window(self):
         if self.flag1 and self.flag2: 
-            self.controller.show_frame("PageFour")
+            self.controller.show_frame("PageTwelve")
 
         else:
             if not self.flag1:

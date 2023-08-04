@@ -88,8 +88,7 @@ class PageTwo(tk.Frame):
         sections_entry.insert(3, ",")
         sections_entry.insert(4, round(random.uniform(0,10), 1))
 
-        sections_entry.bind("<Button-1>", lambda event: self.clear(sections_entry)) # If the user clicks on the entry, we clear the random number and change the color.
-        sections_entry.bind("<Enter>", lambda event: self.change(sections_entry)) # If the user clicks on the entry, we clear the random number and change the color.
+        sections_entry.bind('<FocusIn>', lambda event: self.clear(event, sections_entry, random_num))
 
         self.vector_entries.append(sections_entry)
         
@@ -104,21 +103,32 @@ class PageTwo(tk.Frame):
         sections_entry.grid(row=self.row + 2, column=3, sticky='w')
         random_num = round(random.uniform(0,10), 1)  # Placing a random number as placeholder in the entry
         sections_entry.insert(0, random_num)
-        sections_entry.bind("<Button-1>", lambda event: self.clear(sections_entry)) # If the user clicks on the entry, we clear the random number and change the color.
-        #sections_entry.bind("<Enter>", lambda event: self.change(sections_entry)) # If the user clicks on the entry, we clear the random number and change the color.
-       # sections_entry.bind self.entry.bind("<KeyPress-Shift_L>", shift_press)
-
+        sections_entry.bind('<FocusIn>', lambda event: self.clear(event, sections_entry, random_num))
 
         self.alpha_entries.append(sections_entry)
 
 
    
 
-    def clear(self, sections_entry):
-        print("test")
+    def clear(self, event, sections_entry, random_num):
+
         """This function clears the number already in the entry"""
-        sections_entry.delete(0, tk.END) # Deleting text already in box
-        sections_entry.config(foreground="white") # Changing colour of the box
+        if sections_entry.get() != '': # If the section is empty, there is nothing to clear
+            try:
+                entry_num = sections_entry.get().split(',')
+                if float(entry_num[0]) == float(random_num): # We don't want to clear anything the user put in, just the random pre-placed numbers
+                    sections_entry.delete(0, tk.END) # Deleting text already in box
+                    sections_entry.config(foreground="white") # Changing colour of the box
+            except AttributeError:
+                if float(sections_entry.get()) == float(random_num): # We don't want to clear anything the user put in, just the random pre-placed numbers
+                    sections_entry.delete(0, tk.END) # Deleting text already in box
+                    sections_entry.config(foreground="white") # Changing colour of the box
+
+
+
+
+
+
 
 
 

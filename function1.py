@@ -266,7 +266,6 @@ def get_points(R, A, B, G, P, D, size):
     B_e = 3.3356*0.12 # Beam Rigidity
     s = 0.01 # Step size
 
-    print(P)
     points = []
     points.append([float(P[0]), float(P[1])])
 
@@ -275,17 +274,15 @@ def get_points(R, A, B, G, P, D, size):
 
     for i in range(int(num_steps)):
         Bout = get_B(R, A, B, G, P)
-        
         if Bout != 0:
+            print(Bout)
             R = B_e/Bout # Radius
             P, D = next_point(R,P,D) # Calculating the next point
         else: # If the magnetic field is zero at this point the particle just continues in a straight line
             P2 = s*D
             P = np.add(P, P2)
-        print(P)
 
         points.append(P)
-
      
     # Splitting the data into x and y coordinates for plotting
     x = [point[0] for point in points]
@@ -378,35 +375,42 @@ def default2(A, li, R):
     ax.set_ylim([Y_min, Y_max])
     
 
-    print(float(Pages.ref_point))
-    mu, sigma = float(Pages.ref_point), 0.1 # mean and standard deviation
-    s = np.random.normal(mu, sigma, 3)
-   # y_dir = np.random.normal(mu, sigma, 3)
-
-
     positions = Pages.pos_vector
     directions = Pages.dir_vector
-
     
 
-    for i in range(len(positions)):
-        parts = positions[i].split(',')
-        pos = [float(part) for part in parts]
-        
-        parts = directions[i].split(',')
-        dir = [float(part) for part in parts]
+    if len(positions) > 11:
 
-        x,y = get_points(R, A, B, G, [pos[0],pos[1]], [dir[0],dir[1]], Pages.tracking)   
+
+        split_positions = [[float(num) for num in pair.split(', ')] for pair in positions]
+        split_directions = [[float(num) for num in pair.split(', ')] for pair in directions]
+
+        avg_x_pos = sum(pair[0] for pair in split_positions) / len(split_positions)
+        avg_y_pos = sum(pair[1] for pair in split_positions) / len(split_positions)
+       
+        avg_x_dir = sum(pair[0] for pair in split_directions) / len(split_directions)
+        avg_y_dir = sum(pair[1] for pair in split_directions) / len(split_directions)
+
+
+        x,y = get_points(R, A, B, G, [avg_x_pos,avg_y_pos], [avg_x_dir, avg_y_dir], Pages.tracking)   
         plt.plot(x,y)
 
 
+    else:
 
-   # x,y = get_points(R, A, B, G, Pages.ref_point, Pages.ref_dir, Pages.tracking)
-    
-   
-    plt.plot(x,y)
+        for i in range(len(positions)):
+            parts = positions[i].split(',')
+            pos = [float(part) for part in parts]
+            
+            parts = directions[i].split(',')
+            dir = [float(part) for part in parts]
 
-    return fig,ax  # return only the figure object
+            x,y = get_points(R, A, B, G, [pos[0],pos[1]], [dir[0],dir[1]], Pages.tracking)   
+            plt.plot(x,y)
+
+
+
+    return fig,ax  
 
 
 

@@ -94,8 +94,7 @@ class PageTen(tk.Frame):
         sections_entry.insert(0, random_num)
         sections_entry.insert(3, ",")
         sections_entry.insert(4, random_num2)
-        sections_entry.bind("<Button-1>", lambda event: self.clear(sections_entry)) # If the user clicks on the entry, we clear the random number and change the color.
-        sections_entry.bind("<Leave>", lambda event: self.change(sections_entry)) # If the user clicks on the entry, we clear the random number and change the color.
+        sections_entry.bind('<FocusIn>', lambda event: self.clear(event, sections_entry, random_num))
         self.part_point.append(sections_entry)
 
 
@@ -115,15 +114,29 @@ class PageTen(tk.Frame):
         sections_entry.insert(0, random_num)
         sections_entry.insert(3, ",")
         sections_entry.insert(4, random_num2)
-        sections_entry.bind("<Button-1>", lambda event: self.clear(sections_entry)) # If the user clicks on the entry, we clear the random number and change the color.
-        sections_entry.bind("<Leave>", lambda event: self.change(sections_entry)) # If the user clicks on the entry, we clear the random number and change the color.
+        sections_entry.bind('<FocusIn>', lambda event: self.clear(event, sections_entry, random_num))
+
         self.part_dir.append(sections_entry)
 
 
-    def clear(self, sections_entry):
+    def clear(self, event, sections_entry, random_num):
+
         """This function clears the number already in the entry"""
-        sections_entry.delete(0, tk.END) # Deleting text already in box
-        sections_entry.config(foreground="white") # Changing colour of the box
+        if sections_entry.get() != '': # If the section is empty, there is nothing to clear
+            try:
+                entry_num = sections_entry.get().split(',')
+                if float(entry_num[0]) == float(random_num): # We don't want to clear anything the user put in, just the random pre-placed numbers
+                    sections_entry.delete(0, tk.END) # Deleting text already in box
+                    sections_entry.config(foreground="white") # Changing colour of the box
+            except AttributeError:
+                if float(sections_entry.get()) == float(random_num): # We don't want to clear anything the user put in, just the random pre-placed numbers
+                    sections_entry.delete(0, tk.END) # Deleting text already in box
+                    sections_entry.config(foreground="white") # Changing colour of the box
+
+
+
+
+
 
     def change(self, sections_entry):
         
@@ -192,7 +205,7 @@ class PageTen(tk.Frame):
                 updated_point.append(i)
 
             except ValueError:
-                self.warning_text.set("Please make sure that the initial position of the particle two coordinates seperated by a comma")
+                self.warning_text.set("Please make sure that the initial position of the particle is two coordinates seperated by a comma")
                 user_mistake = True
 
 
@@ -210,7 +223,7 @@ class PageTen(tk.Frame):
                 updated_dir.append(i)
 
             except ValueError:
-                self.warning_text.set("Please make sure that the direction of the particle two coordinates seperated by a comma")
+                self.warning_text.set("Please make sure that the direction of the particle is two coordinates seperated by a comma")
                 user_mistake = True
 
 
@@ -226,7 +239,5 @@ class PageTen(tk.Frame):
 
         if Pages.manual == True:
             self.controller.show_frame("PageEight")
-            print(Pages.dir_vector, Pages.pos_vector)
-
         else:
-            pass
+            self.controller.show_frame("PageEleven")

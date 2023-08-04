@@ -26,7 +26,7 @@ class PageTwelve(tk.Frame, Pages):
 
         # Counters for row number and number of sections
         self.row = 1; self.counter = 1  
-        self.alpha_entries = []; self.vector_entries = []; self.labels = [] # Lists to keep track of all the widgets
+        self.dir_entries = []; self.pos_entries = []; self.labels = [] # Lists to keep track of all the widgets
 
 
        # Create the frame at the bottom
@@ -43,11 +43,11 @@ class PageTwelve(tk.Frame, Pages):
         self.btn_clear = ttk.Button(self.bottom_frame, text="Clear All", command=self.clear_all)
         self.btn_clear.grid(row=0, column=2, padx=5, pady=5)
 
-        self.btn_ok = ttk.Button(self.bottom_frame, text="OK", width=5, command=self.sum_alpha)
+        self.btn_ok = ttk.Button(self.bottom_frame, text="OK", width=5, command=self.next_frame)
         self.btn_ok.grid(row=1, column=1, padx=5, pady=5)
 
         self.btn_back = ttk.Button(self.bottom_frame, text="Back",
-                            command=lambda: controller.show_frame("PageThree"))
+                            command=lambda: controller.show_frame("PageEleven"))
         self.btn_back.grid(row=1, column=0, padx=5, pady=5)
 
 
@@ -59,41 +59,43 @@ class PageTwelve(tk.Frame, Pages):
 
     def pasvariable(self, var):
       
-        # Looping over the alpha list and vecor list from the csv and adding them to the entries 
-        if len(self.alpha_entries) == 0:
-            alpha_list = Pages.alpha_list
-            vector_list = Pages.vector_list
-            for i in range(len(alpha_list)):
-                self.alpha = alpha_list[i]
-                self.vector = vector_list[i]
-                self.automatic_add() # Calling the function to actually add alpha and the vector
+        # Looping over the direction  list and vecor list from the csv and adding them to the entries 
+        if len(self.dir_entries) == 0:
+            dir_list = Pages.dir_vector
+            pos_list = Pages.pos_vector
 
-
-
+            i = 0
+            while i < len(dir_list) and i < 100:
+                self.dir = dir_list[i]
+                self.pos = pos_list[i]
+                self.automatic_add() # Calling the function to actually add direction and the position of the particle
+                i += 1
 
     def automatic_add(self):
-        # Adding Labels For vector
+        # Adding Labels For position
         sec_ent = ttk.Label(self.scrollable_frame, text=f"Particle {self.counter}", font = ("bold", 15)); sec_ent.grid(row=self.row+1, column=0, padx=(5,0), pady = (0,10), sticky='w')
         Bn_lab = ttk.Label(self.scrollable_frame, text='Position')
         Bn_lab.grid(row=self.row+2, column=0,  padx=(5,0), sticky='e')
         self.labels.append(sec_ent); self.labels.append(Bn_lab)
         
-        # Adding Entries for vector
+        # Adding Entries for position of particle
         sections_entry = ttk.Entry(self.scrollable_frame); sections_entry.grid(row=self.row+2, column=1, sticky = 'w')
-        vector = ' '.join([str(elem) for elem in self.vector])
-        vector = vector.replace(" ", ", ")
-        sections_entry.insert(0, vector)
-        self.vector_entries.append(sections_entry)
+        pos = ' '.join([str(elem) for elem in self.pos])
+        pos = pos.replace(" ", ", ")
+        sections_entry.insert(0, pos)
+        self.pos_entries.append(sections_entry)
 
-        # Adding Labels For alpga
+        # Adding Labels For direction of particle
         alp_lab = ttk.Label(self.scrollable_frame, text="Direction:")
         alp_lab.grid(row=self.row+2, column=2, sticky='e')
         self.labels.append(alp_lab)
 
-        # Adding entries for alpha
-        alpha_entry = ttk.Entry(self.scrollable_frame); alpha_entry.grid(row=self.row+2, column=3, sticky = 'w')
-        alpha_entry.insert(0, self.alpha)
-        self.alpha_entries.append(alpha_entry)
+        # Adding entries for direction of particle
+        dir_entry = ttk.Entry(self.scrollable_frame); dir_entry.grid(row=self.row+2, column=3, sticky = 'w')
+        dir = ' '.join([str(elem) for elem in self.dir])
+        dir = dir.replace(" ", ", ")
+        dir_entry.insert(0, dir)
+        self.dir_entries.append(dir_entry)
 
 
         lab = ttk.Label(self.scrollable_frame, text="-"*100, foreground="grey")
@@ -107,31 +109,31 @@ class PageTwelve(tk.Frame, Pages):
  
     def add_section(self):
 
-        # Adding Labels For vector
+        # Adding Labels For positions of the particle
         sec_ent = ttk.Label(self.scrollable_frame, text=f"Section {self.counter}", font = ("bold", 15)); sec_ent.grid(row=self.row+1, column=0, padx=(5,0), pady = (0,10), sticky='w')
         Bn_lab = ttk.Label(self.scrollable_frame, text='Bn')
         Bn_lab.grid(row=self.row+2, column=0,  padx=(5,0), sticky='e')
         self.labels.append(sec_ent); self.labels.append(Bn_lab)
 
-        # Adding Entries for vector
+        # Adding Entries for position of particle
         sections_entry_v = ttk.Entry(self.scrollable_frame, foreground="grey"); sections_entry_v.grid(row=self.row+2, column=1, sticky = 'w')
         random_num_v = round(random.uniform(0,10), 1)
         sections_entry_v.insert(0, random_num_v)
-        sections_entry_v.bind("<Button-1>", lambda event: self.clear(sections_entry_v, random_num_v),) # Binding to an event to clear text already in box
-        self.vector_entries.append(sections_entry_v)
+        sections_entry_v.bind("<FocusIn>", lambda event: self.clear(event, sections_entry_v, random_num_v),) # Binding to an event to clear text already in box
+        self.pos_entries.append(sections_entry_v)
 
-        # Adding Labels For alpha
+        # Adding Labels For the direction of the particle
         alpha_lab = ttk.Label(self.scrollable_frame, text="α:")
         alpha_lab.grid(row=self.row+2, column=2, sticky='e')
         self.labels.append(alpha_lab)
 
 
-        # Adding Entries for alpha
+        # Adding Entries for direction of particle
         sections_entry_a = ttk.Entry(self.scrollable_frame, foreground="grey"); sections_entry_a.grid(row=self.row+2, column=3, sticky = 'w')
         random_num = round(random.uniform(0,10), 1)
         sections_entry_a.insert(0, random_num)
-        sections_entry_a.bind("<Button-1>", lambda event: self.clear(sections_entry_a, random_num),) # Binding to an event to clear text already in box
-        self.alpha_entries.append(sections_entry_a)
+        sections_entry_a.bind("<FocusIn>", lambda event: self.clear(event, sections_entry_a, random_num),) # Binding to an event to clear text already in box
+        self.dir_entries.append(sections_entry_a)
 
 
         lab = ttk.Label(self.scrollable_frame, text="-"*100, foreground="grey")
@@ -140,11 +142,22 @@ class PageTwelve(tk.Frame, Pages):
         self.row += 3; self.counter += 1 # Increment row number for new section and Increment the number of sections
 
   
-    def clear(self, sections_entry, random_num):
-        if sections_entry.get() != '':
-            if float(sections_entry.get()) == float(random_num):
-                sections_entry.delete(0, tk.END) # Deleting text already in box
-                sections_entry.config(foreground="white") # Changing colour of the box
+
+    def clear(self, event, sections_entry, random_num):
+
+        """This function clears the number already in the entry"""
+        if sections_entry.get() != '': # If the section is empty, there is nothing to clear
+            try:
+                entry_num = sections_entry.get().split(',')
+                if float(entry_num[0]) == float(random_num): # We don't want to clear anything the user put in, just the random pre-placed numbers
+                    sections_entry.delete(0, tk.END) # Deleting text already in box
+                    sections_entry.config(foreground="white") # Changing colour of the box
+            except AttributeError:
+                if float(sections_entry.get()) == float(random_num): # We don't want to clear anything the user put in, just the random pre-placed numbers
+                    sections_entry.delete(0, tk.END) # Deleting text already in box
+                    sections_entry.config(foreground="white") # Changing colour of the box
+
+
 
 
 
@@ -154,11 +167,11 @@ class PageTwelve(tk.Frame, Pages):
                 i.destroy()
                 self.labels.remove(i)
 
-            self.alpha_entries[-1].destroy()
-            self.alpha_entries.pop()
+            self.dir_entries[-1].destroy()
+            self.dir_entries.pop()
             
-            self.vector_entries[-1].destroy()
-            self.vector_entries.pop()    
+            self.pos_entries[-1].destroy()
+            self.pos_entries.pop()    
             self.counter -= 1 # Decreasing the counter for every section we remove
 
 
@@ -168,7 +181,7 @@ class PageTwelve(tk.Frame, Pages):
         for i in self.labels[4:]:
             i.destroy()
 
-        for i,j in zip(self.vector_entries[1:], self.alpha_entries[1:]):
+        for i,j in zip(self.pos_entries[1:], self.dir_entries[1:]):
             j.destroy()
             i.destroy()
             self.counter -= 1 # Decreasing the counter for every section we remove
@@ -177,40 +190,65 @@ class PageTwelve(tk.Frame, Pages):
 
 
 
-    def sum_alpha(self):
 
-        alpha_sum = 0 # Counter to keep track of the current sum of degrees
+    def next_frame(self):
+
+
         user_mistake = False # Flag to keep track of mistakes in the input
 
-        updated_alpha = []
-        updated_vector = []
+        updated_point = []
+        updated_dir = []
 
 
-        for i in self.vector_entries:
-            vector = i.get()
-            updated_vector.append(vector.split(","))
 
-
-        # Looping through the buttons and getting their alpha value 
-        for i in self.alpha_entries:
-            alpha = i.get()
-            updated_alpha.append(alpha)
+        for i in self.pos_entries:
+            i = i.get()
             try:
-                alpha = float(alpha)
-                alpha_sum += float(alpha) # adding to the alpha sum
+                parts = i.split(',')
+                # There should be exactly 2 parts
+                if len(parts) != 2:
+                    user_mistake = True
+                # Both parts should be convertible to a float 
+    
+                self.warning_text.set("")
+                user_mistake = False
+                updated_point.append(i)
+
             except ValueError:
-                self.warning_text.set("There is an error in one of your inputs!") # Warning the user
-                user_mistake = True # Setting the flag to true since there is a mistake in the input
+                self.warning_text.set("Please make sure that the initial position of the particle two coordinates seperated by a comma")
+                user_mistake = True
+
+
+        for i in self.dir_entries:
+            i = i.get()
+            try:
+                parts = i.split(',')
+                # There should be exactly 2 parts
+                if len(parts) != 2:
+                    user_mistake = True
+                # Both parts should be convertible to a float 
     
-                            
-        if alpha_sum > 360:
-            self.warning_text.set("The total degrees should not exceed 360 degrees!") # Warning the user if the degrees exceed 360
-    
-        elif user_mistake == False:
+                self.warning_text.set("")
+                user_mistake = False
+                updated_dir.append(i)
+
+            except ValueError:
+                self.warning_text.set("Please make sure that the direction of the particle two coordinates seperated by a comma")
+                user_mistake = True
+
+
+        if user_mistake == False:
             self.warning_text.set(" ") # Removing the warning if error is fixed
-            Pages.alpha_list = updated_alpha
-            Pages.vector_list = updated_vector
+            Pages.dir_vector = updated_dir
+            Pages.pos_vector = updated_point
+            self.controller.show_frame("PageFourteen") # Opening the next page
 
-            print(updated_alpha)
-            self.controller.show_frame("PageFive")
+        
 
+    def go_back(self):
+
+        if Pages.manual == True:
+            self.controller.show_frame("PageEight")
+
+        else:
+            self.controller.show_frame("PageEleven")
