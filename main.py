@@ -1,6 +1,5 @@
 import tkinter as tk
 from tkinter import font as tkfont
-from ttkthemes import ThemedTk
 from start_page import StartPage
 from page_one import PageOne
 from page_two import PageTwo

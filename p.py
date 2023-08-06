@@ -18,3 +18,4 @@ class Pages:
     pos_vector = []
     dir_vector = []
     ener_vector = []
+    file_data = {}

@@ -59,6 +59,7 @@ class PageTwelve(tk.Frame, Pages):
 
     def pasvariable(self, var):
       
+        print(Pages.file_data)
         if len(self.dir_entries) == 0:
             dir_list = Pages.dir_vector
             pos_list = Pages.pos_vector
