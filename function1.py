@@ -378,11 +378,7 @@ def default2(A, li, R):
     directions = Pages.dir_vector
     Energy = Pages.ener_vector
 
-
-    print(Pages.file_data)
-
-    print(Pages.multiple_beams)
-    if len(positions) > 11:
+    if len(positions) > 11: # This is if the manual input of particles are more than 11. If that's the case we just average them to make one beam
 
 
         split_positions = [[float(num) for num in pair.split(', ')] for pair in positions]
@@ -404,15 +400,15 @@ def default2(A, li, R):
         plt.plot(x,y)
 
 
-    elif Pages.multiple_beams == True:
+    elif Pages.multiple_beams == True: # If the user wants to see the particles in beams we go into this statement
         
-        beams = Pages.file_data
+        beams = Pages.file_data # Getting the data of the beams from the pages module
 
         def calculate_averages(file_data):
-            averages = {"Positions": {}, "Directions": {}, "Energies": {}}
+            averages = {"Positions": {}, "Directions": {}, "Energies": {}} # Initialising average of all beams
 
-            for category, category_dict in file_data.items():
-                for file, file_data_list in category_dict.items():
+            for category, category_dict in file_data.items(): # Go into each category
+                for file, file_data_list in category_dict.items(): # Go into each file
                     if category == "Energies":
                         # For 'Energies', calculate the average of all values
                         averages[category][file] = sum(val[0] for val in file_data_list) / len(file_data_list)
@@ -421,7 +417,7 @@ def default2(A, li, R):
                         averages[category][file] = [sum(val[i] for val in file_data_list) / len(file_data_list) for i in range(len(file_data_list[0]))]
             return averages
         
-        averages = calculate_averages(beams)
+        averages = calculate_averages(beams) # Actually getting the averages from the user defined files
         file_keys = set(key for category_dict in averages.values() for key in category_dict.keys())
 
         for file in file_keys:
@@ -429,15 +425,15 @@ def default2(A, li, R):
             direction = averages['Directions'].get(file)
             energy = averages['Energies'].get(file)
 
-            x,y = get_points(R, A, B, G, [position[0],position[1]], [direction[0],direction[1]], energy, Pages.tracking)   
+            x,y = get_points(R, A, B, G, [position[0],position[1]], [direction[0],direction[1]], energy, Pages.tracking)  # Plotting the beam
             plt.plot(x,y)
 
 
 
 
-    else:
-
+    else: # We enter this statement if the user manually input less than 11 particles
         for i in range(len(positions)):
+            # This is just to translate the user entry to floats 
             parts = positions[i].split(',')
             pos = [float(part) for part in parts]
             

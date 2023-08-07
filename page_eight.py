@@ -99,10 +99,10 @@ class PageEight(tk.Frame):
             user_mistake = True
 
 
-        if self.entryFlag == True and self.method == False and user_mistake == False:
+        if self.entryFlag == True and self.method == False and user_mistake == False and self.checkFlag == True:
             Pages.manual = True
             self.controller.show_frame("PageTen")
-        elif self.entryFlag == True and self.method == True and user_mistake == False:
+        elif self.entryFlag == True and self.method == True and user_mistake == False and self.checkFlag == True:
             Pages.manual = False
             self.controller.show_frame("PageEleven")
         else:

@@ -30,7 +30,7 @@ class PageEleven(tk.Frame):
     def set_num_files(self):
         self.file_count = {category: 1 for category in ['Positions', 'Directions', 'Energies']}
         self.file_data = {}
-        
+
         for button in self.upload_buttons:
             button.grid_forget()
         for button in self.delete_buttons:
@@ -46,23 +46,25 @@ class PageEleven(tk.Frame):
             upload_button.grid(row=3+category_index, column=0, sticky='w')
             self.upload_buttons.append(upload_button)
 
+            self.paths[category] = tk.StringVar(self, value=' ')
+            ttk.Label(self, textvariable=self.paths[category]).grid(row=3+category_index, column=1, sticky='w')
+
             delete_button = ttk.Button(self, text=f'Delete Last {category} File', command=lambda category=category: self.delete_last_file(category))
-            delete_button.grid(row=3+category_index, column=1, sticky='w')
+            delete_button.grid(row=3+category_index, column=2, sticky='w')
             self.delete_buttons.append(delete_button)
 
-            self.paths[category] = tk.StringVar(self, value=' ')
-            ttk.Label(self, textvariable=self.paths[category]).grid(row=3+category_index, column=2, columnspan=5, pady=5)
-
         self.ok_button = ttk.Button(self, text='OK', command=self.open_window)
-        self.ok_button.grid(row=6+category_index, column=0, sticky='w')
+        self.ok_button.grid(row=7+category_index, column=0, sticky='w')
         self.back_button = ttk.Button(self, text="Back", command=lambda: self.controller.show_frame("PageTen"))
-        self.back_button.grid(row=6+category_index, column=1, sticky='w')
-        ttk.Label(self, textvariable=self.warning).grid(row=6+category_index, column=2, columnspan=5, pady=5)
+        self.back_button.grid(row=7+category_index, column=1, sticky='w')
+        warning_label = ttk.Label(self, textvariable=self.warning)
+        warning_label.grid(row=8+category_index, column=0, columnspan=5, pady=5)
+        warning_label.config(foreground='red')
 
     def import_csv_data(self, category):
         csv_file_path = askopenfilename()  # allows single file selection
 
-        path = csv_file_path[:5]  # Get the first 5 letters of the file path
+        path = csv_file_path[-6:]  # Get the last 5 letters of the file path
 
         if "csv" not in csv_file_path and "txt" not in csv_file_path: 
             self.flags[category] = False
@@ -89,7 +91,7 @@ class PageEleven(tk.Frame):
             # update existing path for the category with the new file path
             existing_path = self.paths[category].get()
             self.paths[category].set(existing_path + ',' + path if existing_path else path)
-            
+
             # Increase the file count for this category
             self.file_count[category] += 1
 
@@ -101,7 +103,6 @@ class PageEleven(tk.Frame):
             paths.pop()
             self.paths[category].set(','.join(paths))
             self.file_count[category] -= 1
-
 
     def open_window(self):
         if all(self.flags.values()): 
@@ -123,7 +124,7 @@ class PageEleven(tk.Frame):
                         for j, length in enumerate(lst):
                             if length != lst[0]:
                                 mismatched_files.append(f'file{i+1} in {list(self.file_data.keys())[j]}')
-                self.warning.set("Corresponding files in each category must have the same length. There is a length mismatch in the following files: " + ', '.join(mismatched_files))
+                self.warning.set("There is a length mismatch in the following files: " + ', '.join(mismatched_files))
         else:
             for category, flag in self.flags.items():
                 if not flag:
