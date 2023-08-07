@@ -19,3 +19,4 @@ class Pages:
     dir_vector = []
     ener_vector = []
     file_data = {}
+    multiple_beams = False

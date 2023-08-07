@@ -378,7 +378,10 @@ def default2(A, li, R):
     directions = Pages.dir_vector
     Energy = Pages.ener_vector
 
-    print(Energy)
+
+    print(Pages.file_data)
+
+    print(Pages.multiple_beams)
     if len(positions) > 11:
 
 
@@ -401,6 +404,37 @@ def default2(A, li, R):
         plt.plot(x,y)
 
 
+    elif Pages.multiple_beams == True:
+        
+        beams = Pages.file_data
+
+        def calculate_averages(file_data):
+            averages = {"Positions": {}, "Directions": {}, "Energies": {}}
+
+            for category, category_dict in file_data.items():
+                for file, file_data_list in category_dict.items():
+                    if category == "Energies":
+                        # For 'Energies', calculate the average of all values
+                        averages[category][file] = sum(val[0] for val in file_data_list) / len(file_data_list)
+                    else:
+                        # For 'Positions' and 'Directions', calculate the average of corresponding values
+                        averages[category][file] = [sum(val[i] for val in file_data_list) / len(file_data_list) for i in range(len(file_data_list[0]))]
+            return averages
+        
+        averages = calculate_averages(beams)
+        file_keys = set(key for category_dict in averages.values() for key in category_dict.keys())
+
+        for file in file_keys:
+            position = averages['Positions'].get(file)
+            direction = averages['Directions'].get(file)
+            energy = averages['Energies'].get(file)
+
+            x,y = get_points(R, A, B, G, [position[0],position[1]], [direction[0],direction[1]], energy, Pages.tracking)   
+            plt.plot(x,y)
+
+
+
+
     else:
 
         for i in range(len(positions)):
@@ -411,8 +445,17 @@ def default2(A, li, R):
             dir = [float(part) for part in parts]
 
             x,y = get_points(R, A, B, G, [pos[0],pos[1]], [dir[0],dir[1]], float(Energy[i]), Pages.tracking)   
-            print(float(Energy[i]))
             plt.plot(x,y)
+
+
+
+    
+
+
+
+
+
+
 
 
 

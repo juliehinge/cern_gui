@@ -28,6 +28,9 @@ class PageEleven(tk.Frame):
         self.warning = tk.StringVar(self, value=' ')
 
     def set_num_files(self):
+        self.file_count = {category: 1 for category in ['Positions', 'Directions', 'Energies']}
+        self.file_data = {}
+        
         for button in self.upload_buttons:
             button.grid_forget()
         for button in self.delete_buttons:
@@ -78,36 +81,49 @@ class PageEleven(tk.Frame):
                     data.append(row.tolist())
 
             if category in self.file_data:
-                self.file_data[category].append(data)
+                self.file_data[category][f"file{self.file_count[category]}"] = data
             else:
-                self.file_data[category] = [data]
+                self.file_data[category] = {f"file{self.file_count[category]}": data}
 
             self.flags[category] = True 
             # update existing path for the category with the new file path
             existing_path = self.paths[category].get()
             self.paths[category].set(existing_path + ',' + path if existing_path else path)
+            
+            # Increase the file count for this category
+            self.file_count[category] += 1
 
     def delete_last_file(self, category):
         if self.file_data[category]:
-            self.file_data[category].pop()
+            last_file_key = list(self.file_data[category].keys())[-1]
+            del self.file_data[category][last_file_key]
             paths = self.paths[category].get().split(',')
             paths.pop()
             self.paths[category].set(','.join(paths))
+            self.file_count[category] -= 1
+
 
     def open_window(self):
         if all(self.flags.values()): 
             lengths = []
-            for data_list in self.file_data.values():
-                lengths.append([len(data) for data in data_list])
+            for category_dict in self.file_data.values():
+                lengths.append([len(data) for data in category_dict.values()])
 
             # Transpose lengths for easy comparison
             lengths = list(map(list, zip(*lengths)))
 
             if all(len(set(lst)) == 1 for lst in lengths):
                 Pages.file_data = self.file_data
-                self.controller.show_frame("PageTwelve")
+                Pages.multiple_beams = True
+                self.controller.show_frame("PageFourteen")
             else:
-                self.warning.set("Corresponding files in each category must have the same length.")
+                mismatched_files = []
+                for i, lst in enumerate(lengths):
+                    if len(set(lst)) != 1:
+                        for j, length in enumerate(lst):
+                            if length != lst[0]:
+                                mismatched_files.append(f'file{i+1} in {list(self.file_data.keys())[j]}')
+                self.warning.set("Corresponding files in each category must have the same length. There is a length mismatch in the following files: " + ', '.join(mismatched_files))
         else:
             for category, flag in self.flags.items():
                 if not flag:
