@@ -264,7 +264,7 @@ def get_points(R, A, B, G, P, D, energy, size):
     D = D/(magnitude+eps) # Normalizing the vector and adding a tiny constant to avoid division by zero error
 
     B_e = 3.3356*(energy/1000) # Beam Rigidity
-    s = 0.01 # Step size
+    s = 0.001 # Step size
 
     points = []
     points.append([float(P[0]), float(P[1])])
@@ -305,7 +305,7 @@ def default2(A, li, R):
     Y_max = 0.2
     a = 0 # X coordinate of center of circle
     b = -R # Y coordinate of center of circle
-    stepSize = 0.01 # Stepsize of line of circle
+    stepSize = 0.001 # Stepsize of line of circle
 
     # This is to calculate the coordinates of the circles circumference
     positions = []

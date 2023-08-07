@@ -16,7 +16,7 @@ class PageEleven(tk.Frame):
 
         ttk.Label(self, text="Upload your CSV files please", font = ("bold", 20)).grid(row=1, column=0, padx = (10,30), pady = (10,30), columnspan=3)
 
-        ttk.Label(self, text="Enter the number of files you want to upload for each category:", font=("bold", 10)).grid(row=2, column=0, padx=10, pady=10)
+        ttk.Label(self, text="Enter the number beams you want displayed:", font=("bold", 10)).grid(row=2, column=0, padx=10, pady=10)
         self.num_files = tk.IntVar(value=0)
         ttk.Entry(self, textvariable=self.num_files).grid(row=2, column=1, padx=10, pady=10)
         ttk.Button(self, text='Set', command=self.set_num_files).grid(row=2, column=2, sticky='w')
