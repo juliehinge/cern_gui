@@ -429,8 +429,6 @@ def default2(A, li, R):
             plt.plot(x,y)
 
 
-
-
     else: # We enter this statement if the user manually input less than 11 particles
         for i in range(len(positions)):
             # This is just to translate the user entry to floats 
@@ -442,14 +440,6 @@ def default2(A, li, R):
 
             x,y = get_points(R, A, B, G, [pos[0],pos[1]], [dir[0],dir[1]], float(Energy[i]), Pages.tracking)   
             plt.plot(x,y)
-
-
-
-    
-
-
-
-
 
 
 
