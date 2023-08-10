@@ -4,9 +4,9 @@ from tkinter import *
 import matplotlib
 matplotlib.use('TkAgg')  # Backend of matplotlib for tkinter
 from matplotlib.figure import Figure
-from function1 import custom
+#from function1 import custom
 from p import Pages
-
+from functions.zoomed_mag_field import zoomed_preview
 
 
 class PageSeven(tk.Frame):
@@ -33,7 +33,7 @@ class PageSeven(tk.Frame):
         self.canvas = FigureCanvasTkAgg(self.fig, master=self.frame)  # linking figure with the FigureCanvasTkAgg
         self.canvas.get_tk_widget().pack(side=tk.TOP, fill=tk.BOTH, expand=1)
 
-
+        self.is_toolbar = 0
 
     def pasvariable(self, event=None):
     
@@ -47,10 +47,12 @@ class PageSeven(tk.Frame):
         R = Pages.radius
 
         # Calling the function that makes the plot and putting it on the GUI        
-        self.fig = custom(x_min, x_max, y_min, y_max, A, li, R, )  
+        self.fig = zoomed_preview(x_min, x_max, y_min, y_max, A, li, R, )  
         self.canvas.figure = self.fig  # Update the figure associated with the canvas
         self.canvas.draw()  # Redraw the canvas to reflect changes
 
-        self.toolbar = NavigationToolbar2Tk(self.canvas, self.frame)
-        self.toolbar.update()
 
+        if self.is_toolbar == 0:
+            self.toolbar = NavigationToolbar2Tk(self.canvas, self.frame)
+            self.toolbar.update()
+            self.is_toolbar += 1

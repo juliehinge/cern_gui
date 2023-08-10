@@ -6,6 +6,8 @@ from page_two import PageTwo
 from page_three import PageThree
 from page_four import PageFour
 from page_five import PageFive
+from five_half import FiveHalf
+
 from page_six import PageSix
 from page_seven import PageSeven
 from page_eight import PageEight
@@ -30,8 +32,8 @@ class SampleApp(tk.Tk):
         self.frames = {}
 
  
-        for F,geometry in zip((StartPage, PageOne, PageTwo, PageThree, PageFour, PageFive, PageSix, PageSeven, PageEight,PageNine, PageTen, PageEleven, PageTwelve, PageFourteen), 
-                              ('450x500', '400x350', '600x500', '350x150', '600x500', '500x500', '600x600', '600x600','500x500', '600x600','950x700', '700x500', '950x700', '600x600')):
+        for F,geometry in zip((StartPage, PageOne, PageTwo, PageThree, PageFour, PageFive, FiveHalf, PageSix, PageSeven, PageEight,PageNine, PageTen, PageEleven, PageTwelve, PageFourteen), 
+                              ('450x500', '400x350', '600x500', '350x150', '600x500', '600x500','300x300', '600x600', '600x600','500x500', '600x600','950x700', '700x500', '950x700', '600x600')):
 
             page_name = F.__name__
             frame = F(parent=container, controller=self)

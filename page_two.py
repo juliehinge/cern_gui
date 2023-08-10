@@ -213,5 +213,5 @@ class PageTwo(tk.Frame):
             self.warning_text.set(" ") # Removing the warning if error is fixed
             Pages.alpha_list = updated_alpha # Passing the variables to the pages module
             Pages.vector_list = updated_vector
-            self.controller.show_frame("PageFive") # Opening the next page
+            self.controller.show_frame("FiveHalf") # Opening the next page
         

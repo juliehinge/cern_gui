@@ -6,8 +6,9 @@ from tkinter import *
 import matplotlib
 matplotlib.use('TkAgg')  # Backend of matplotlib for tkinter
 from matplotlib.figure import Figure
-from function1 import default
+#from function1 import default
 from p import Pages
+from functions.map_mag_field import display_magnetic_fild
 
 class PageSix(tk.Frame):
 
@@ -20,7 +21,7 @@ class PageSix(tk.Frame):
 
         # Create "Back" button
         back_button = tk.Button(self, text="Go back", 
-                                command=lambda: controller.show_frame("PageFive"))
+                                command=lambda: controller.show_frame("FiveHalf"))
         back_button.pack()
 
         # Create a Frame
@@ -32,7 +33,7 @@ class PageSix(tk.Frame):
         self.canvas = FigureCanvasTkAgg(self.fig, master=self.frame)  # linking figure with the FigureCanvasTkAgg
         self.canvas.get_tk_widget().pack(side=tk.TOP, fill=tk.BOTH, expand=1)
 
-
+        self.is_toolbar = 0
 
     def pasvariable(self, event=None):
     
@@ -41,12 +42,13 @@ class PageSix(tk.Frame):
         A = Pages.alpha_list
         li = Pages.vector_list
         R = Pages.radius
-        
         # Calling the function that makes the plot and putting it on the GUI        
-        self.fig, ax = default(A, li, R)  
+        self.fig, ax, _ = display_magnetic_fild(A, li, R, plot_trajectory=False)  
         self.canvas.figure = self.fig  # Update the figure associated with the canvas
         self.canvas.draw()  # Redraw the canvas to reflect changes
 
-        self.toolbar = NavigationToolbar2Tk(self.canvas, self.frame)
-        self.toolbar.update()
+        if self.is_toolbar == 0:
+            self.toolbar = NavigationToolbar2Tk(self.canvas, self.frame)
+            self.toolbar.update()
+            self.is_toolbar += 1
 

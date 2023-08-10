@@ -5,8 +5,9 @@ from tkinter import *
 import matplotlib
 matplotlib.use('TkAgg')  # Backend of matplotlib for tkinter
 from matplotlib.figure import Figure
-from function1 import get_points, default, default2
+#from function1 import get_points, default, default2
 from p import Pages
+from functions.map_mag_field import display_magnetic_fild
 
 
 
@@ -47,7 +48,7 @@ class PageFourteen(tk.Frame):
 
         # Calling the function that makes the plot and putting it on the GUI        
         
-        self.fig, ax = default2(A, li, R)  
+        self.fig, ax, _ = display_magnetic_fild(A, li, R, plot_trajectory=True)  
         self.canvas.figure = self.fig  # Update the figure associated with the canvas
         self.canvas.draw()  # Redraw the canvas to reflect changes
 
