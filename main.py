@@ -1,23 +1,23 @@
 import tkinter as tk
 from tkinter import font as tkfont
-from start_page import StartPage
-from page_one import PageOne
-from page_two import PageTwo
-from page_three import PageThree
-from page_four import PageFour
-from page_five import PageFive
-from five_half import FiveHalf
+from pages.start_page import StartPage
+from pages.page_one import PageOne
+from pages.page_two import PageTwo
+from pages.page_three import PageThree
+from pages.page_four import PageFour
+from pages.page_five import PageFive
+from pages.five_half import FiveHalf
 
-from page_six import PageSix
-from page_seven import PageSeven
-from page_eight import PageEight
-from page_nine import PageNine
-from page_ten import PageTen
-from page_eleven import PageEleven
-from page_twelve import PageTwelve
-from page_fourteen import PageFourteen
-from page_fifteen import PageFifteen
-from page_sixteen import PageSixteen
+from pages.page_six import PageSix
+from pages.page_seven import PageSeven
+from pages.page_eight import PageEight
+from pages.page_nine import PageNine
+from pages.page_ten import PageTen
+from pages.page_eleven import PageEleven
+from pages.page_twelve import PageTwelve
+from pages.page_fourteen import PageFourteen
+from pages.page_fifteen import PageFifteen
+from pages.page_sixteen import PageSixteen
 
 
 
