@@ -160,18 +160,10 @@ class PageTwo(tk.Frame):
 
     def clear_all(self):
         """This function clears all entries except for the first on"""
-        for i in self.labels[3:]: # We dont include the first section which is why we start from three in the loop
-            i.destroy()
+        for i in range(self.counter-1):
+            self.remove_section()
 
-        for i, j in zip(self.vector_entries[1:], self.alpha_entries[1:]):
-            j.destroy()
-            i.destroy()
-            self.counter -= 1 # Decrease sections counter each time we delete a section
-
-        ttk.Label(self.scrollable_frame, text="-" * 100, foreground="grey").grid(row=self.row, column=0, pady=(10, 0),
-                                                                                  columnspan=5, sticky='w')
-
-
+    
 
     def sum_alpha(self):
         """This function is to make sure alpha doesn't exceed 360 degrees and to make sure there are no user mistakes in general"""
@@ -184,7 +176,6 @@ class PageTwo(tk.Frame):
 
         for i in self.vector_entries: 
             vector = i.get() # Getting the values of all vector entries and appending them to an updated version
-
             try:
                 parts = vector.split(',')
                 float_parts = [float(part) for part in parts]

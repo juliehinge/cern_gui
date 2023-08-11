@@ -90,6 +90,7 @@ class PageOne(tk.Frame):
     def open_next_frame(self):
         """This function first calls the record params function to make sure everything is ok. If the option is manual, page two will be opened,
         if the option is CSV page three will be opened. If there is a mistake in the user input, the user will be informed"""
+    
         self.record_params()
         if self.checkFlag == True and self.entryFlag == True and self.method == False:
             Pages.manual = True # Setting the munual flag to True since the user chose the manual method

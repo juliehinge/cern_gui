@@ -217,21 +217,11 @@ class PageTwelve(tk.Frame, Pages):
 
 
     def clear_all(self):
+        """This function clears all entries except for the first on"""
+        for i in range(self.counter-1):
+            self.remove_section()
 
-        for i in self.labels[4:]:
-            i.destroy()
-
-        for i,j,k in zip(self.pos_entries[1:], self.dir_entries[1:], self.energy_entries[1:]):
-            j.destroy()
-            i.destroy()
-            k.destroy()
-            self.counter -= 1 # Decreasing the counter for every section we remove
-
-
-        ttk.Label(self.scrollable_frame, text="-" * 150, foreground="grey").grid(row=self.row, column=0, pady=(10, 0),
-                                                                                  columnspan=6, sticky='w')
-
-
+    
 
 
     def next_frame(self):

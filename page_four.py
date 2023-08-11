@@ -24,6 +24,7 @@ class PageFour(tk.Frame, Pages):
         label = tk.Label(self.scrollable_frame, text="This is the CSV section", font=("bold", 20))
         label.grid(row=0, column=0, padx=(10, 30), pady=(10, 20), sticky='w', columnspan=4)
 
+
         # Counters for row number and number of sections
         self.row = 1; self.counter = 1  
         self.alpha_entries = []; self.vector_entries = []; self.labels = [] # Lists to keep track of all the widgets
@@ -139,7 +140,7 @@ class PageFour(tk.Frame, Pages):
         self.labels.append(lab) # Apending to list of labels
         self.row += 3; self.counter += 1 # Increment row number for new section and Increment the number of sections
 
-  
+
 
     def clear(self, event, sections_entry, random_num):
         """This function clears the number already in the entry"""
@@ -172,17 +173,13 @@ class PageFour(tk.Frame, Pages):
 
 
 
+
     def clear_all(self):
+        """This function clears all entries except for the first on"""
+        for i in range(self.counter-1):
+            self.remove_section()
 
-        for i in self.labels[4:]:
-            i.destroy()
-
-        for i,j in zip(self.vector_entries[1:], self.alpha_entries[1:]):
-            j.destroy()
-            i.destroy()
-            self.counter -= 1 # Decreasing the counter for every section we remove
-
-
+    
 
 
 
