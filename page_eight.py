@@ -101,10 +101,12 @@ class PageEight(tk.Frame):
 
         if self.entryFlag == True and self.method == False and user_mistake == False and self.checkFlag == True:
             Pages.manual = True
+            Pages.beam_specification_status = True
             self.controller.show_frame("PageTen")
         elif self.entryFlag == True and self.method == True and user_mistake == False and self.checkFlag == True:
             Pages.manual = False
             self.controller.show_frame("PageEleven")
+            Pages.beam_specification_status = True
         else:
             self.warning_text.set("Please fill out the information correctly")
 

@@ -104,6 +104,9 @@ class PageEleven(tk.Frame):
             self.paths[category].set(','.join(paths))
             self.file_count[category] -= 1
 
+
+
+
     def open_window(self):
         if all(self.flags.values()): 
             lengths = []

@@ -2,11 +2,18 @@
 
 import numpy as np
 from scipy.optimize import minimize
-from functions.get_trajectory import get_trajectory
+from functions.map_mag_field import trajectory
 from p import Pages
 from scipy.optimize import minimize
 
 
+def flatten(li):
+    """Flatten the list of lists to a single list."""
+    return [item for sublist in li for item in sublist]
+
+def reshape(flat_list):
+    """Reshape the flattened list back to the list of lists form."""
+    return [flat_list[i:i+2] for i in range(0, len(flat_list), 2)]
 
 
 def beam_diff(beam_exit_directions, indeces):

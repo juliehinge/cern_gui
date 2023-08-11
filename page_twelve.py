@@ -47,7 +47,7 @@ class PageTwelve(tk.Frame, Pages):
         self.btn_ok.grid(row=1, column=1, padx=5, pady=5)
 
         self.btn_back = ttk.Button(self.bottom_frame, text="Back",
-                            command=lambda: controller.show_frame("PageEleven"))
+                            command=self.go_back)
         self.btn_back.grid(row=1, column=0, padx=5, pady=5)
 
 
@@ -226,7 +226,7 @@ class PageTwelve(tk.Frame, Pages):
 
     def next_frame(self):
 
-
+        print("test")
         user_mistake = False # Flag to keep track of mistakes in the input
 
         updated_point = []
@@ -291,8 +291,12 @@ class PageTwelve(tk.Frame, Pages):
             Pages.dir_vector = updated_dir
             Pages.pos_vector = updated_point
             Pages.ener_vector = updated_energy
-            self.controller.show_frame("PageFourteen") # Opening the next page
-
+            print(Pages.open_optimization)
+            print("test")
+            if Pages.open_optimization == False:
+                self.controller.show_frame("PageFourteen") # Opening the next page
+            else:
+                self.controller.show_frame("PageSixteen")
         
 
     def go_back(self):

@@ -20,7 +20,8 @@ class Pages:
     ener_vector = []
     file_data = {}
     multiple_beams = False
-
+    beam_specification_status = False
+    open_optimization = False
     angle = 0
     beam_divergence = 0
     beam_size = 0

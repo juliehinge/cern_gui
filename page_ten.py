@@ -259,8 +259,12 @@ class PageTen(tk.Frame):
             Pages.dir_vector = updated_dir
             Pages.pos_vector = updated_point
             Pages.ener_vector = updated_energy
-            self.controller.show_frame("PageFourteen") # Opening the next page
 
+            
+            if Pages.open_optimization == False:
+                self.controller.show_frame("PageFourteen") # Opening the next page
+            else:
+                self.controller.show_frame("PageSixteen")
 
     def go_back(self):
 

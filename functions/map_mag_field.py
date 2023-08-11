@@ -3,7 +3,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from functions.get_trajectory import get_trajectory
 from functions.get_b import get_B
-
+from p import Pages
 
 
 def get_circle_coordinates(R, a, b, stepSize):
@@ -69,6 +69,7 @@ def plot_trajectories(R, A, B, G, directions, positions, Energy):
     
     return bending_radius
 
+
 def display_magnetic_fild(A, li, R, plot_trajectory=False):
     """ 
     This function creates the default preview that the user can see without having to input X_min, X_max, Y_min, Y_max
@@ -105,3 +106,67 @@ def display_magnetic_fild(A, li, R, plot_trajectory=False):
         bending_radius = plot_trajectories(R, A, B, G, directions, positions, Energy)
 
     return fig, ax, bending_radius
+
+
+
+
+
+
+
+
+
+# ... [Your imports and existing functions here] ...
+
+def flatten_list(beams_list):
+    return [item for sublist in beams_list for item in sublist]
+
+def calculate_averages(file_data):
+    averages = {"Positions": None, "Directions": None, "Energies": None}
+    for category, data in file_data.items():
+        if category == "Energies":
+            averages[category] = sum(val[0] for val in data) / len(data)
+        else:
+            averages[category] = [sum(val[i] for val in data) / len(data) for i in range(len(data[0]))]
+    return averages
+
+
+
+
+def trajectory(A, li, R):
+    B, G = split_vectors(li)
+    A = calculate_alpha_intervals(A)
+    
+    
+    beams = Pages.file_data
+    print(beams)
+    exit_direction, xx, yy, dd = {}, {}, {}, {}
+    
+    for file in beams['Energies'].keys():
+        energy = beams['Energies'][file]
+        positions = beams['Positions'][file]
+        directions = beams['Directions'][file]
+        energies = flatten_list(energy)
+
+        xx[file], yy[file], dd[file] = [], [], []
+
+        for j in range(len(positions)):
+            x, y, dirs = get_trajectory(R, A, B, G, positions[j], directions[j], energies[j], 1)
+            xx[file].append(x)
+            yy[file].append(y)
+            dd[file].append(dirs)
+
+        file_data = {'Energies': energy, 'Positions': positions, 'Directions': directions}
+        
+        exit_direction[file] = []
+        for j in range(len(positions)):
+            averages = calculate_averages(file_data)
+            x, y, dirs = get_trajectory(R, A, B, G, averages['Positions'], averages['Directions'], averages['Energies'], 1)
+            previous_dir = dirs[-1]
+            for i, dir in enumerate(dirs[::-1]):
+                if not np.array_equal(dir, previous_dir):
+                    exit_direction[file].append(dir)
+                    break
+                previous_dir = dir
+
+    return xx, yy, exit_direction, dd
+

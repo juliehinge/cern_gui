@@ -31,7 +31,7 @@ class FiveHalf(tk.Frame):
 
         # Section for beam Optimization
         beam_optimization = ttk.Button(self, text="Beam Optimization", width=22,
-                            command=lambda: controller.show_frame("PageFifteen"))
+                            command=lambda: self.open_optimization())
         beam_optimization.grid(row=4, column=1, padx=10,pady=10, sticky = 'w')
 
        # Section for beam Optimization
@@ -40,6 +40,13 @@ class FiveHalf(tk.Frame):
         back.grid(row=5, column=1, padx=10,pady=10, sticky = 'w')
 
      
+    def open_optimization(self):
+        Pages.open_optimization = True
+        status = Pages.beam_specification_status
+        if status == True:
+            self.controller.show_frame("PageFifteen")
+        else:
+            self.controller.show_frame("PageEight")
      
     def go_back(self):
         if Pages.manual == True:
