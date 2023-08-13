@@ -17,7 +17,6 @@ class PageTwo(tk.Frame):
         # Create the scrollable frame and display it
         self.sf = ScrolledFrame(self.container, width=640, height=400, scrollbars="vertical")
         self.sf.pack(fill="both", expand=True)
-        #self.sf.bind_arrow_keys(self.container); self.sf.bind_scroll_wheel(self.container)
         self.scrollable_frame = self.sf.display_widget(tk.Frame)
 
         # Making labels and putting them on the frame
@@ -112,6 +111,11 @@ class PageTwo(tk.Frame):
 
     def clear(self, event, sections_entry, random_num):
 
+
+        color = sections_entry.cget("foreground")
+        print("color", color)
+
+        
         """This function clears the number already in the entry"""
         if sections_entry.get() != '': # If the section is empty, there is nothing to clear
             try:
@@ -132,7 +136,7 @@ class PageTwo(tk.Frame):
 
 
 
-    def change(self, sections_entry):
+    def change(self, sections_entry): # Do i use this function?
         
         """This function clears the number already in the entry"""
         sections_entry.config(foreground="white") # Changing colour of the box
@@ -158,6 +162,7 @@ class PageTwo(tk.Frame):
             self.counter -= 1 # Decrease the sections counter since we just deleted a section
 
 
+
     def clear_all(self):
         """This function clears all entries except for the first on"""
         for i in range(self.counter-1):
@@ -172,7 +177,6 @@ class PageTwo(tk.Frame):
 
         updated_alpha = [] 
         updated_vector = []
-
 
         for i in self.vector_entries: 
             vector = i.get() # Getting the values of all vector entries and appending them to an updated version
