@@ -33,6 +33,7 @@ class PageTwo(tk.Frame):
         # Putting the first section on the frame
         self.add_section()
 
+
         # Create the frame at the bottom to contain all the buttons so they don't get in the way
         self.bottom_frame = tk.Frame(self.container)
         self.bottom_frame.pack(side="bottom")
@@ -62,6 +63,7 @@ class PageTwo(tk.Frame):
 
 
     def add_section(self):
+
         i = self.row
         self.vector_section(i) # Calling the function that puts the vector on the gui
         self.alpha_section(i)# Calling the function that puts the alpha section on the gui
@@ -118,6 +120,7 @@ class PageTwo(tk.Frame):
                 entry_num = sections_entry.get().split(',')
                 if float(entry_num[0]) == float(random_num): # We don't want to clear anything the user put in, just the random pre-placed numbers
                     sections_entry.delete(0, tk.END) # Deleting text already in box
+                    print(Pages.dark_color)
                     if Pages.dark_color == True:
                         sections_entry.config(foreground="white") # Changing colour of the box
                     else:
@@ -134,13 +137,6 @@ class PageTwo(tk.Frame):
 
 
 
-
-
-
-    def change(self, sections_entry): # Do i use this function?
-        
-        """This function clears the number already in the entry"""
-        sections_entry.config(foreground="white") # Changing colour of the box
 
 
 

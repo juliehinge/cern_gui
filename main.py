@@ -24,6 +24,7 @@ class SampleApp(tk.Tk):
     def __init__(self, *args, **kwargs):
         tk.Tk.__init__(self, *args, **kwargs)
         
+        self.is_dark_theme() # deciding and setting the theme that the user is using
 
         self.title_font = tkfont.Font(family='Helvetica', size=18, weight="bold", slant="italic")
 
@@ -60,11 +61,12 @@ class SampleApp(tk.Tk):
         average = (r + g + b) / (3 * 256)  # winfo_rgb returns in range 0-65535
         dark_theme = average < 128  # this threshold can be adjusted
     
+        print(dark_theme)
+        
         if dark_theme:
             Pages.dark_color == True
         else:
             Pages.dark_color == False
-
 
 
 
