@@ -108,6 +108,7 @@ def exit_size(x_list, y_list, index):
 
     for x_sublist, y_sublist in zip(x_list, y_list):
         # get the item at 'index' in the sublist
+        print(index, x_sublist)
         x_pos = x_sublist[index[0]]
         y_pos = y_sublist[index[0]]
         x_positions.append(x_pos); y_positions.append(y_pos)
@@ -140,18 +141,21 @@ def objective(params):
 
     # Get the beam results from the default2 function
     x, y, _, indices, dd = trajectory(A, li, R)
-   # x, y, exit_direction, dd = trajectory(A, li, R)
-
-    beams = Pages.file_data
-    file_keys = list(beams.keys())
 
 
-    results_beam_sizes = [exit_size(x[key], y[key], indices[key]) for key in file_keys]
+    # Extract list of filenames (inner keys)
+
+    file_keys = list(x.keys())
+    results_beam_sizes = [exit_size(x[file], y[file], indices[file]) for file in file_keys]
+    # Computing average beam size
     average_beam_size = sum(results_beam_sizes) / len(results_beam_sizes)
 
-    results_beam_disparity = [beam_disparity(dd[key], indices[key]) for key in file_keys]
+    # Computing beam disparity
+    results_beam_disparity = [beam_disparity(dd[file], indices[file]) for file in file_keys]
     average_beam_disparity = sum(results_beam_disparity) / len(results_beam_disparity)
-    
+
+
+
     initial_a = beam_diff(dd, indices)
     initial_b = average_beam_size
     initial_d = average_beam_disparity
@@ -161,7 +165,7 @@ def objective(params):
     d = Pages.beam_divergence
 
     # Objective function
-    f = (initial_a - a)**2 + (initial_b - b)**2 + 50*(initial_d - d)**2
+    f = (initial_a - a)**2 + (initial_b - b)**2 + (initial_d - d)**2
     
     penalty_weight = 1e12  
     penalty = 0
