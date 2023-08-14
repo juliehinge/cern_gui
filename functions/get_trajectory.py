@@ -43,6 +43,8 @@ def next_point(bending_radius, P, D):
 
 
 
+
+
 def get_trajectory(R, A, B, G, P, D, Energy, size):
 
     # Compute the magnitude of the vector for normalization
@@ -56,6 +58,8 @@ def get_trajectory(R, A, B, G, P, D, Energy, size):
 
     points = []
     points.append([float(P[0]), float(P[1])])
+
+    directions = []
 
     trajectory_len = float(size)
     num_steps = trajectory_len/s
@@ -72,12 +76,13 @@ def get_trajectory(R, A, B, G, P, D, Energy, size):
             P = np.add(P, P2)
 
         points.append(P)
-    
+        directions.append(D)
+
      
     # Splitting the data into x and y coordinates for plotting
     x = [point[0] for point in points]
     y = [point[1] for point in points]
 
 
-    return x,y, bending_radnius
+    return x,y, directions
 

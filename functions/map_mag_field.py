@@ -64,7 +64,7 @@ def plot_trajectories(R, A, B, G, directions, positions, Energy):
         parts = directions[i].split(',')
         dir = [float(part) for part in parts]
 
-        x, y, bending_radius = get_trajectory(R, A, B, G, [pos[0],pos[1]], [dir[0],dir[1]], Energy[i], 4)
+        x, y, bending_radius = get_trajectory(R, A, B, G, [pos[0],pos[1]], [dir[0],dir[1]], Energy[i], 2)
         plt.plot(x, y)
     
     return bending_radius
@@ -110,13 +110,6 @@ def display_magnetic_fild(A, li, R, plot_trajectory=False):
 
 
 
-
-
-
-
-
-# ... [Your imports and existing functions here] ...
-
 def flatten_list(beams_list):
     return [item for sublist in beams_list for item in sublist]
 
@@ -138,9 +131,9 @@ def trajectory(A, li, R):
     
     
     beams = Pages.file_data
-    print(beams)
     exit_direction, xx, yy, dd = {}, {}, {}, {}
-    
+    indicies = {}
+
     for file in beams['Energies'].keys():
         energy = beams['Energies'][file]
         positions = beams['Positions'][file]
@@ -150,23 +143,30 @@ def trajectory(A, li, R):
         xx[file], yy[file], dd[file] = [], [], []
 
         for j in range(len(positions)):
-            x, y, dirs = get_trajectory(R, A, B, G, positions[j], directions[j], energies[j], 1)
+            x, y, dirs = get_trajectory(R, A, B, G, positions[j], directions[j], energies[j], 2)
             xx[file].append(x)
             yy[file].append(y)
             dd[file].append(dirs)
 
         file_data = {'Energies': energy, 'Positions': positions, 'Directions': directions}
-        
+        indicies[file] = []
+
         exit_direction[file] = []
         for j in range(len(positions)):
             averages = calculate_averages(file_data)
-            x, y, dirs = get_trajectory(R, A, B, G, averages['Positions'], averages['Directions'], averages['Energies'], 1)
+            positions = averages['Positions']
+            directions = averages['Directions']
+            energies = averages['Energies']            
+            x, y, dirs = get_trajectory(R, A, B, G, [positions[0], positions[1]], [directions[0], directions[1]], energies, 2)  # Plotting the bea
             previous_dir = dirs[-1]
             for i, dir in enumerate(dirs[::-1]):
                 if not np.array_equal(dir, previous_dir):
+                    indicies[file].append(len(dirs) - i)
                     exit_direction[file].append(dir)
                     break
                 previous_dir = dir
 
-    return xx, yy, exit_direction, dd
+    print(len(xx), indicies)
+    return xx, yy, exit_direction, indicies, dd
+
 

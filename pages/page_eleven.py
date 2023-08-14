@@ -119,7 +119,10 @@ class PageEleven(tk.Frame):
             if all(len(set(lst)) == 1 for lst in lengths):
                 Pages.file_data = self.file_data
                 Pages.multiple_beams = True
-                self.controller.show_frame("PageFourteen")
+                if Pages.open_optimization == False:
+                    self.controller.show_frame("PageFourteen")
+                else:
+                    self.controller.show_frame("PageSixteen")
             else:
                 mismatched_files = []
                 for i, lst in enumerate(lengths):
