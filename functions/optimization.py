@@ -108,7 +108,6 @@ def exit_size(x_list, y_list, index):
 
     for x_sublist, y_sublist in zip(x_list, y_list):
         # get the item at 'index' in the sublist
-        print(index, x_sublist)
         x_pos = x_sublist[index[0]]
         y_pos = y_sublist[index[0]]
         x_positions.append(x_pos); y_positions.append(y_pos)

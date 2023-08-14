@@ -53,6 +53,10 @@ class PageOne(tk.Frame):
         self.method = False 
 
 
+
+
+
+
     def get_selection(self):
         """This function is for making sure that the user only chose one checkbox for the manual vs.csv option. If they didn't the warning text and flags will be set"""
         if (self.var1.get() == 1) & (self.var2.get() == 0): # Getting the value of the checkbox: 1 = on, 0 = off )
@@ -87,11 +91,13 @@ class PageOne(tk.Frame):
             Pages.radius = float(radius) # We set the radius on the Pages module so we can pass it forward to other windows
 
 
-    def open_next_frame(self):
+    def open_next_frame(self, ):
         """This function first calls the record params function to make sure everything is ok. If the option is manual, page two will be opened,
         if the option is CSV page three will be opened. If there is a mistake in the user input, the user will be informed"""
     
         self.record_params()
+ 
+
         if self.checkFlag == True and self.entryFlag == True and self.method == False:
             Pages.manual = True # Setting the munual flag to True since the user chose the manual method
             self.controller.show_frame("PageTwo")

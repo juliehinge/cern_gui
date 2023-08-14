@@ -30,7 +30,7 @@ class PageFifteen(tk.Frame):
 
 
         button1 = ttk.Button(self, text="Back",
-                            command=lambda: controller.show_frame("FiveHalf"))
+                            command=lambda: controller.show_frame("Options"))
         button1.grid(row=7, column=0,  pady = (10), sticky='e')
 
 

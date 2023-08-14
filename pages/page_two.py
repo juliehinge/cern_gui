@@ -112,23 +112,24 @@ class PageTwo(tk.Frame):
     def clear(self, event, sections_entry, random_num):
 
 
-        color = sections_entry.cget("foreground")
-        print("color", color)
-
-        
         """This function clears the number already in the entry"""
         if sections_entry.get() != '': # If the section is empty, there is nothing to clear
             try:
                 entry_num = sections_entry.get().split(',')
                 if float(entry_num[0]) == float(random_num): # We don't want to clear anything the user put in, just the random pre-placed numbers
                     sections_entry.delete(0, tk.END) # Deleting text already in box
-                    sections_entry.config(foreground="white") # Changing colour of the box
+                    if Pages.dark_color == True:
+                        sections_entry.config(foreground="white") # Changing colour of the box
+                    else:
+                        sections_entry.config(foreground="black") # Changing colour of the box
+
             except AttributeError:
                 if float(sections_entry.get()) == float(random_num): # We don't want to clear anything the user put in, just the random pre-placed numbers
                     sections_entry.delete(0, tk.END) # Deleting text already in box
-                    sections_entry.config(foreground="white") # Changing colour of the box
-
-
+                    if Pages.dark_color == True:
+                            sections_entry.config(foreground="white") # Changing colour of the box
+                    else:
+                        sections_entry.config(foreground="black") # Changing colour of the box
 
 
 
@@ -208,5 +209,5 @@ class PageTwo(tk.Frame):
             self.warning_text.set(" ") # Removing the warning if error is fixed
             Pages.alpha_list = updated_alpha # Passing the variables to the pages module
             Pages.vector_list = updated_vector
-            self.controller.show_frame("FiveHalf") # Opening the next page
+            self.controller.show_frame("Options") # Opening the next page
         

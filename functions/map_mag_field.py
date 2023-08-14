@@ -143,7 +143,7 @@ def trajectory(A, li, R):
         xx[file], yy[file], dd[file] = [], [], []
 
         for j in range(len(positions)):
-            x, y, dirs = get_trajectory(R, A, B, G, positions[j], directions[j], energies[j], 2)
+            x, y, dirs = get_trajectory(R, A, B, G, positions[j], directions[j], energies[j], Pages.tracking)
             xx[file].append(x)
             yy[file].append(y)
             dd[file].append(dirs)
@@ -157,7 +157,7 @@ def trajectory(A, li, R):
             positions = averages['Positions']
             directions = averages['Directions']
             energies = averages['Energies']            
-            x, y, dirs = get_trajectory(R, A, B, G, [positions[0], positions[1]], [directions[0], directions[1]], energies, 2)  # Plotting the bea
+            x, y, dirs = get_trajectory(R, A, B, G, [positions[0], positions[1]], [directions[0], directions[1]], energies, Pages.tracking)  # Plotting the bea
             previous_dir = dirs[-1]
             for i, dir in enumerate(dirs[::-1]):
                 if not np.array_equal(dir, previous_dir):
@@ -166,7 +166,6 @@ def trajectory(A, li, R):
                     break
                 previous_dir = dir
 
-    print(len(xx), indicies)
     return xx, yy, exit_direction, indicies, dd
 
 

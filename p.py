@@ -25,3 +25,4 @@ class Pages:
     angle = 0
     beam_divergence = 0
     beam_size = 0
+    dark_color = False

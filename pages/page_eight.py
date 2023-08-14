@@ -15,17 +15,6 @@ class PageEight(tk.Frame):
         ttk.Label(self, text="-"*100, foreground="grey").grid(row=1, column=0, pady = (10,0), columnspan = 5, sticky='w')
 
 
-        tk.Label(self, text="How would you like to input your list of particles:", font = ("bold", 15)).grid(row=4, column=0, padx=5, pady=(10,0),columnspan=3, sticky='w')
-
-
-        # This is the setup for the checkboxes
-        self.var1 = tk.IntVar()
-        self.var2 = tk.IntVar()
-        c1 = tk.Checkbutton(self, text='Manually',variable=self.var1, onvalue=1, offvalue=0, command=self.get_selection)
-        c1.grid(row=5, column=1, pady=(10,0),sticky='w')
-        c2 = tk.Checkbutton(self, text='By CSV upload',variable=self.var2, onvalue=1, offvalue=0, command=self.get_selection)
-        c2.grid(row=6, column=1, pady=(0,10),sticky='w')
-
 
         ttk.Label(self, text="-"*100, foreground="grey").grid(row=7, column=0, pady = (10,0), columnspan = 5, sticky='w')
 
@@ -42,7 +31,7 @@ class PageEight(tk.Frame):
 
 
         button1 = ttk.Button(self, text="Back",
-                            command=lambda: controller.show_frame("FiveHalf"))
+                            command=lambda: controller.show_frame("Options"))
         button1.grid(row=11, column=0,  pady = (10), sticky='e')
 
 

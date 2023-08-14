@@ -4,13 +4,13 @@ from tkinter import ttk
 from p import Pages
 import math
 
-class FiveHalf(tk.Frame):
+class Options(tk.Frame):
 
     def __init__(self, parent, controller):
         tk.Frame.__init__(self, parent)
         self.controller = controller
 
-        label1 = tk.Label(self, text="Go To:", font = ("bold", 22))
+        label1 = tk.Label(self, text="Go To:", font = ("bold", 26))
         label1.grid(row=0, column=0, padx = (10), pady = (10), columnspan=4)
       
 
@@ -35,7 +35,7 @@ class FiveHalf(tk.Frame):
         beam_optimization.grid(row=4, column=1, padx=10,pady=10, sticky = 'w')
 
        # Section for beam Optimization
-        back = ttk.Button(self, text="Back", width=20,
+        back = ttk.Button(self, text="Back", width=22,
                             command=lambda:self.go_back())
         back.grid(row=5, column=1, padx=10,pady=10, sticky = 'w')
 
@@ -46,7 +46,7 @@ class FiveHalf(tk.Frame):
         if status == True:
             self.controller.show_frame("PageFifteen")
         else:
-            self.controller.show_frame("PageEight")
+            self.controller.show_frame("PageEleven")
      
     def go_back(self):
         if Pages.manual == True:

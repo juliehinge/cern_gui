@@ -149,12 +149,17 @@ class PageFour(tk.Frame, Pages):
                 entry_num = sections_entry.get().split(',')
                 if float(entry_num[0]) == float(random_num): # We don't want to clear anything the user put in, just the random pre-placed numbers
                     sections_entry.delete(0, tk.END) # Deleting text already in box
-                    sections_entry.config(foreground="white") # Changing colour of the box
-            except AttributeError:
+                    if Pages.dark_color == True:
+                            sections_entry.config(foreground="white") # Changing colour of the box
+                    else:
+                        sections_entry.config(foreground="black") # Changing colour of the box
+            except AttributeError: # This is in case the user only put a number in for B and not G
                 if float(sections_entry.get()) == float(random_num): # We don't want to clear anything the user put in, just the random pre-placed numbers
                     sections_entry.delete(0, tk.END) # Deleting text already in box
-                    sections_entry.config(foreground="white") # Changing colour of the box
-
+                    if Pages.dark_color == True:
+                            sections_entry.config(foreground="white") # Changing colour of the box
+                    else:
+                        sections_entry.config(foreground="black") # Changing colour of the box
 
 
 
@@ -217,5 +222,5 @@ class PageFour(tk.Frame, Pages):
             Pages.alpha_list = updated_alpha
             Pages.vector_list = updated_vector
 
-            self.controller.show_frame("FiveHalf")
+            self.controller.show_frame("Options")
 

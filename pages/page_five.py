@@ -34,7 +34,7 @@ class PageFive(tk.Frame):
 
         # Button for returning back to page one
         button1 = ttk.Button(self, text="Back",
-                            command=lambda: controller.show_frame("FiveHalf"))
+                            command=lambda: controller.show_frame("Options"))
         button1.grid(row=5, column=0,  pady = (10), sticky='e')
 
         # Button for opening the zoomed in frame

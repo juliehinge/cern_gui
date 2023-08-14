@@ -21,7 +21,7 @@ class PageSix(tk.Frame):
 
         # Create "Back" button
         back_button = tk.Button(self, text="Go back", 
-                                command=lambda: controller.show_frame("FiveHalf"))
+                                command=lambda: controller.show_frame("Options"))
         back_button.pack()
 
         # Create a Frame
