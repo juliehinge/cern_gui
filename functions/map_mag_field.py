@@ -98,12 +98,22 @@ def display_magnetic_fild(A, li, R, plot_trajectory=False):
     ax.set_ylim([Y_min, Y_max])
     
     bending_radius = None
-    if plot_trajectory:
-        directions = ["1, 0", "1, 0", "1, 0"]
-        positions = ["0, 0", "0, 0","0, 0"]
-        Energy = [100,120,140]
 
-        bending_radius = plot_trajectories(R, A, B, G, directions, positions, Energy)
+    if plot_trajectory:
+        beams = Pages.file_data
+
+        for file in beams['Energies'].keys():
+            energy = beams['Energies'][file]
+            positions = beams['Positions'][file]
+            directions = beams['Directions'][file]
+            energies = flatten_list(beams['Energies'][file])
+            
+            for j in range(len(positions)):
+                x, y, dirs = get_trajectory(R, A, B, G, [positions[j][0], positions[j][1]], [directions[j][0], directions[j][1]], energies[j], Pages.tracking)  # Plotting the beam
+                plt.plot(x, y)
+
+    
+
 
     return fig, ax, bending_radius
 

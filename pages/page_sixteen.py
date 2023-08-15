@@ -32,7 +32,8 @@ class PageSixteen(tk.Frame):
         self.canvas = FigureCanvasTkAgg(self.fig, master=self.frame)  # linking figure with the FigureCanvasTkAgg
         self.canvas.get_tk_widget().pack(side=tk.TOP, fill=tk.BOTH, expand=1)
 
-    
+        self.is_toolbar = 0
+
 
 
         
@@ -55,6 +56,8 @@ class PageSixteen(tk.Frame):
         self.canvas.figure = self.fig  # Update the figure associated with the canvas
         self.canvas.draw()  # Redraw the canvas to reflect changes
 
-        self.toolbar = NavigationToolbar2Tk(self.canvas, self.frame)
-        self.toolbar.update()
+        if self.is_toolbar == 0: # To avoid putting two zoom bars on the page
+            self.toolbar = NavigationToolbar2Tk(self.canvas, self.frame)
+            self.toolbar.update()
+            self.is_toolbar += 1
 

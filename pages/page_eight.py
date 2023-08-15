@@ -16,16 +16,11 @@ class PageEight(tk.Frame):
 
 
 
-        ttk.Label(self, text="-"*100, foreground="grey").grid(row=7, column=0, pady = (10,0), columnspan = 5, sticky='w')
 
-        ttk.Label(self, text="Please input the tracking size and charge of paricles", font = ("bold", 15)).grid(row=8, column=0, padx=5, pady = (10,0), columnspan = 5, sticky='w')
+        ttk.Label(self, text="Please input the tracking size", font = ("bold", 15)).grid(row=8, column=0, padx=5, pady = (10,0), columnspan = 5, sticky='w')
 
-        tk.Label(self, text="Tracking size (m)").grid(row=9, column=0, pady=10, sticky='e')
-        tk.Label(self, text="Charge of Particles (+/-)").grid(row=10, column=0, pady=10, sticky='e')
-
-       
+        tk.Label(self, text="Tracking size (m)").grid(row=9, column=0, pady=10, sticky='e')       
         self.track = ttk.Entry(self, width=5); self.track.grid(row=9, column=1, pady=10, sticky='w', )
-        self.charge = ttk.Entry(self, width=5); self.charge.grid(row=10, column=1, pady=10, sticky='w', )
 
 
 
@@ -46,28 +41,6 @@ class PageEight(tk.Frame):
         self.text = ttk.Label(self, textvariable = self.warning_text, foreground ="red").grid(row=12, column=0,pady = 5, columnspan=3)
         
         self.entryFlag = True
-        self.method = False
-
-
-
-    def get_selection(self):
-        """This function is for making sure that the user only chose one checkbox for the manual vs.csv option. If they didn't the warning text and flags will be set"""
-        if (self.var1.get() == 1) & (self.var2.get() == 0): # Getting the value of the checkbox: 1 = on, 0 = off )
-            self.warning_text.set("")
-            self.checkFlag = True
-            self.method = False
-        elif (self.var1.get() == 0) & (self.var2.get() == 1):
-            self.warning_text.set("")
-            self.checkFlag = True
-            self.method = True
-        elif (self.var1.get() == 0) & (self.var2.get() == 0):
-            self.warning_text.set("Please choose an option")
-            self.checkFlag = False
-        else:
-            self.warning_text.set("Please choose only on option")
-            self.checkFlag = False
-
-    
 
 
 
@@ -77,25 +50,18 @@ class PageEight(tk.Frame):
         if the option is CSV page three will be opened. If there is a mistake in the user input, the user will be informed"""
 
         user_mistake = True
-
+        Pages.open_optimization = False
         try:
             size = float(self.track.get())
             Pages.tracking = size
             user_mistake = False
 
         except ValueError:
-            self.warning_text.set("Please fill out the information correctly")
+            self.warning_text.set("Please input a real number as the tracking size")
             user_mistake = True
 
-
-        if self.entryFlag == True and self.method == False and user_mistake == False and self.checkFlag == True:
-            Pages.manual = True
-            Pages.beam_specification_status = True
-            self.controller.show_frame("PageTen")
-        elif self.entryFlag == True and self.method == True and user_mistake == False and self.checkFlag == True:
-            Pages.manual = False
+        if user_mistake == False:
             self.controller.show_frame("PageEleven")
-            Pages.beam_specification_status = True
         else:
             self.warning_text.set("Please fill out the information correctly")
 

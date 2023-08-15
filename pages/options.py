@@ -26,7 +26,7 @@ class Options(tk.Frame):
 
         # Section for beam tracking
         beam_tracking = ttk.Button(self, text="Beam Tracking", width=22,
-                            command=lambda: controller.show_frame("PageEight"))
+                            command=lambda: self.open_tracking())
         beam_tracking.grid(row=3, column=1, padx=10,pady=10, sticky = 'w')
 
         # Section for beam Optimization
@@ -48,6 +48,12 @@ class Options(tk.Frame):
         else:
             self.controller.show_frame("PageEleven")
      
+
+    def open_tracking(self):
+        Pages.open_optimization = False
+        self.controller.show_frame("PageEleven")
+    
+
     def go_back(self):
         if Pages.manual == True:
             self.controller.show_frame("PageTwo")

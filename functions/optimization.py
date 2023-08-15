@@ -72,9 +72,11 @@ def beam_disparity(directions, index):
     # Calculate the angles between the average vector and each other vector
     
     angles = []
-
     dir_at_index = []
-    for inner_list in directions:
+
+    
+    for inner_list in directions[:-1]:
+        print(len(inner_list), index)
         if index[0] < len(inner_list):
             dir_at_index.append(inner_list[index[0]])
 
@@ -107,9 +109,11 @@ def exit_size(x_list, y_list, index):
 
     x_positions = []; y_positions = []
 
-    for x_sublist, y_sublist in zip(x_list, y_list):
+    for x_sublist, y_sublist in zip(x_list[:-1], y_list[:-1]):
         # get the item at 'index' in the sublist
         if len(index) == 0:
+            print("here")
+            break
             index = [0,0]
         x_pos = x_sublist[index[0]]
         y_pos = y_sublist[index[0]]
@@ -166,7 +170,6 @@ def objective(params):
     b = Pages.beam_size
     d = Pages.beam_divergence
 
-    print(a, b, d)
 
 
     # Objective function

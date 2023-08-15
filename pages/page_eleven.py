@@ -14,15 +14,17 @@ class PageEleven(tk.Frame):
         self.paths = {} 
         self.file_data = {}
 
-        ttk.Label(self, text="Set the tracking size of the beams please", font = ("bold", 20)).grid(row=0, column=0, padx = (10,30), pady = (10,30), columnspan=3)
-
-        tk.Label(self, text="Tracking size (m)").grid(row=1, column=0, pady=10, sticky='e')
-        self.track = ttk.Entry(self, width=5); self.track.grid(row=1, column=1, pady=10, sticky='w', )
 
 
-        ttk.Label(self, text="-"*100, foreground="grey").grid(row=2, column=0, pady = (10,0), columnspan = 5, sticky='w')
 
-        ttk.Label(self, text="Upload your CSV files please", font = ("bold", 20)).grid(row=3, column=0, padx = (10,30), pady = (10,30), columnspan=3)
+        ttk.Label(self, text="Upload your CSV files please", font = ("bold", 20)).grid(row=0, column=0, padx = (10,30), pady = (10,30), columnspan=3)
+        ttk.Label(self, text="-"*100, foreground="grey").grid(row=1, column=0, pady = (10,0), columnspan = 5, sticky='w')
+
+        tk.Label(self, text="Tracking size (m)").grid(row=2, column=0, pady=10, sticky='e')
+        self.track = ttk.Entry(self, width=5); self.track.grid(row=2, column=1, pady=10, sticky='w', )
+
+
+
 
         ttk.Label(self, text="Enter the number beams you want displayed:", font=("bold", 10)).grid(row=4, column=0, padx=10, pady=10)
         self.num_files = tk.IntVar(value=0)
@@ -129,7 +131,6 @@ class PageEleven(tk.Frame):
             elif category == 'Energies':
                 self.paths[category].set(f'ener{self.file_count[category]-1}' if self.file_count[category] > 1 else '')
         
-            paths.pop()
             #self.paths[category].set(','.join(paths))
             self.paths[category].set(f'dir{self.file_count[category]-1}')
             self.file_count[category] -= 1
