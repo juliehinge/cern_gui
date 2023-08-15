@@ -38,52 +38,13 @@ class PageFifteen(tk.Frame):
         button1.grid(row=7, column=1,  pady = (10), sticky='w')
 
 
-        tk.Label(self, text="*It may take some time for the optimization to run").grid(row=8, column=0, pady=10, sticky='w')
+        tk.Label(self, text="*It may take some time for the optimization to run").grid(row=8, column=0, pady=10, sticky='e')
 
         # Warning text setup
         self.warning_text = tk.StringVar(self, value=' ')
-        self.text = ttk.Label(self, textvariable = self.warning_text, foreground ="red").grid(row=8, column=0,pady = 5, columnspan=3)
+        self.text = ttk.Label(self, textvariable = self.warning_text, foreground ="red").grid(row=9, column=0,pady = 5, columnspan=3)
         
-        self.entryFlag = True
-        self.method = False
 
-
-
-        #Labels for instructions
-        tk.Label(self, text="Input bounds to display zoomed in beam tracking plot:", font = ("bold", 15)).grid(row=9, column=0, padx=10,pady=10, columnspan=3, sticky='w', )
-    
-        tk.Label(self, text="X-min:").grid(row=10, column=0, pady=10)
-        tk.Label(self, text="X-max:").grid(row=11, column=0, pady=10)
-        tk.Label(self, text="Y-min:").grid(row=10, column=2, pady=10, sticky='w', )
-        tk.Label(self, text="Y-max:").grid(row=11, column=2, pady=10, sticky='w', )
-
-        # Entry boxes set up
-        self.x_min = ttk.Entry(self, width=5); self.x_min.grid(row=10, column=1, pady=10, sticky='w', )
-        self.x_max = ttk.Entry(self, width=5); self.x_max.grid(row=11, column=1, pady=10, sticky='w', )
-        self.y_min = ttk.Entry(self, width=5); self.y_min.grid(row=10, column=3, pady=10, sticky='w', )
-        self.y_max = ttk.Entry(self, width=5); self.y_max.grid(row=11, column=3, pady=10, sticky='w', )
-
-
-
-
-
-        button1 = ttk.Button(self, text="Back",
-                            command=lambda: controller.show_frame("PageEleven"))
-        button1.grid(row=12, column=0,  pady = (10), sticky='e')
-
-
-        button1 = ttk.Button(self, text="Ok",
-                            command=lambda: self.open_zoomed_view())
-        button1.grid(row=12, column=1,  pady = (10), sticky='w')
-
-
-    def open_zoomed_view(self):
-        Pages.x_min = self.x_min.get()        
-        Pages.x_max = self.x_max.get()       
-        Pages.y_min = self.y_min.get()
-        Pages.y_max = self.y_max.get()
-        # Opening the zoomed in magnetic field plot
-        self.controller.show_frame("PageTen")
 
 
 

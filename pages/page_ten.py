@@ -5,10 +5,10 @@ import matplotlib
 matplotlib.use('TkAgg')  # Backend of matplotlib for tkinter
 from matplotlib.figure import Figure
 from p import Pages
-from functions.zoomed_mag_field import zoomed_preview
 from functions.optimization import fmin
+from functions.map_mag_field import display_magnetic_fild
 
-class PageSeven(tk.Frame):
+class PageTen(tk.Frame):
 
     def __init__(self, parent, controller):
         tk.Frame.__init__(self, parent)
@@ -19,7 +19,7 @@ class PageSeven(tk.Frame):
 
         # Create "Back" button
         back_button = tk.Button(self, text="Go back", 
-                                command=lambda: controller.show_frame("PageFive"))
+                                command=lambda: controller.show_frame("PageFifteen"))
         back_button.pack()
 
 
@@ -47,7 +47,7 @@ class PageSeven(tk.Frame):
 
     
         # Calling the function that makes the plot and putting it on the GUI        
-        self.fig = zoomed_preview(x_min, x_max, y_min, y_max, optimized_A, optimized_li, Pages.R)  
+        self.fig, ax, _ = display_magnetic_fild(optimized_A, optimized_li, Pages.radius, plot_trajectory=True, custom_axis=True)  
         self.canvas.figure = self.fig  # Update the figure associated with the canvas
         self.canvas.draw()  # Redraw the canvas to reflect changes
 
@@ -57,13 +57,12 @@ class PageSeven(tk.Frame):
             self.toolbar.update()
             self.is_toolbar += 1
 
+            beams_size = tk.Label(self, text=f"Average Beam Size is: {average_beam_size}")
+            beams_size.pack(anchor='w', padx=10, pady=(5, 0))
 
-        beams_size = tk.Label(self, text=f"Average Beam Size is: {average_beam_size}")
-        beams_size.pack(anchor='w', padx=10, pady=(5, 0))
-
-        beam_disparity = tk.Label(self, text=f"Average Beam Disperity is: {average_beam_disparity}")
-        beam_disparity.pack(anchor='w', padx=10, pady=(0, 5))
+            beam_disparity = tk.Label(self, text=f"Average Beam Disperity is: {average_beam_disparity}")
+            beam_disparity.pack(anchor='w', padx=10, pady=(0, 5))
 
 
-        optimized_li_label = tk.Label(self, text=f"Angle between innermost and outermost beam: {beam_dif}")
-        optimized_li_label.pack(anchor='w', padx=10, pady=(0, 5))
+            optimized_li_label = tk.Label(self, text=f"Angle between innermost and outermost beam: {beam_dif}")
+            optimized_li_label.pack(anchor='w', padx=10, pady=(0, 5))

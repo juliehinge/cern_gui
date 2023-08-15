@@ -5,64 +5,55 @@ from p import Pages
 
 
 
-class PageEight(tk.Frame):
+class PageFifteen(tk.Frame):
 
     def __init__(self, parent, controller):
         tk.Frame.__init__(self, parent)
         self.controller = controller
 
-        tk.Label(self, text="Input parameters for specifying the beam", font = ("bold", 20)).grid(row=0, column=0, padx = (10), pady = (10), columnspan=3)
-        ttk.Label(self, text="-"*100, foreground="grey").grid(row=1, column=0, pady = (10,0), columnspan = 5, sticky='w')
+        tk.Label(self, text="*It may take some time for the optimization to run").grid(row=8, column=0, pady=10, sticky='e')
 
 
+        #Labels for instructions
+        tk.Label(self, text="Input bounds to change X and Y axis in beam tracking plot:", font = ("bold", 15)).grid(row=11, column=0, padx=10,pady=10, columnspan=3, sticky='w', )
+    
+        tk.Label(self, text="X-min:").grid(row=12, column=0, pady=10, sticky='e')
+        tk.Label(self, text="X-max:").grid(row=13, column=0, pady=10, sticky='e')
+        tk.Label(self, text="Y-min:").grid(row=12, column=2, pady=10, sticky='w', )
+        tk.Label(self, text="Y-max:").grid(row=13, column=2, pady=10, sticky='w', )
 
-
-        ttk.Label(self, text="Please input the tracking size", font = ("bold", 15)).grid(row=8, column=0, padx=5, pady = (10,0), columnspan = 5, sticky='w')
-
-        tk.Label(self, text="Tracking size (m)").grid(row=9, column=0, pady=10, sticky='e')       
-        self.track = ttk.Entry(self, width=5); self.track.grid(row=9, column=1, pady=10, sticky='w', )
+        # Entry boxes set up
+        self.x_min = ttk.Entry(self, width=5); self.x_min.grid(row=12, column=1, pady=10, sticky='w', )
+        self.x_max = ttk.Entry(self, width=5); self.x_max.grid(row=13, column=1, pady=10, sticky='w', )
+        self.y_min = ttk.Entry(self, width=5); self.y_min.grid(row=12, column=3, pady=10, sticky='w', )
+        self.y_max = ttk.Entry(self, width=5); self.y_max.grid(row=13, column=3, pady=10, sticky='w', )
 
 
 
 
         button1 = ttk.Button(self, text="Back",
-                            command=lambda: controller.show_frame("Options"))
-        button1.grid(row=11, column=0,  pady = (10), sticky='e')
+                            command=lambda: controller.show_frame("PageFifteen"))
+        button1.grid(row=14, column=0,  pady = (10), sticky='e')
 
 
         button1 = ttk.Button(self, text="Ok",
-                            command=lambda: self.open_next_frame())
-        button1.grid(row=11, column=1,  pady = (10), sticky='w')
-
-
+                            command=lambda: self.open_zoomed_view())
+        button1.grid(row=14, column=1,  pady = (10), sticky='w')
 
         # Warning text setup
         self.warning_text = tk.StringVar(self, value=' ')
-        self.text = ttk.Label(self, textvariable = self.warning_text, foreground ="red").grid(row=12, column=0,pady = 5, columnspan=3)
+        self.text = ttk.Label(self, textvariable = self.warning_text, foreground ="red").grid(row=9, column=0,pady = 5, columnspan=3)
         
-        self.entryFlag = True
 
 
-
-
-    def open_next_frame(self):
-        """This function first calls the record params function to make sure everything is ok. If the option is manual, page two will be opened,
-        if the option is CSV page three will be opened. If there is a mistake in the user input, the user will be informed"""
-
-        user_mistake = True
-        Pages.open_optimization = False
+    def open_zoomed_view(self):
         try:
-            size = float(self.track.get())
-            Pages.tracking = size
-            user_mistake = False
+            Pages.x_min = float(self.x_min.get())        
+            Pages.x_max = float(self.x_max.get())      
+            Pages.y_min = float(self.y_min.get())
+            Pages.y_max = float(self.y_max.get())
+            # Opening the zoomed in magnetic field plot
+            self.controller.show_frame("PageTen")
 
-        except ValueError:
-            self.warning_text.set("Please input a real number as the tracking size")
-            user_mistake = True
-
-        if user_mistake == False:
-            self.controller.show_frame("PageEleven")
-        else:
-            self.warning_text.set("Please fill out the information correctly")
-
-
+        except ValueError:  # This will catch if the conversion to float fails (i.e., the entry is not a number)
+            self.warning_text.set("Please make sure all entries are real numbers")

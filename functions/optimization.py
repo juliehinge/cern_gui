@@ -130,8 +130,7 @@ def exit_size(x_list, y_list, index):
         if 0 <= index[0] < len(y_sublist):
             y_positions.append(y_sublist[index[0]])
         else:
-            print(f"Index {index[0]} out of range for y_sublist!")
-            return float('inf')  # Return a large penalty value
+            index[0] = 0
 
         previous_x_sublist = x_sublist
         previous_y_sublist = y_sublist

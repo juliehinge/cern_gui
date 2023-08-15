@@ -46,6 +46,9 @@ def calculate_magnetic_field(X_min, X_max, Y_min, Y_max, R, A, B, G):
             mag_field[i, j] = get_B(R, A, B, G, P)
     return xx, yy, mag_field
 
+
+
+
 def zoomed_preview(X_min, X_max, Y_min, Y_max, A, li, R):
     """This function creates the custom view that the user can see after inputting X_min, X_max, Y_min, Y_max"""
 
