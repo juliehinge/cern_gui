@@ -1,6 +1,6 @@
 import tkinter as tk
 from tkinter import ttk
-from tkinter.filedialog import askopenfilename
+from tkinter.filedialog import askopenfilenames
 import pandas as pd
 from p import Pages
 import re
@@ -78,16 +78,26 @@ class PageEleven(tk.Frame):
         warning_label.grid(row=11+category_index, column=0, columnspan=5, pady=5)
         warning_label.config(foreground='red')
 
+
+
+
     def import_csv_data(self, category):
-        csv_file_path = askopenfilename()  # allows single file selection
+        selected_files = askopenfilenames()  # This returns a tuple of selected file paths
 
-        path = csv_file_path[-6:]  # Get the last 5 letters of the file path
+        # If no files were selected, exit the function
+        if not selected_files:
+            return
 
-        if "csv" not in csv_file_path and "txt" not in csv_file_path: 
-            self.flags[category] = False
-        else:
-            df = pd.read_csv(csv_file_path) 
-            header_row = pd.read_csv(csv_file_path, nrows=1).columns
+        existing_paths = self.paths[category].get().split(', ')
+
+        for csv_file in selected_files:
+
+            if "csv" not in csv_file and "txt" not in csv_file: 
+                self.flags[category] = False
+                continue
+
+            df = pd.read_csv(csv_file) 
+            header_row = pd.read_csv(csv_file, nrows=1).columns
             is_header = all(not bool(re.search(r'\d', header)) for header in header_row)
 
             data = []
@@ -95,29 +105,25 @@ class PageEleven(tk.Frame):
                 for _, row in df.iterrows():
                     data.append(row.tolist())
             else:
-                df = pd.read_csv(csv_file_path, header=None) 
+                df = pd.read_csv(csv_file, header=None) 
                 for _, row in df.iterrows():
                     data.append(row.tolist())
 
-            if category in self.file_data:
-                self.file_data[category][f"file{self.file_count[category]}"] = data
-            else:
-                self.file_data[category] = {f"file{self.file_count[category]}": data}
-
-            self.flags[category] = True 
-            # update existing path for the category with the new file path
-            existing_path = self.paths[category].get()
-            if category == 'Directions':
-                self.paths[category].set(f'dir{self.file_count[category]}')
-            elif category == 'Positions':
-                self.paths[category].set(f'pos{self.file_count[category]}')
-            elif category == 'Energies':
-                self.paths[category].set(f'ener{self.file_count[category]}')
-
-            # Increase the file count for this category
             self.file_count[category] += 1
+            file_key = f"file{self.file_count[category]}"
+            
+            if category == 'Directions':
+                existing_paths.append(f'dir{self.file_count[category]}')
+            elif category == 'Positions':
+                existing_paths.append(f'pos{self.file_count[category]}')
+            elif category == 'Energies':
+                existing_paths.append(f'ener{self.file_count[category]}')
 
+            self.file_data[category] = self.file_data.get(category, {})
+            self.file_data[category][file_key] = data
+            self.flags[category] = True 
 
+        self.paths[category].set(", ".join(existing_paths))
 
     def delete_last_file(self, category):
         if self.file_data[category]:

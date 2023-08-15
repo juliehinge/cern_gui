@@ -42,7 +42,7 @@ class PageSixteen(tk.Frame):
        # divergence = Pages.beam_divergence 
        # beam_size = Pages.beam_size 
         
-        optimized_A, optimized_li = fmin()
+        optimized_A, optimized_li, average_beam_size, average_beam_disparity, beam_dif = fmin()
 
 
         # Getting the user defined variables from the Pages module
@@ -61,3 +61,13 @@ class PageSixteen(tk.Frame):
             self.toolbar.update()
             self.is_toolbar += 1
 
+
+        beams_size = tk.Label(self, text=f"Average Beam Size is: {average_beam_size}")
+        beams_size.pack(anchor='w', padx=10, pady=(5, 0))
+
+        beam_disparity = tk.Label(self, text=f"Average Beam Disperity is: {average_beam_disparity}")
+        beam_disparity.pack(anchor='w', padx=10, pady=(0, 5))
+
+
+        optimized_li_label = tk.Label(self, text=f"Angle between innermost and outermost beam: {beam_dif}")
+        optimized_li_label.pack(anchor='w', padx=10, pady=(0, 5))

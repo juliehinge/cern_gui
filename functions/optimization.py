@@ -75,10 +75,10 @@ def beam_disparity(directions, index):
     dir_at_index = []
 
     
-    for inner_list in directions[:-1]:
-        print(len(inner_list), index)
-        if index[0] < len(inner_list):
-            dir_at_index.append(inner_list[index[0]])
+    for inner_list in directions:
+        dir_at_index.append(inner_list[index[0]])
+
+
 
     average_vector = np.mean(dir_at_index, axis=0)
     for vec in dir_at_index:
@@ -105,33 +105,48 @@ def beam_disparity(directions, index):
 
 
 def exit_size(x_list, y_list, index):
-
-
+        
     x_positions = []; y_positions = []
 
-    for x_sublist, y_sublist in zip(x_list[:-1], y_list[:-1]):
-        # get the item at 'index' in the sublist
-        if len(index) == 0:
-            print("here")
-            break
-            index = [0,0]
-        x_pos = x_sublist[index[0]]
-        y_pos = y_sublist[index[0]]
-        x_positions.append(x_pos); y_positions.append(y_pos)
+    previous_x_sublist = None
+    previous_y_sublist = None
+
+    for x_sublist, y_sublist in zip(x_list, y_list):
+
+        # If the current x_sublist is empty, use the previous x_sublist.
+        if not x_sublist and previous_x_sublist is not None:
+            x_sublist = previous_x_sublist
+
+        # If the current y_sublist is empty, use the previous y_sublist.
+        if not y_sublist and previous_y_sublist is not None:
+            y_sublist = previous_y_sublist
+
+        # Check if index[0] is valid for both x_sublist and y_sublist.
+        if 0 <= index[0] < len(x_sublist):
+            x_positions.append(x_sublist[index[0]])
+        else:
+            print(f"Index {index[0]} out of range for x_sublist!")
+
+        if 0 <= index[0] < len(y_sublist):
+            y_positions.append(y_sublist[index[0]])
+        else:
+            print(f"Index {index[0]} out of range for y_sublist!")
+
+        previous_x_sublist = x_sublist
+        previous_y_sublist = y_sublist
+
+        print(index, len(x_sublist))
+
 
     average_x_position = sum(x_positions) / len(x_positions)
     average_y_position = sum(y_positions) / len(y_positions)
-
-
     avg_pos = (average_x_position, average_y_position)
-
     coordinates = list(zip(x_positions, y_positions))
 
     # calculate the Euclidean distances and find the maximum
     distances = [((x-avg_pos[0])**2 + (y-avg_pos[1])**2)**0.5 for x, y in coordinates]
     max_distance = max(distances)
     max_coordinate = coordinates[distances.index(max_distance)]
-
 
 
     return max_distance
@@ -150,7 +165,6 @@ def objective(params):
 
 
     # Extract list of filenames (inner keys)
-
     file_keys = list(x.keys())
     results_beam_sizes = [exit_size(x[file], y[file], indices[file]) for file in file_keys]
     # Computing average beam size
@@ -213,7 +227,22 @@ def fmin():
         optimized_li = optimized_values[2:].reshape(num_rows, -1)
         print("Optimized A:", optimized_A)
         print("Optimized li:", optimized_li)
-        return optimized_A, optimized_li
+        #return optimized_A, optimized_li
+       # _, _, _, _, dd = trajectory(optimized_A, optimized_li, 0.7)
+        x, y, _, indices, dd = trajectory(optimized_A, optimized_li, Pages.tracking)
+
+        file_keys = list(dd.keys())
+
+        results_beam_sizes = [exit_size(x[file], y[file], indices[file]) for file in file_keys]
+        # Computing average beam size
+        average_beam_size = sum(results_beam_sizes) / len(results_beam_sizes)
+        # Computing beam disparity
+        results_beam_disparity = [beam_disparity(dd[file], indices[file]) for file in file_keys]
+        average_beam_disparity = sum(results_beam_disparity) / len(results_beam_disparity)
+        beam_difference = beam_diff(dd, indices)
+
+        return optimized_A, optimized_li, average_beam_size, average_beam_disparity, beam_difference
+
     else:
         print("Optimization did not converge:", solution.message)
 

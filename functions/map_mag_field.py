@@ -137,7 +137,7 @@ def calculate_averages(file_data):
 
 def trajectory(A, li, R):
     B, G = split_vectors(li)
-    A = calculate_alpha_intervals(A)
+    A = calculate_alpha_intervals(A) 
     
     
     beams = Pages.file_data
@@ -163,17 +163,27 @@ def trajectory(A, li, R):
 
         exit_direction[file] = []
         for j in range(len(positions)):
-            averages = calculate_averages(file_data)
+            # Calculate average values for the given file data
+            averages = calculate_averages(file_data) 
+            # Extract positions, directions, and energies from the averaged data
             positions = averages['Positions']
             directions = averages['Directions']
-            energies = averages['Energies']            
+            energies = averages['Energies']     
+             # Calculate the trajectory for the given parameters and extracted positions, directions, and energies
             x, y, dirs = get_trajectory(R, A, B, G, [positions[0], positions[1]], [directions[0], directions[1]], energies, Pages.tracking)  # Plotting the bea
+            # Store the last direction in the trajectory
             previous_dir = dirs[-1]
+            # Iterate through the directions in reverse order
             for i, dir in enumerate(dirs[::-1]):
+                # If the current direction does not match the previous direction
                 if not np.array_equal(dir, previous_dir):
+                    # Append the index where direction changes to the indices dictionary for the current file
                     indicies[file].append(len(dirs) - i)
+                    # Append the changed direction to the exit_direction dictionary for the current file
                     exit_direction[file].append(dir)
+                    # Break out of the loop after finding the first change in direction
                     break
+                # Update the previous_dir for the next iteration
                 previous_dir = dir
 
     return xx, yy, exit_direction, indicies, dd

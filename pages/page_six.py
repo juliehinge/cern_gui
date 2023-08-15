@@ -47,7 +47,7 @@ class PageSix(tk.Frame):
         self.canvas.figure = self.fig  # Update the figure associated with the canvas
         self.canvas.draw()  # Redraw the canvas to reflect changes
 
-        if self.is_toolbar == 0:
+        if self.is_toolbar == 0: # To avoid putting two zoom bars on the page
             self.toolbar = NavigationToolbar2Tk(self.canvas, self.frame)
             self.toolbar.update()
             self.is_toolbar += 1
