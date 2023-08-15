@@ -5,13 +5,13 @@ from p import Pages
 
 
 
-class PageFifteen(tk.Frame):
+class PageEight(tk.Frame):
 
     def __init__(self, parent, controller):
         tk.Frame.__init__(self, parent)
         self.controller = controller
 
-        tk.Label(self, text="*It may take some time for the optimization to run").grid(row=8, column=0, pady=10, sticky='e')
+        tk.Label(self, text="*It may take some time for the optimization to run").grid(row=0, column=0, pady=10)
 
 
         #Labels for instructions

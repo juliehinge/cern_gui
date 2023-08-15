@@ -212,8 +212,10 @@ def fmin():
     li_bounds_list = [li_bounds_1, li_bounds_2] * num_rows
     bounds = A_bounds_list + li_bounds_list
 
-    # Call minimize
-    solution = minimize(objective, initial_guess.flatten(), bounds=bounds, method='COBYLA')
+
+
+    solution = minimize(objective, initial_guess.flatten(), bounds=bounds, method='Nelder-Mead')
+
 
     # Extract optimized values
     if solution.success:

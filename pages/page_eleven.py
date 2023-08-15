@@ -44,7 +44,7 @@ class PageEleven(tk.Frame):
 
 
     def set_num_files(self):
-        self.file_count = {category: 1 for category in ['Positions', 'Directions', 'Energies']}
+        self.file_count = {category: 0 for category in ['Positions', 'Directions', 'Energies']}
         self.file_data = {}
 
         for button in self.upload_buttons:

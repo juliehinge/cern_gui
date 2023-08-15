@@ -61,13 +61,12 @@ class PageSixteen(tk.Frame):
             self.toolbar.update()
             self.is_toolbar += 1
 
+            beams_size = tk.Label(self, text=f"Average Beam Size is: {average_beam_size}")
+            beams_size.pack(anchor='w', padx=10, pady=(5, 0))
 
-        beams_size = tk.Label(self, text=f"Average Beam Size is: {average_beam_size}")
-        beams_size.pack(anchor='w', padx=10, pady=(5, 0))
-
-        beam_disparity = tk.Label(self, text=f"Average Beam Disperity is: {average_beam_disparity}")
-        beam_disparity.pack(anchor='w', padx=10, pady=(0, 5))
+            beam_disparity = tk.Label(self, text=f"Average Beam Disperity is: {average_beam_disparity}")
+            beam_disparity.pack(anchor='w', padx=10, pady=(0, 5))
 
 
-        optimized_li_label = tk.Label(self, text=f"Angle between innermost and outermost beam: {beam_dif}")
-        optimized_li_label.pack(anchor='w', padx=10, pady=(0, 5))
+            optimized_li_label = tk.Label(self, text=f"Angle between innermost and outermost beam: {beam_dif}")
+            optimized_li_label.pack(anchor='w', padx=10, pady=(0, 5))
