@@ -16,7 +16,6 @@ class PageFifteen(tk.Frame):
 
 
 
-
         ttk.Label(self, text="Please input your ideal parameters", font = ("bold", 15)).grid(row=3, column=0, padx=5, pady = (10,0), columnspan = 5, sticky='w')
 
         tk.Label(self, text="Beam Angle").grid(row=4, column=0, pady=10, sticky='e')
@@ -30,7 +29,7 @@ class PageFifteen(tk.Frame):
 
 
         button1 = ttk.Button(self, text="Back",
-                            command=lambda: controller.show_frame("Options"))
+                            command=lambda: controller.show_frame("PageEleven"))
         button1.grid(row=7, column=0,  pady = (10), sticky='e')
 
 
@@ -60,11 +59,11 @@ class PageFifteen(tk.Frame):
             # Check if values are positive and angle is not more than 180
             if (angle_value > 0 and angle_value <= 180) and divergence_value > 0 and size_value > 0:
                 self.warning_text.set("")
-                self.controller.show_frame("PageSixteen")
                 Pages.angle = angle_value
                 Pages.beam_divergence = divergence_value
                 Pages.size = size_value
-                
+                self.controller.show_frame("PageSixteen")
+
             else:
                 self.warning_text.set("Please make sure all entries are postitive numbers and the angle is less than 180 degrees")
         except ValueError:  # This will catch if the conversion to float fails (i.e., the entry is not a number)

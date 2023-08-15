@@ -104,10 +104,13 @@ def beam_disparity(directions, index):
 
 def exit_size(x_list, y_list, index):
 
+
     x_positions = []; y_positions = []
 
     for x_sublist, y_sublist in zip(x_list, y_list):
         # get the item at 'index' in the sublist
+        if len(index) == 0:
+            index = [0,0]
         x_pos = x_sublist[index[0]]
         y_pos = y_sublist[index[0]]
         x_positions.append(x_pos); y_positions.append(y_pos)
@@ -163,6 +166,9 @@ def objective(params):
     b = Pages.beam_size
     d = Pages.beam_divergence
 
+    print(a, b, d)
+
+
     # Objective function
     f = (initial_a - a)**2 + (initial_b - b)**2 + (initial_d - d)**2
     
@@ -204,5 +210,8 @@ def fmin():
         optimized_li = optimized_values[2:].reshape(num_rows, -1)
         print("Optimized A:", optimized_A)
         print("Optimized li:", optimized_li)
+        return optimized_A, optimized_li
     else:
         print("Optimization did not converge:", solution.message)
+
+

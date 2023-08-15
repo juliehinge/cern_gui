@@ -29,11 +29,17 @@ class PageEleven(tk.Frame):
         ttk.Entry(self, textvariable=self.num_files).grid(row=4, column=1, padx=10, pady=10)
         ttk.Button(self, text='Set', command=self.set_num_files).grid(row=4, column=2, sticky='w')
 
+        self.back_button = ttk.Button(self, text="Back", command=lambda: self.controller.show_frame("Options"))
+        self.back_button.grid(row=4, column=3, sticky='w')  # Placing it next to the Set button
+
         self.upload_buttons = []
         self.delete_buttons = []
         self.ok_button = None
-        self.back_button = None
+        #self.back_button = None
         self.warning = tk.StringVar(self, value=' ')
+       
+     
+
 
     def set_num_files(self):
         self.file_count = {category: 1 for category in ['Positions', 'Directions', 'Energies']}
@@ -50,12 +56,13 @@ class PageEleven(tk.Frame):
 
         categories = ['Positions', 'Directions', 'Energies']
         for category_index, category in enumerate(categories, start=1):
-            upload_button = ttk.Button(self, text=f'Upload {category} Files', command=lambda category=category: self.import_csv_data(category))
+            upload_button = ttk.Button(self, text=f'Upload {category} File', command=lambda category=category: self.import_csv_data(category))
             upload_button.grid(row=6+category_index, column=0, sticky='w')
             self.upload_buttons.append(upload_button)
 
-            self.paths[category] = tk.StringVar(self, value=' ')
-            ttk.Label(self, textvariable=self.paths[category]).grid(row=3+category_index, column=1, sticky='w')
+            # Initialize with an empty string
+            self.paths[category] = tk.StringVar(self, value='')
+            ttk.Label(self, textvariable=self.paths[category]).grid(row=6+category_index, column=1, sticky='w')
 
             delete_button = ttk.Button(self, text=f'Delete Last {category} File', command=lambda category=category: self.delete_last_file(category))
             delete_button.grid(row=6+category_index, column=2, sticky='w')
@@ -63,8 +70,8 @@ class PageEleven(tk.Frame):
 
         self.ok_button = ttk.Button(self, text='OK', command=self.open_window)
         self.ok_button.grid(row=10+category_index, column=0, sticky='w')
-        self.back_button = ttk.Button(self, text="Back", command=lambda: self.controller.show_frame("PageTen"))
-        self.back_button.grid(row=10+category_index, column=1, sticky='w')
+        self.back_button.grid(row=10+category_index, column=1, sticky='w')  # Adjust the row index if needed
+
         warning_label = ttk.Label(self, textvariable=self.warning)
         warning_label.grid(row=11+category_index, column=0, columnspan=5, pady=5)
         warning_label.config(foreground='red')
@@ -98,18 +105,33 @@ class PageEleven(tk.Frame):
             self.flags[category] = True 
             # update existing path for the category with the new file path
             existing_path = self.paths[category].get()
-            self.paths[category].set(existing_path + ',' + path if existing_path else path)
+            if category == 'Directions':
+                self.paths[category].set(f'dir{self.file_count[category]}')
+            elif category == 'Positions':
+                self.paths[category].set(f'pos{self.file_count[category]}')
+            elif category == 'Energies':
+                self.paths[category].set(f'ener{self.file_count[category]}')
 
             # Increase the file count for this category
             self.file_count[category] += 1
+
+
 
     def delete_last_file(self, category):
         if self.file_data[category]:
             last_file_key = list(self.file_data[category].keys())[-1]
             del self.file_data[category][last_file_key]
-            paths = self.paths[category].get().split(',')
+           # paths = self.paths[category].get().split(',')
+            if category == 'Directions':
+                self.paths[category].set(f'dir{self.file_count[category]-1}' if self.file_count[category] > 1 else '')
+            elif category == 'Positions':
+                self.paths[category].set(f'pos{self.file_count[category]-1}' if self.file_count[category] > 1 else '')
+            elif category == 'Energies':
+                self.paths[category].set(f'ener{self.file_count[category]-1}' if self.file_count[category] > 1 else '')
+        
             paths.pop()
-            self.paths[category].set(','.join(paths))
+            #self.paths[category].set(','.join(paths))
+            self.paths[category].set(f'dir{self.file_count[category]-1}')
             self.file_count[category] -= 1
 
 
@@ -130,11 +152,11 @@ class PageEleven(tk.Frame):
                 try:
                     float(self.track.get())
                     self.warning.set("")
-                    Pages.tracking = self.track
+                    Pages.tracking = float(self.track.get())
                     if Pages.open_optimization == False:
                         self.controller.show_frame("PageFourteen")
                     else:
-                        self.controller.show_frame("PageSixteen")
+                        self.controller.show_frame("PageFifteen")
 
                 except TypeError:
                     self.warning.set("Please make sure the tracking size is a real number in meters")

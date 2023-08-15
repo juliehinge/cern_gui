@@ -24,8 +24,6 @@ class SampleApp(tk.Tk):
     def __init__(self, *args, **kwargs):
         tk.Tk.__init__(self, *args, **kwargs)
         
-        self.is_dark_theme() # deciding and setting the theme that the user is using
-
         self.title_font = tkfont.Font(family='Helvetica', size=18, weight="bold", slant="italic")
 
         container = tk.Frame(self)
@@ -52,22 +50,6 @@ class SampleApp(tk.Tk):
 
         frame.event_generate("<<ShowFrame>>")
         frame.tkraise()
-
- 
-    def is_dark_theme(self):
-        """The function tests wether the user has a dark or light theme which is nessecarry when i change the colors from grey to black/white depending on the theme"""
-        bg_color = self.cget("background")
-        r, g, b = self.winfo_rgb(bg_color)
-        average = (r + g + b) / (3 * 256)  # winfo_rgb returns in range 0-65535
-        dark_theme = average < 128  # this threshold can be adjusted
-    
-        print(dark_theme)
-        
-        if dark_theme:
-            Pages.dark_color == True
-        else:
-            Pages.dark_color == False
-
 
 
 

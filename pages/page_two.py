@@ -32,7 +32,8 @@ class PageTwo(tk.Frame):
 
         # Putting the first section on the frame
         self.add_section()
-
+        self.theme = ""
+        self.is_dark_theme()
 
         # Create the frame at the bottom to contain all the buttons so they don't get in the way
         self.bottom_frame = tk.Frame(self.container)
@@ -59,6 +60,19 @@ class PageTwo(tk.Frame):
         self.text = ttk.Label(self.bottom_frame, textvariable=self.warning_text, foreground="red")
         self.text.grid(row=2, column=0, columnspan=5, padx=5, pady=(0,10))
 
+
+ 
+    def is_dark_theme(self):
+        """The function tests wether the user has a dark or light theme which is nessecarry when i change the colors from grey to black/white depending on the theme"""
+        bg_color = self.cget("background")
+        r, g, b = self.winfo_rgb(bg_color)
+        average = (r + g + b) / (3 * 256)  # winfo_rgb returns in range 0-65535
+        dark_theme = average < 128  # this threshold can be adjusted
+    
+        if dark_theme:
+            self.theme = "dark"
+        else:
+            self.theme = "light"
 
 
 
@@ -120,8 +134,7 @@ class PageTwo(tk.Frame):
                 entry_num = sections_entry.get().split(',')
                 if float(entry_num[0]) == float(random_num): # We don't want to clear anything the user put in, just the random pre-placed numbers
                     sections_entry.delete(0, tk.END) # Deleting text already in box
-                    print(Pages.dark_color)
-                    if Pages.dark_color == True:
+                    if self.theme == "dark":
                         sections_entry.config(foreground="white") # Changing colour of the box
                     else:
                         sections_entry.config(foreground="black") # Changing colour of the box
@@ -129,7 +142,7 @@ class PageTwo(tk.Frame):
             except AttributeError:
                 if float(sections_entry.get()) == float(random_num): # We don't want to clear anything the user put in, just the random pre-placed numbers
                     sections_entry.delete(0, tk.END) # Deleting text already in box
-                    if Pages.dark_color == True:
+                    if self.theme == "dark":
                             sections_entry.config(foreground="white") # Changing colour of the box
                     else:
                         sections_entry.config(foreground="black") # Changing colour of the box

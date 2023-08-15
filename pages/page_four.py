@@ -13,6 +13,9 @@ class PageFour(tk.Frame, Pages):
         self.container = tk.Frame(self)
         self.container.pack(side="top", fill="both", expand=True)
 
+        self.theme = ""
+        self.is_dark_theme()
+
         # This is to pass the variables from the csv
         self.bind("<<ShowFrame>>", self.pasvariable)
 
@@ -141,25 +144,45 @@ class PageFour(tk.Frame, Pages):
         self.row += 3; self.counter += 1 # Increment row number for new section and Increment the number of sections
 
 
+ 
+    def is_dark_theme(self):
+        """The function tests wether the user has a dark or light theme which is nessecarry when i change the colors from grey to black/white depending on the theme"""
+        bg_color = self.cget("background")
+        r, g, b = self.winfo_rgb(bg_color)
+        average = (r + g + b) / (3 * 256)  # winfo_rgb returns in range 0-65535
+        dark_theme = average < 128  # this threshold can be adjusted
+    
+        if dark_theme:
+            self.theme = "dark"
+        else:
+            self.theme = "light"
+
+
+
+
 
     def clear(self, event, sections_entry, random_num):
+
+
         """This function clears the number already in the entry"""
         if sections_entry.get() != '': # If the section is empty, there is nothing to clear
             try:
                 entry_num = sections_entry.get().split(',')
                 if float(entry_num[0]) == float(random_num): # We don't want to clear anything the user put in, just the random pre-placed numbers
                     sections_entry.delete(0, tk.END) # Deleting text already in box
-                    if Pages.dark_color == True:
-                            sections_entry.config(foreground="white") # Changing colour of the box
+                    if self.theme == "dark":
+                        sections_entry.config(foreground="white") # Changing colour of the box
                     else:
                         sections_entry.config(foreground="black") # Changing colour of the box
-            except AttributeError: # This is in case the user only put a number in for B and not G
+
+            except AttributeError:
                 if float(sections_entry.get()) == float(random_num): # We don't want to clear anything the user put in, just the random pre-placed numbers
                     sections_entry.delete(0, tk.END) # Deleting text already in box
-                    if Pages.dark_color == True:
+                    if self.theme == "dark":
                             sections_entry.config(foreground="white") # Changing colour of the box
                     else:
                         sections_entry.config(foreground="black") # Changing colour of the box
+
 
 
 
