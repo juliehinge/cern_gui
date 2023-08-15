@@ -6,6 +6,7 @@ from functions.map_mag_field import trajectory
 from p import Pages
 import math
 
+
 def flatten(li):
     """Flatten the list of lists to a single list."""
     return [item for sublist in li for item in sublist]
@@ -29,8 +30,6 @@ def beam_diff(beam_exit_directions, indeces):
             avg_first_beam_particles.append(inner_list[first_index[0]])
 
     average_first_vector = np.mean(avg_first_beam_particles, axis=0)
-
-
 
     # Caluclate the average particle exit direction of the last beam
     last_key = list(beam_exit_directions.keys())[-1]
@@ -126,11 +125,13 @@ def exit_size(x_list, y_list, index):
             x_positions.append(x_sublist[index[0]])
         else:
             print(f"Index {index[0]} out of range for x_sublist!")
+            return float('inf')  # Return a large penalty value
 
         if 0 <= index[0] < len(y_sublist):
             y_positions.append(y_sublist[index[0]])
         else:
             print(f"Index {index[0]} out of range for y_sublist!")
+            return float('inf')  # Return a large penalty value
 
         previous_x_sublist = x_sublist
         previous_y_sublist = y_sublist
@@ -146,8 +147,6 @@ def exit_size(x_list, y_list, index):
     # calculate the Euclidean distances and find the maximum
     distances = [((x-avg_pos[0])**2 + (y-avg_pos[1])**2)**0.5 for x, y in coordinates]
     max_distance = max(distances)
-    max_coordinate = coordinates[distances.index(max_distance)]
-
 
     return max_distance
 
@@ -160,7 +159,7 @@ def objective(params):
     li = reshape(flat_li)
     R = 0.7
 
-    # Get the beam results from the default2 function
+    # Get the beam results from the trajectory function
     x, y, _, indices, dd = trajectory(A, li, R)
 
 
@@ -189,12 +188,9 @@ def objective(params):
     # Objective function
     f = (initial_a - a)**2 + (initial_b - b)**2 + (initial_d - d)**2
     
-    penalty_weight = 1e12  
-    penalty = 0
-    if initial_d > 0.09:
-        penalty = penalty_weight * (initial_d - 0.09)**2
+
                 
-    return f + penalty
+    return f 
 
 
 def fmin():
@@ -227,12 +223,9 @@ def fmin():
         optimized_li = optimized_values[2:].reshape(num_rows, -1)
         print("Optimized A:", optimized_A)
         print("Optimized li:", optimized_li)
-        #return optimized_A, optimized_li
-       # _, _, _, _, dd = trajectory(optimized_A, optimized_li, 0.7)
         x, y, _, indices, dd = trajectory(optimized_A, optimized_li, Pages.tracking)
 
         file_keys = list(dd.keys())
-
         results_beam_sizes = [exit_size(x[file], y[file], indices[file]) for file in file_keys]
         # Computing average beam size
         average_beam_size = sum(results_beam_sizes) / len(results_beam_sizes)

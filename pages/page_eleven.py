@@ -88,7 +88,7 @@ class PageEleven(tk.Frame):
         if not selected_files:
             return
 
-        existing_paths = self.paths[category].get().split(', ')
+        existing_paths = [path for path in self.paths[category].get().split(', ') if path]
 
         for csv_file in selected_files:
 

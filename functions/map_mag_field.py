@@ -70,12 +70,20 @@ def plot_trajectories(R, A, B, G, directions, positions, Energy):
     return bending_radius
 
 
-def display_magnetic_fild(A, li, R, plot_trajectory=False):
+def display_magnetic_fild(A, li, R, plot_trajectory=False, custom_axis = False):
     """ 
     This function creates the default preview that the user can see without having to input X_min, X_max, Y_min, Y_max
     """
     
-    X_min, X_max, Y_min, Y_max = -0.2, R + 0.5, -R-0.2, 0.2
+    if custom_axis:
+        X_min = Pages.x_min
+        X_max = Pages.x_max
+        Y_max = Pages.y_max
+        Y_min = Pages.y_min
+    else:
+        X_min, X_max, Y_min, Y_max = -0.2, R + 0.5, -R-0.2, 0.2
+
+
     a, b, stepSize = 0, -R, 0.01
     
     positions = get_circle_coordinates(R, a, b, stepSize)

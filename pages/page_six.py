@@ -43,7 +43,7 @@ class PageSix(tk.Frame):
         li = Pages.vector_list
         R = Pages.radius
         # Calling the function that makes the plot and putting it on the GUI        
-        self.fig, ax, _ = display_magnetic_fild(A, li, R, plot_trajectory=False)  
+        self.fig, ax, _ = display_magnetic_fild(A, li, R, plot_trajectory=False, custom_axis=False)  
         self.canvas.figure = self.fig  # Update the figure associated with the canvas
         self.canvas.draw()  # Redraw the canvas to reflect changes
 
