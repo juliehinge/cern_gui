@@ -124,23 +124,25 @@ class PageEleven(tk.Frame):
             self.flags[category] = True 
 
         self.paths[category].set(", ".join(existing_paths))
-
+   
+   
     def delete_last_file(self, category):
         if self.file_data[category]:
+            # Get the last file key and remove it from the data
             last_file_key = list(self.file_data[category].keys())[-1]
             del self.file_data[category][last_file_key]
-           # paths = self.paths[category].get().split(',')
-            if category == 'Directions':
-                self.paths[category].set(f'dir{self.file_count[category]-1}' if self.file_count[category] > 1 else '')
-            elif category == 'Positions':
-                self.paths[category].set(f'pos{self.file_count[category]-1}' if self.file_count[category] > 1 else '')
-            elif category == 'Energies':
-                self.paths[category].set(f'ener{self.file_count[category]-1}' if self.file_count[category] > 1 else '')
-        
-            #self.paths[category].set(','.join(paths))
-            self.paths[category].set(f'dir{self.file_count[category]-1}')
+
+            # Reduce the file count
             self.file_count[category] -= 1
 
+            # Now, update the paths StringVar
+            paths = self.paths[category].get().split(', ')
+            
+            # Remove the last path from paths list
+            if paths:
+                paths.pop()
+
+            self.paths[category].set(', '.join(paths))
 
 
 

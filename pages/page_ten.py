@@ -5,7 +5,7 @@ import matplotlib
 matplotlib.use('TkAgg')  # Backend of matplotlib for tkinter
 from matplotlib.figure import Figure
 from p import Pages
-from functions.optimization import fmin
+from functions.optimization2 import fmin
 from functions.map_mag_field import display_magnetic_fild
 
 class PageTen(tk.Frame):

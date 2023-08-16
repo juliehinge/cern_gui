@@ -5,8 +5,9 @@ import matplotlib
 matplotlib.use('TkAgg')  # Backend of matplotlib for tkinter
 from matplotlib.figure import Figure
 from p import Pages
-from functions.optimization import fmin
+from functions.optimization2 import fmin
 from functions.map_mag_field import display_magnetic_fild
+
 
 
 class PageSixteen(tk.Frame):
@@ -36,7 +37,6 @@ class PageSixteen(tk.Frame):
 
 
 
-        
     def pasvariable(self, event=None):
        # angle = Pages.angle 
        # divergence = Pages.beam_divergence 
@@ -45,14 +45,12 @@ class PageSixteen(tk.Frame):
         optimized_A, optimized_li, average_beam_size, average_beam_disparity, beam_dif = fmin()
 
 
-        # Getting the user defined variables from the Pages module
-        A = optimized_A
-        li = optimized_li
+
         R = Pages.radius
 
         # Calling the function that makes the plot and putting it on the GUI        
         
-        self.fig, ax, _ = display_magnetic_fild(A, li, R, plot_trajectory=True, custom_axis=False)  
+        self.fig, ax, _ = display_magnetic_fild(optimized_A, optimized_li, R, plot_trajectory=True, custom_axis=False)  
         self.canvas.figure = self.fig  # Update the figure associated with the canvas
         self.canvas.draw()  # Redraw the canvas to reflect changes
 

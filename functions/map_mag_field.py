@@ -181,6 +181,9 @@ def trajectory(A, li, R):
             x, y, dirs = get_trajectory(R, A, B, G, [positions[0], positions[1]], [directions[0], directions[1]], energies, Pages.tracking)  # Plotting the bea
             # Store the last direction in the trajectory
             previous_dir = dirs[-1]
+            # Add a flag to check if a change in direction is encountered
+            direction_changed = False
+            
             # Iterate through the directions in reverse order
             for i, dir in enumerate(dirs[::-1]):
                 # If the current direction does not match the previous direction
@@ -190,10 +193,19 @@ def trajectory(A, li, R):
                     # Append the changed direction to the exit_direction dictionary for the current file
                     exit_direction[file].append(dir)
                     # Break out of the loop after finding the first change in direction
+                    direction_changed = True
                     break
                 # Update the previous_dir for the next iteration
                 previous_dir = dir
+            if not direction_changed:
+                print("this shouldn't appear")
+                indicies[file].append(len(dirs) - 1)
+                exit_direction[file].append(dirs[-1])
+
+
 
     return xx, yy, exit_direction, indicies, dd
+
+
 
 
