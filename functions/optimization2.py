@@ -5,7 +5,7 @@ from scipy.optimize import minimize
 from functions.map_mag_field import trajectory
 from p import Pages
 import math
-from scipy.optimize import differential_evolution
+import scipy.optimize
 
 
 def flatten(li):
@@ -58,10 +58,9 @@ def beam_diff(beam_exit_directions, indeces):
     cos_theta = np.clip(cos_theta, -1, 1)
 
     # Calculate the angle in radians
-    theta = np.arccos(cos_theta) 
+    theta = np.arccos(cos_theta) * 180.0 / np.pi
 
 
-    print(average_first_vector, average_last_vector)
     return abs(theta)
 
 
@@ -183,7 +182,7 @@ def fmin():
     # Initial guesses
     # Initial guesses
     A_init = [0.6, 0.95]
-    mag_init = [[0.57, -0.7], [0.57, 2.4]]
+    mag_init = [[0.57, -0.7], [0.57, 1]]
 
     # Number of rows is based on the length of A_init
     num_rows = len(A_init)
@@ -192,12 +191,14 @@ def fmin():
 
     # Bounds
     A_bounds = (0, 60*math.pi/180)
-    li_bounds_1 = (0, 1.5)
+    li_bounds_1 = (0, 2)
     li_bounds_2 = (-2, 2)
 
-    A_bounds_list = [A_bounds] * len(A_init)
-    li_bounds_list = [li_bounds_1, li_bounds_2] * num_rows
-    bounds = A_bounds_list + li_bounds_list
+   # A_bounds_list = [A_bounds] * len(A_init)
+   # li_bounds_list = [li_bounds_1, li_bounds_2] * num_rows
+   
+   # bounds = A_bounds_list + li_bounds_list
+    bounds = [A_bounds, A_bounds, li_bounds_1, li_bounds_1, li_bounds_2, li_bounds_2]
 
 
     print("Initial Guess:", initial_guess)
@@ -206,10 +207,21 @@ def fmin():
     # Call minimize
     #solution = minimize(objective, initial_guess.flatten(), bounds=bounds, method='COBYLA')
 
-   # options = {'rhobeg': 1.5}  # Adjust 0.5 to your desired initial step size
-    solution = minimize(objective, initial_guess.flatten(), bounds=bounds, method='COBYLA')
+  
+   # solution = minimize(objective, initial_guess.flatten(), bounds=bounds,options=options,  method='BFGS')
+    #solution = minimize(objective, initial_guess.flatten(),  method='L-BFGS-B')
 
+    #solution = minimize(objective, initial_guess.flatten(), method='L-BFGS-B', tol=1e-5)
+    options = {
+        'gtol': 1e-3,  # default is usually 1e-5
+        'ftol': 1e-3,  # default is usually 2.2e-9
+        'eps': 1e-6   # default is usually 1e-8
+    }
 
+    #solution = minimize(objective, initial_guess.flatten(), method='L-BFGS-B')
+    solution = scipy.optimize.fmin(objective, initial_guess.flatten())
+
+    print(solution)
 
     # Extract optimized values
     if solution.success:
@@ -222,14 +234,6 @@ def fmin():
 
         x, y, exit, indices, dd = trajectory(optimized_A, optimized_li, Pages.tracking)
 
-        for k,v in x.items():
-            if k == 'file2':
-                print(v[0])
-
-
-        for k,v in y.items():
-            if k == 'file2':
-                print(v[0])
 
         file_keys = list(dd.keys())
         results_beam_sizes = [exit_size(x[file], y[file], indices[file]) for file in file_keys]
@@ -242,5 +246,4 @@ def fmin():
 
         return optimized_A, optimized_li, average_beam_size, average_beam_disparity, beam_difference
 
-    else:
-        print("Optimization did not converge:", solution.message)
+   
