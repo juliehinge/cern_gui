@@ -66,3 +66,4 @@ class PageTen(tk.Frame):
 
             optimized_li_label = tk.Label(self, text=f"Angle between innermost and outermost beam: {beam_dif}")
             optimized_li_label.pack(anchor='w', padx=10, pady=(0, 5))
+

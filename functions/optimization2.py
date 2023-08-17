@@ -57,7 +57,7 @@ def beam_diff(beam_exit_directions, indeces):
     cos_theta = dot_product / (mag_first_vector * mag_last_vector)
     cos_theta = np.clip(cos_theta, -1, 1)
 
-    # Calculate the angle in radians
+    # Calculate the angle in degrees
     theta = np.arccos(cos_theta) * 180.0 / np.pi
 
 
@@ -170,7 +170,7 @@ def objective(params):
 
 
     # Objective function
-    f = 5*(initial_a - a)**2 + (initial_b - b)**2 + (initial_d - d)**2
+    f = (initial_a - a)**2 + (initial_b - b)**2 + (initial_d - d)**2
     
     return f
 
@@ -180,9 +180,8 @@ def objective(params):
 def fmin():
 
     # Initial guesses
-    # Initial guesses
-    A_init = [0.6, 0.95]
-    mag_init = [[0.57, -0.7], [0.57, 1]]
+    A_init = [0.611, 0.96]
+    mag_init = [[0.57, -0.7], [0.57, -2.4]]
 
     # Number of rows is based on the length of A_init
     num_rows = len(A_init)
@@ -190,60 +189,51 @@ def fmin():
     initial_guess = np.hstack((np.array(A_init).reshape(-1, 1), mag_matrix))
 
     # Bounds
-    A_bounds = (0, 60*math.pi/180)
-    li_bounds_1 = (0, 2)
-    li_bounds_2 = (-2, 2)
+    A_bounds = (0, 40*math.pi/180)
+    li_bounds_1 = (0.4, 0.6)
+    li_bounds_2 = (-2.5, 2.5)
 
-   # A_bounds_list = [A_bounds] * len(A_init)
-   # li_bounds_list = [li_bounds_1, li_bounds_2] * num_rows
-   
-   # bounds = A_bounds_list + li_bounds_list
-    bounds = [A_bounds, A_bounds, li_bounds_1, li_bounds_1, li_bounds_2, li_bounds_2]
+    bounds = []
+    for i in range(num_rows):
+        bounds.append(A_bounds)
+        bounds.append(li_bounds_1)
+        bounds.append(li_bounds_2)
 
-
-    print("Initial Guess:", initial_guess)
+    print("Initial Guess:", initial_guess.flatten())
     print("Bounds:", bounds)
 
     # Call minimize
-    #solution = minimize(objective, initial_guess.flatten(), bounds=bounds, method='COBYLA')
-
-  
-   # solution = minimize(objective, initial_guess.flatten(), bounds=bounds,options=options,  method='BFGS')
-    #solution = minimize(objective, initial_guess.flatten(),  method='L-BFGS-B')
-
-    #solution = minimize(objective, initial_guess.flatten(), method='L-BFGS-B', tol=1e-5)
-    options = {
-        'gtol': 1e-3,  # default is usually 1e-5
-        'ftol': 1e-3,  # default is usually 2.2e-9
-        'eps': 1e-6   # default is usually 1e-8
-    }
-
-    #solution = minimize(objective, initial_guess.flatten(), method='L-BFGS-B')
+    #solution = minimize(objective, initial_guess.flatten(),bounds=bounds, method='COBYLA')
     solution = scipy.optimize.fmin(objective, initial_guess.flatten())
+
 
     print(solution)
 
     # Extract optimized values
-    if solution.success:
-        optimized_values = solution.x
-        optimized_A = optimized_values[:2]
-        optimized_li = optimized_values[2:].reshape(num_rows, -1)
-        print("Optimized A:", optimized_A)
-        print("Optimized li:", optimized_li)
-    
+   #if solution.success:
+    optimized_values = solution
+    # Extract the A values
+    optimized_A = [optimized_values[i] for i in range(0, len(optimized_values), 3)]
 
-        x, y, exit, indices, dd = trajectory(optimized_A, optimized_li, Pages.tracking)
+    # Extract the li values and group them in pairs
+    optimized_li = [optimized_values[i:i+2] for i in range(1, len(optimized_values), 3)]
+
+    print("Optimized A:", optimized_A)
+    print("Optimized li:", optimized_li)
 
 
-        file_keys = list(dd.keys())
-        results_beam_sizes = [exit_size(x[file], y[file], indices[file]) for file in file_keys]
-        # Computing average beam size
-        average_beam_size = sum(results_beam_sizes) / len(results_beam_sizes)
-        # Computing beam disparity
-        results_beam_disparity = [beam_disparity(dd[file], indices[file]) for file in file_keys]
-        average_beam_disparity = sum(results_beam_disparity) / len(results_beam_disparity)
-        beam_difference = beam_diff(dd, indices)
+    x, y, exit, indices, dd = trajectory(optimized_A, optimized_li, Pages.tracking)
 
-        return optimized_A, optimized_li, average_beam_size, average_beam_disparity, beam_difference
 
-   
+    file_keys = list(dd.keys())
+    results_beam_sizes = [exit_size(x[file], y[file], indices[file]) for file in file_keys]
+    # Computing average beam size
+    average_beam_size = sum(results_beam_sizes) / len(results_beam_sizes)
+    # Computing beam disparity
+    results_beam_disparity = [beam_disparity(dd[file], indices[file]) for file in file_keys]
+    average_beam_disparity = sum(results_beam_disparity) / len(results_beam_disparity)
+    beam_difference = beam_diff(dd, indices)
+
+    return optimized_A, optimized_li, average_beam_size, average_beam_disparity, beam_difference
+
+

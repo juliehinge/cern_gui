@@ -17,7 +17,7 @@ class PageEleven(tk.Frame):
 
 
 
-        ttk.Label(self, text="Upload your CSV files please", font = ("bold", 20)).grid(row=0, column=0, padx = (10,30), pady = (10,30), columnspan=3)
+        ttk.Label(self, text="Upload your csv/txt files please", font = ("bold", 20)).grid(row=0, column=0, padx = (10,30), pady = (10,30), columnspan=3)
         ttk.Label(self, text="-"*100, foreground="grey").grid(row=1, column=0, pady = (10,0), columnspan = 5, sticky='w')
 
         tk.Label(self, text="Tracking size (m)").grid(row=2, column=0, pady=10, sticky='e')
@@ -26,7 +26,7 @@ class PageEleven(tk.Frame):
 
 
 
-        ttk.Label(self, text="Enter the number beams you want displayed:", font=("bold", 10)).grid(row=4, column=0, padx=10, pady=10)
+        ttk.Label(self, text="Enter the number beams you want to track:", font=("bold", 15)).grid(row=4, column=0, padx=10, pady=10)
         self.num_files = tk.IntVar(value=0)
         ttk.Entry(self, textvariable=self.num_files).grid(row=4, column=1, padx=10, pady=10)
         ttk.Button(self, text='Set', command=self.set_num_files).grid(row=4, column=2, sticky='w')

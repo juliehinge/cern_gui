@@ -110,6 +110,37 @@ def display_magnetic_fild(A, li, R, plot_trajectory=False, custom_axis = False):
     if plot_trajectory:
         beams = Pages.file_data
 
+
+        # Compute the sums for each file
+        sums = {file: sum(beams['Energies'][file][0]) for file in beams['Energies']}
+
+        # Sort file names based on their sums
+        sorted_files = sorted(sums, key=sums.get)
+
+        # Create a new dictionary with the data reordered
+        beams = {
+            'Energies': {file: beams['Energies'][file] for file in sorted_files},
+            'Positions': {file: beams['Positions'][file] for file in sorted_files},
+            'Directions': {file: beams['Directions'][file] for file in sorted_files}
+        }
+
+
+
+
+        # Compute the sums for each file
+        sums = {file: sum(beams['Energies'][file][0]) for file in beams['Energies']}
+
+        # Sort file names based on their sums
+        sorted_files = sorted(sums, key=sums.get)
+
+        # Create a new dictionary with the data reordered
+        beams = {
+            'Energies': {file: beams['Energies'][file] for file in sorted_files},
+            'Positions': {file: beams['Positions'][file] for file in sorted_files},
+            'Directions': {file: beams['Directions'][file] for file in sorted_files}
+        }
+
+
         for file in beams['Energies'].keys():
             energy = beams['Energies'][file]
             positions = beams['Positions'][file]
@@ -149,6 +180,23 @@ def trajectory(A, li, R):
     
     
     beams = Pages.file_data
+
+
+
+    # Compute the sums for each file
+    sums = {file: sum(beams['Energies'][file][0]) for file in beams['Energies']}
+
+    # Sort file names based on their sums
+    sorted_files = sorted(sums, key=sums.get)
+
+    # Create a new dictionary with the data reordered
+    beams = {
+        'Energies': {file: beams['Energies'][file] for file in sorted_files},
+        'Positions': {file: beams['Positions'][file] for file in sorted_files},
+        'Directions': {file: beams['Directions'][file] for file in sorted_files}
+    }
+
+    
     exit_direction, xx, yy, dd = {}, {}, {}, {}
     indicies = {}
 
@@ -179,6 +227,8 @@ def trajectory(A, li, R):
             energies = averages['Energies']     
              # Calculate the trajectory for the given parameters and extracted positions, directions, and energies
             x, y, dirs = get_trajectory(R, A, B, G, [positions[0], positions[1]], [directions[0], directions[1]], energies, Pages.tracking)  # Plotting the bea
+           
+           
             # Store the last direction in the trajectory
             previous_dir = dirs[-1]
             # Add a flag to check if a change in direction is encountered
@@ -198,7 +248,6 @@ def trajectory(A, li, R):
                 # Update the previous_dir for the next iteration
                 previous_dir = dir
             if not direction_changed:
-                print("this shouldn't appear")
                 indicies[file].append(len(dirs) - 1)
                 exit_direction[file].append(dirs[-1])
 

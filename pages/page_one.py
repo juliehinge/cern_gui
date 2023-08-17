@@ -12,7 +12,7 @@ class PageOne(tk.Frame):
         # Adding labels to the GUI and placing them on the grid
         tk.Label(self, text="Input your magnet parameters please", font = ("bold", 20)).grid(row=0, column=0, padx = (10), pady = (10), columnspan=2)
         ttk.Label(self, text="-"*80, foreground="grey").grid(row=1, column=0, pady = (10,0), columnspan = 5, sticky='w')
-        tk.Label(self, text="Reference Radius:", font = ("bold", 15)).grid(row=2, column=0, pady=10, sticky='w', )
+        tk.Label(self, text="Reference Radius (m):", font = ("bold", 15)).grid(row=2, column=0, pady=10, sticky='w', )
         tk.Label(self, text="Input Sections:", font = ("bold", 15)).grid(row=4, column=0,pady=(10,0), sticky='w')
         ttk.Label(self, text="-"*80, foreground="grey").grid(row=3, column=0, pady = (10,0), columnspan = 5, sticky='w')
         ttk.Label(self, text="-"*80, foreground="grey").grid(row=6, column=0, pady = (10,0), columnspan = 5, sticky='w')

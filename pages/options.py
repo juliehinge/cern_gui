@@ -10,7 +10,7 @@ class Options(tk.Frame):
         tk.Frame.__init__(self, parent)
         self.controller = controller
 
-        label1 = tk.Label(self, text="Go To:", font = ("bold", 26))
+        label1 = tk.Label(self, text="Menu", font = ("bold", 26))
         label1.grid(row=0, column=0, padx = (10), pady = (10), columnspan=4)
       
 
@@ -30,7 +30,7 @@ class Options(tk.Frame):
         beam_tracking.grid(row=3, column=1, padx=10,pady=10, sticky = 'w')
 
         # Section for beam Optimization
-        beam_optimization = ttk.Button(self, text="Beam Optimization", width=22,
+        beam_optimization = ttk.Button(self, text="Magnet Optimization", width=22,
                             command=lambda: self.open_optimization())
         beam_optimization.grid(row=4, column=1, padx=10,pady=10, sticky = 'w')
 

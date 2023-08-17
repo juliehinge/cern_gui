@@ -43,9 +43,6 @@ class PageSixteen(tk.Frame):
        # beam_size = Pages.beam_size 
         
         optimized_A, optimized_li, average_beam_size, average_beam_disparity, beam_dif = fmin()
-
-
-
         R = Pages.radius
 
         # Calling the function that makes the plot and putting it on the GUI        
@@ -59,12 +56,12 @@ class PageSixteen(tk.Frame):
             self.toolbar.update()
             self.is_toolbar += 1
 
-            beams_size = tk.Label(self, text=f"Average Beam Size is: {average_beam_size}")
+            beams_size = tk.Label(self, text=f"Average Beam Size is: {average_beam_size} radians") # Putting this on the gui
             beams_size.pack(anchor='w', padx=10, pady=(5, 0))
 
-            beam_disparity = tk.Label(self, text=f"Average Beam Disperity is: {average_beam_disparity}")
+            beam_disparity = tk.Label(self, text=f"Average Beam Disperity is: {average_beam_disparity} radians") # Putting this on the gui
             beam_disparity.pack(anchor='w', padx=10, pady=(0, 5))
 
 
-            optimized_li_label = tk.Label(self, text=f"Angle between innermost and outermost beam: {beam_dif}")
+            optimized_li_label = tk.Label(self, text=f"Angle between innermost and outermost beam: {beam_dif} degrees") # Putting this on the gui
             optimized_li_label.pack(anchor='w', padx=10, pady=(0, 5))

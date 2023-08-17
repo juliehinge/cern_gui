@@ -58,4 +58,3 @@ class PageFourteen(tk.Frame):
             self.toolbar = NavigationToolbar2Tk(self.canvas, self.frame)
             self.toolbar.update()
             self.is_toolbar += 1
-

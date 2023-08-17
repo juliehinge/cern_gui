@@ -18,9 +18,9 @@ class PageFifteen(tk.Frame):
 
         ttk.Label(self, text="Please input your ideal parameters", font = ("bold", 15)).grid(row=3, column=0, padx=5, pady = (10,0), columnspan = 5, sticky='w')
 
-        tk.Label(self, text="Beam Angle").grid(row=4, column=0, pady=10, sticky='e')
-        tk.Label(self, text="Average Beam Divergence").grid(row=5, column=0, pady=10, sticky='e')
-        tk.Label(self, text="Average Beam Size").grid(row=6, column=0, pady=10, sticky='e')
+        tk.Label(self, text="Beam Angle (degrees)").grid(row=4, column=0, pady=10, sticky='e')
+        tk.Label(self, text="Average Beam Divergence (radians)").grid(row=5, column=0, pady=10, sticky='e')
+        tk.Label(self, text="Average Beam Size (radians)").grid(row=6, column=0, pady=10, sticky='e')
 
         self.angle = ttk.Entry(self, width=5); self.angle.grid(row=4, column=1, pady=10, sticky='w', )
         self.divergence = ttk.Entry(self, width=5); self.divergence.grid(row=5, column=1, pady=10, sticky='w', )
@@ -41,7 +41,7 @@ class PageFifteen(tk.Frame):
 
         button1 = ttk.Button(self, text="Go to custom axis section",
                             command=lambda: self.zoomed_section())
-        button1.grid(row=8, column=1,  pady = (10), sticky='w')
+        button1.grid(row=8, column=0,  pady = (10), sticky='w')
 
         tk.Label(self, text="*It may take some time for the optimization to run").grid(row=9, column=0, pady=10, sticky='e')
 
