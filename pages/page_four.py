@@ -125,7 +125,7 @@ class PageFour(tk.Frame, Pages):
         self.vector_entries.append(sections_entry_v)
 
         # Adding Labels For alpha
-        alpha_lab = ttk.Label(self.scrollable_frame, text="α:")
+        alpha_lab = ttk.Label(self.scrollable_frame, text="α(radians):")
         alpha_lab.grid(row=self.row+2, column=2, sticky='e')
         self.labels.append(alpha_lab)
 

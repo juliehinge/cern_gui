@@ -1,6 +1,7 @@
 tkscrolledframe
-random
-tkinter
+tk
 pandas
 matplotlib
 seaborn
+numpy
+SciPy

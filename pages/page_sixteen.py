@@ -63,5 +63,23 @@ class PageSixteen(tk.Frame):
             beam_disparity.pack(anchor='w', padx=10, pady=(0, 5))
 
 
-            optimized_li_label = tk.Label(self, text=f"Angle between innermost and outermost beam: {beam_dif} degrees") # Putting this on the gui
-            optimized_li_label.pack(anchor='w', padx=10, pady=(0, 5))
+            angle_label = tk.Label(self, text=f"Angle between innermost and outermost beam: {beam_dif} degrees") # Putting this on the gui
+            angle_label.pack(anchor='w', padx=10, pady=(0, 5))
+
+
+
+            optimized_A_label = tk.Label(self, text=f"Optimized section sizes are: {optimized_A} radians") # Putting this on the gui
+            optimized_A_label.pack(anchor='w', padx=10, pady=(0, 5))
+
+
+
+            B = " ".join(str(x[0]) for x in optimized_li)
+            G = " ".join(str(x[1]) for x in optimized_li)
+
+
+            optimized_B_label = tk.Label(self, text=f"optimized magnetic fields are: {B}") # Putting this on the gui
+            optimized_B_label.pack(anchor='w', padx=10, pady=(0, 5))
+
+
+            optimized_B_label = tk.Label(self, text=f"optimized gradients are: {G}") # Putting this on the gui
+            optimized_B_label.pack(anchor='w', padx=10, pady=(0, 5))

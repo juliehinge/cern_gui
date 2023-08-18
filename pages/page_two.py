@@ -107,7 +107,7 @@ class PageTwo(tk.Frame):
 
         self.vector_entries.append(sections_entry)
         
-        lab3 = tk.Label(self.scrollable_frame, text="α:", font=(10))
+        lab3 = tk.Label(self.scrollable_frame, text="α (radians):", font=(10))
         lab3.grid(row=self.row + 2, column=2, sticky='e', padx=(10, 0))
         self.labels.append(lab3)
 

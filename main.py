@@ -19,7 +19,7 @@ from pages.page_fifteen import PageFifteen
 from pages.page_sixteen import PageSixteen
 from p import Pages
 import os
-
+import sys
 
 # Determine the correct path for accessing resources
 if getattr(sys, 'frozen', False):

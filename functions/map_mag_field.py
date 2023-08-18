@@ -126,7 +126,6 @@ def display_magnetic_fild(A, li, R, plot_trajectory=False, custom_axis = False):
 
 
 
-
         # Compute the sums for each file
         sums = {file: sum(beams['Energies'][file][0]) for file in beams['Energies']}
 

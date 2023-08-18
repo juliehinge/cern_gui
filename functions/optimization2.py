@@ -164,6 +164,7 @@ def objective(params):
     initial_d = average_beam_disparity
 
 
+    # Ideal parameters
     a = Pages.angle
     b = Pages.beam_size
     d = Pages.beam_divergence

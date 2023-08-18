@@ -7,7 +7,7 @@ matplotlib.use('TkAgg')  # Backend of matplotlib for tkinter
 from matplotlib.figure import Figure
 from function1 import default2
 from p import Pages
-
+from functions.map_mag_field import trajectory
 
 
 class PageNine(tk.Frame):
@@ -36,7 +36,7 @@ class PageNine(tk.Frame):
         self.canvas.get_tk_widget().pack(side=tk.TOP, fill=tk.BOTH, expand=1)
 
     
-
+        self.is_tool_bar = 0
 
     def pasvariable(self, event=None):
     
@@ -46,8 +46,7 @@ class PageNine(tk.Frame):
         li = Pages.vector_list
         R = Pages.radius
 
-        # Calling the function that makes the plot and putting it on the GUI        
-        
+
         self.fig, ax = default2(A, li, R)  
         self.canvas.figure = self.fig  # Update the figure associated with the canvas
         self.canvas.draw()  # Redraw the canvas to reflect changes

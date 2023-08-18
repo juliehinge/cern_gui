@@ -44,10 +44,11 @@ class PageFifteen(tk.Frame):
         button1.grid(row=8, column=0,  pady = (10), sticky='w')
 
         tk.Label(self, text="*It may take some time for the optimization to run").grid(row=9, column=0, pady=10, sticky='e')
+        tk.Label(self, text="*Optimizer does not work well for now").grid(row=10, column=0, pady=10, sticky='e')
 
         # Warning text setup
         self.warning_text = tk.StringVar(self, value=' ')
-        self.text = ttk.Label(self, textvariable = self.warning_text, foreground ="red").grid(row=10, column=0,pady = 5, columnspan=3)
+        self.text = ttk.Label(self, textvariable = self.warning_text, foreground ="red").grid(row=11, column=0,pady = 5, columnspan=3)
         self.verify = False
 
 
