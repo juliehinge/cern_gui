@@ -10,10 +10,8 @@ from pages.options import Options
 from pages.page_six import PageSix
 from pages.page_seven import PageSeven
 from pages.page_eight import PageEight
-from pages.page_nine import PageNine
 from pages.page_ten import PageTen
 from pages.page_eleven import PageEleven
-from pages.page_twelve import PageTwelve
 from pages.page_fourteen import PageFourteen
 from pages.page_fifteen import PageFifteen
 from pages.page_sixteen import PageSixteen
@@ -41,8 +39,8 @@ class SampleApp(tk.Tk):
 
         self.frames = {}
 
-        for F, geometry in zip((StartPage, PageOne, PageTwo, PageThree, PageFour, PageFive, Options, PageSix, PageSeven, PageEight, PageNine, PageTen, PageEleven, PageTwelve, PageFourteen, PageFifteen, PageSixteen), 
-                               ('450x500', '400x350', '600x500', '350x150', '600x500', '600x500', '300x300', '600x600', '600x600', '500x450', '600x600', '950x700', '700x500', '950x700', '600x600', '600x600', '700x700')):
+        for F, geometry in zip((StartPage, PageOne, PageTwo, PageThree, PageFour, PageFive, Options, PageSix, PageSeven, PageEight, PageTen, PageEleven, PageFourteen, PageFifteen, PageSixteen), 
+                               ('450x500', '400x350', '600x500', '350x150', '600x500', '600x500', '300x300', '600x600', '600x600', '500x450', '950x700', '700x500',  '600x600', '600x600', '700x700')):
             
             page_name = F.__name__
             if F == StartPage:

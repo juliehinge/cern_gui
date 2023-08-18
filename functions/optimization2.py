@@ -18,11 +18,11 @@ def reshape(flat_list):
 
 
 
-def beam_diff(beam_exit_directions, indeces):
+def beam_diff(directions, indeces):
 
     # Caluclate the average particle exit direction of the first beam
-    first_key = list(beam_exit_directions.keys())[0]
-    first_beam = beam_exit_directions[first_key]
+    first_key = list(directions.keys())[0]
+    first_beam = directions[first_key]
     first_index = list(indeces.values())[0]
 
     avg_first_beam_particles = []
@@ -34,8 +34,8 @@ def beam_diff(beam_exit_directions, indeces):
 
 
     # Caluclate the average particle exit direction of the last beam
-    last_key = list(beam_exit_directions.keys())[-1]
-    last_beam = beam_exit_directions[last_key]
+    last_key = list(directions.keys())[-1]
+    last_beam = directions[last_key]
     last_index = list(indeces.values())[-1]
 
     avg_last_beam_particles = []
@@ -143,7 +143,7 @@ def objective(params):
     li = reshape(flat_li) 
     R = 0.7
 
-    # Get the beam results from the default2 function
+    # Get the beam results from the trajectory function
     x, y, _, indices, dd = trajectory(A, li, R)
 
 
@@ -181,8 +181,8 @@ def objective(params):
 def fmin():
 
     # Initial guesses
-    A_init = [0.611, 0.96]
-    mag_init = [[0.57, -0.7], [0.57, -2.4]]
+    A_init = Pages.alpha_list
+    mag_init = Pages.vector_list
 
     # Number of rows is based on the length of A_init
     num_rows = len(A_init)

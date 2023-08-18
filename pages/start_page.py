@@ -10,11 +10,13 @@ class StartPage(tk.Frame):
         self.controller = controller
 
         # Adding a label to the frame and putting it on the grid
-        tk.Label(self, text="Let's get started", font=controller.title_font).grid(row=0, column=1,pady=(10))
+        tk.Label(self, text="Let's get started!", font=controller.title_font).grid(row=0, column=1,pady=(10))
 
         # Adding a get started button that takes the user to the first page
-        tk.Button(self, text="Get Started", command=lambda: controller.show_frame("PageOne")).grid(row=3, column=1, padx=(10), pady=(10))
-        tk.Label(self, text="Julie Hinge").grid(row=3, column=2, sticky='e', pady=(10))
+        tk.Button(self, text="Get Started", command=lambda: controller.show_frame("PageOne")).grid(row=3, column=1, padx=(10), pady=(0,10))
+        tk.Label(self, text="BeaMagnetizer").grid(row=4, column=2, sticky='e', pady=(0,10))
+
+        tk.Label(self, text="Julie Hinge").grid(row=3, column=2, sticky='e', padx=10)
 
         # Using the provided image_path to load the image
         self.image = PhotoImage(file=image_path)
