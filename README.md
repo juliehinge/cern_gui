@@ -1,5 +1,5 @@
 To run the GUI, simply 
-1. clone my repository
+1. Clone my repository
 2. Run "pip install -r requirements" in your terminal
 3. Navigate to the repository and run "python main.py"
 
